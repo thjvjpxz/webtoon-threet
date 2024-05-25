@@ -1,0 +1,39 @@
+<!--<vector-->
+<!--    xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:aapt="http://schemas.android.com/aapt"-->
+<!--    android:width="453dp"-->
+<!--    android:height="374dp"-->
+<!--    android:viewportWidth="453"-->
+<!--    android:viewportHeight="374"-->
+<!--    >-->
+<!--    <group>-->
+<!--        <clip-path-->
+<!--            android:pathData="M353 187C353 235.049 296.364 274 226.5 274C156.636 274 100 235.049 100 187C100 138.951 156.636 100 226.5 100C296.364 100 353 138.951 353 187Z"-->
+<!--            />-->
+<!--    </group>-->
+<!--    <group>-->
+<!--        <clip-path-->
+<!--            android:pathData="M0 0V374H453V0M353 187C353 235.049 296.364 274 226.5 274C156.636 274 100 235.049 100 187C100 138.951 156.636 100 226.5 100C296.364 100 353 138.951 353 187Z"-->
+<!--            />-->
+<!--        <path-->
+<!--            android:pathData="M353 187C353 235.049 296.364 274 226.5 274C156.636 274 100 235.049 100 187C100 138.951 156.636 100 226.5 100C296.364 100 353 138.951 353 187Z"-->
+<!--            android:strokeWidth="200"-->
+<!--            android:strokeColor="#AA000000"-->
+<!--            />-->
+<!--    </group>-->
+<!--</vector>-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap
+            android:src="@drawable/test"
+            android:gravity="center" />
+    </item>
+    <item>
+        <shape>
+            <gradient
+                android:startColor="#AA000000"
+                android:endColor="#00000000"
+                android:angle="90" />
+        </shape>
+    </item>
+</layer-list>
