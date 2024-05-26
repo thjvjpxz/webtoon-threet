@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragment.HomeFragment">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="10dp"
+            android:layout_height="match_parent">
+
+            <include
+                layout="@layout/header"
+                android:id="@+id/header" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/oswald"
+                    android:letterSpacing="-0.02"
+                    android:text="@string/popular"
+                    android:textColor="#F97892"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="36.5dp"
+                    android:background="@drawable/line"
+                    />
+
+                <View
+                    android:layout_width="125dp"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="35dp"
+                    android:background="#F97892"
+                    />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvBanner"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/oswald"
+                    android:letterSpacing="-0.02"
+                    android:text="@string/recent"
+                    android:textColor="#F97892"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="36.5dp"
+                    android:background="@drawable/line"
+                    />
+
+                <View
+                    android:layout_width="106dp"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="35dp"
+                    android:background="#F97892"
+                    />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvUpdated"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/oswald"
+                    android:letterSpacing="-0.02"
+                    android:text="@string/completed"
+                    android:textColor="#F97892"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="36.5dp"
+                    android:background="@drawable/line"
+                    />
+
+                <View
+                    android:layout_width="170dp"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="35dp"
+                    android:background="#F97892"
+                    />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvCompleted"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/oswald"
+                    android:letterSpacing="-0.02"
+                    android:text="@string/ranking"
+                    android:textColor="#F97892"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="36.5dp"
+                    android:background="@drawable/line"
+                    />
+
+                <View
+                    android:layout_width="115dp"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="35dp"
+                    android:background="#F97892"
+                    />
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvRanking"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:orientation="vertical" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_marginTop="15dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    android:fontFamily="@font/oswald"
+                    android:letterSpacing="-0.02"
+                    android:text="@string/total"
+                    android:textColor="#F97892"
+                    android:textSize="22sp"
+                    android:textStyle="bold" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="36.5dp"
+                    android:background="@drawable/line"
+                    />
+
+                <View
+                    android:layout_width="70dp"
+                    android:layout_height="4dp"
+                    android:layout_marginTop="35dp"
+                    android:background="#F97892"
+                    />
+            </RelativeLayout>
+
+            <com.google.android.flexbox.FlexboxLayout
+                android:id="@+id/flexboxLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:flexWrap="wrap"
+                android:layout_marginBottom="100dp"
+                app:justifyContent="flex_start">
+<!--                <TextView-->
+<!--                    android:id="@+id/tvCategory"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginEnd="5dp"-->
+<!--                    android:layout_marginVertical="5dp"-->
+<!--                    android:fontFamily="@font/poppins"-->
+<!--                    android:paddingHorizontal="12dp"-->
+<!--                    android:paddingVertical="7dp"-->
+<!--                    android:background="@drawable/tag_background"-->
+<!--                    android:textColor="#FFFFFF"-->
+<!--                    android:textStyle="bold"/>-->
+            </com.google.android.flexbox.FlexboxLayout>
+
+        </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>

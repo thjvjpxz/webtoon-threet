@@ -1,5 +1,6 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentLoginBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -73,7 +75,9 @@ public class LoginFragment extends Fragment {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         });
         binding.btnLogin.setOnClickListener(v -> {
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
         });
         binding.loginFacebook.setOnClickListener(v -> {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
