@@ -13,14 +13,25 @@
         android:orientation="vertical">
 
         <EditText
+            android:id="@+id/edName"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="34dp"
             android:background="@drawable/edt_sign_edit"
-            android:hint="Email hoặc tài khoản"
+            android:hint="Tên"
+            android:inputType="text|textEmailAddress"
+            android:textColorHint="@color/hint_color" />
+        <EditText
+            android:id="@+id/edEmail"
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginTop="26dp"
+            android:background="@drawable/edt_sign_edit"
+            android:hint="Email"
             android:inputType="text|textEmailAddress"
             android:textColorHint="@color/hint_color" />
 
         <EditText
+            android:id="@+id/edPassword"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="26dp"
@@ -31,6 +42,7 @@
             android:textColorHint="@color/hint_color" />
 
         <EditText
+            android:id="@+id/edConfirmPassword"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginTop="26dp"

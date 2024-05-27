@@ -1,5 +1,14 @@
 <resources>
     <string name="app_name">WebtoonGroupTT</string>
-<!-- TODO: Remove or change this placeholder text -->
+    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="poster">Poster</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="star">Star</string>
+    <string name="popular">Xem Nhiều Nhất</string>
+    <string name="recent">Mới Cập Nhật</string>
+    <string name="total">Tổng Hợp</string>
+    <string name="completed">Truyện Đã Hoàn Thành</string>
+    <string name="ranking">Bảng Xếp Hạng</string>
+    <string name="eye">Eye</string>
 </resources>

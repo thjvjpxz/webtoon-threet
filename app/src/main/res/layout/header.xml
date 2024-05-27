@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_marginTop="10dp"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/ellipse_1"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/rounded_border"
+        android:backgroundTint="#FDD7DE"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/ellipse_1"
+        app:layout_constraintEnd_toEndOf="@+id/ellipse_1"
+        app:layout_constraintStart_toStartOf="@+id/ellipse_1"
+        app:layout_constraintTop_toTopOf="@+id/ellipse_1"
+        app:srcCompat="@drawable/ic_user"
+        android:contentDescription="user" />
+
+    <TextView
+        android:id="@+id/trang_ch_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:fontFamily="@font/poppins"
+        android:letterSpacing="-0.03"
+        android:text="Trang Chủ"
+        android:textColor="#BD7C89"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@+id/ellipse_1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|top"
+        android:letterSpacing="-0.02"
+        android:layout_marginStart="10dp"
+        android:textColor="#F97892"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/ellipse_1"
+        app:layout_constraintTop_toBottomOf="@+id/trang_ch_" />
+
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:contentDescription="notification"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_bell" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="search"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="5dp"
+        app:layout_constraintEnd_toStartOf="@+id/imageView2"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_search" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
