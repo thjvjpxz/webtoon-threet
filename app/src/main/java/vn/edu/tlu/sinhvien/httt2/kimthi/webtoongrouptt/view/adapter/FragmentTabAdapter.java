@@ -1,4 +1,4 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.adapter;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
