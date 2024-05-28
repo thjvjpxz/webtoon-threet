@@ -3,16 +3,29 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import retrofit2.Call;
+
+import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.List;
+
+import retrofit2.Callback;
+import retrofit2.Response;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.api.ApiService;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentLoginBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.LoginRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 
 /**
@@ -75,9 +88,36 @@ public class LoginFragment extends Fragment {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
         });
         binding.btnLogin.setOnClickListener(v -> {
-//            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(getContext(), MainActivity.class);
-            startActivity(intent);
+            EditText edtEmail = binding.edtEmail;
+            EditText edtPassword = binding.edtPassword;
+            if (edtEmail.getText().toString().isEmpty() || edtPassword.getText().toString().isEmpty()) {
+                Toast.makeText(getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+            } else {
+                LoginRequest loginRequest = new LoginRequest(edtEmail.getText().toString(), edtPassword.getText().toString());
+                Call<LoginResponse> call = ApiService.apiService.loginUser(loginRequest);
+                call.enqueue(new Callback<LoginResponse>() {
+                    @Override
+                    public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
+                        if (response.isSuccessful()) {
+                            LoginResponse loginResponse = response.body();
+                            SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
+                            assert loginResponse != null;
+                            sharedPrefManager.saveToken(loginResponse.getToken());
+                            sharedPrefManager.saveAvatar(loginResponse.getAvatar());
+                            sharedPrefManager.saveName(loginResponse.getName());
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Toast.makeText(getContext(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<LoginResponse> call, Throwable t) {
+                        Toast.makeText(getContext(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
         });
         binding.loginFacebook.setOnClickListener(v -> {
             Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();

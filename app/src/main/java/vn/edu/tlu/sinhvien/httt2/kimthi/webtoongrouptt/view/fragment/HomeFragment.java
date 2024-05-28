@@ -23,6 +23,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.adapter.HomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.api.ApiService;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.api.HomeResponse;
@@ -73,6 +74,8 @@ public class HomeFragment extends Fragment {
         }
         View headerView = homeView.findViewById(R.id.header);
         tvName = headerView.findViewById(R.id.tvName);
+//        SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
+//        sharedPrefManager.getToken();
         tvName.setText("Nghiêm Quang Thắng");
         ApiService.apiService.getComics().enqueue(new Callback<HomeResponse>() {
             @Override
