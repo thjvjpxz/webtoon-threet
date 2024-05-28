@@ -1,4 +1,4 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.api;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response;
 
 import java.util.List;
 

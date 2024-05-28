@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home"
+        app:cnb_backgroundColor="@color/primary_color"
+        app:cnb_iconColor="@color/white"
+        android:title=""/>
+    <item
+        android:id="@+id/heart"
+        android:icon="@drawable/heart"
+        app:cnb_backgroundColor="@color/primary_color"
+        app:cnb_iconColor="@color/white"
+        android:title="" />
+    <item
+        android:id="@+id/compass"
+        android:icon="@drawable/compass"
+        app:cnb_backgroundColor="@color/primary_color"
+        app:cnb_iconColor="@color/white"
+        android:title="" />
+</menu>

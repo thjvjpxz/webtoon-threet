@@ -1,9 +1,12 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,6 +15,8 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
@@ -24,25 +29,21 @@ import retrofit2.Response;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.adapter.HomeAdapter;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.api.ApiService;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.api.HomeResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentHomeBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
 
 public class HomeFragment extends Fragment {
-    RecyclerView rvBanner, rvUpdated, rvCompleted, rvRanking;
-    View headerView;
-    TextView tvName;
     String[] tags = {"Action", "Adaptation", "Adult", "ABO", "Adventure"};
-    FlexboxLayout flexboxLayout;
+    private HomeViewModel homeViewModel;
+    private HomeAdapter homeAdapter;
+    private FragmentHomeBinding binding;
+
     public HomeFragment() {
         // Required empty public constructor
-    }
-    public static HomeFragment newInstance() {
-        HomeFragment fragment = new HomeFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override
@@ -51,58 +52,86 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View homeView =  inflater.inflate(R.layout.fragment_home, container, false);
-        rvBanner = homeView.findViewById(R.id.rvBanner);
-        rvBanner.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        rvUpdated = homeView.findViewById(R.id.rvUpdated);
-        rvUpdated.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        rvCompleted = homeView.findViewById(R.id.rvCompleted);
-        rvCompleted.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
-        rvRanking = homeView.findViewById(R.id.rvRanking);
-        rvRanking.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
-        flexboxLayout = homeView.findViewById(R.id.flexboxLayout);
-        for (String tag : tags) {
-            TextView textView = new TextView(new ContextThemeWrapper(getContext(), R.style.TagTextViewStyle));
-            textView.setText(tag);
-            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 10, 5, 0);
-            textView.setLayoutParams(layoutParams);
-            flexboxLayout.addView(textView);
-        }
-        View headerView = homeView.findViewById(R.id.header);
-        tvName = headerView.findViewById(R.id.tvName);
-//        SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
-//        sharedPrefManager.getToken();
-        tvName.setText("Nghiêm Quang Thắng");
-        ApiService.apiService.getComics().enqueue(new Callback<HomeResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<HomeResponse> call, @NonNull Response<HomeResponse> response) {
-                if (response.isSuccessful()) {
-                    HomeResponse homeResponses = response.body();
-                    if (homeResponses != null) {
-                        List<Comic> comicsHot = homeResponses.getComicsHot();
-                        if (comicsHot != null) {
-                            HomeAdapter bannerAdapter = new HomeAdapter(comicsHot, 1);
-                            HomeAdapter updatedAdapter = new HomeAdapter(comicsHot, 2);
-                            rvBanner.setAdapter(bannerAdapter);
-                            rvUpdated.setAdapter(updatedAdapter);
-                            rvCompleted.setAdapter(updatedAdapter);
-                            rvRanking.setAdapter(new HomeAdapter(comicsHot, 3));
-                        }
-                    }
-                }
-            }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
-            @Override
-            public void onFailure(@NonNull Call<HomeResponse> call, @NonNull Throwable t) {
-                Log.e("HomeFragment", "onFailure: " + t.getMessage());
-            }
+        binding = FragmentHomeBinding.inflate(inflater, container, false);
+
+        setLayoutRCV();
+
+        binding.header.tvName.setText("Nghiêm Công Thi");
+
+        addTagsToFlexboxLayout();
+
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+
+        observice();
+        // An tr_om imageview thong bao
+        ImageView btnLogout = (ImageView) binding.header.btnLogout;
+
+        btnLogout.setOnClickListener(v -> {
+            SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
+            sharedPrefManager.removeToken();
+            Intent intent = new Intent(getContext(), SignActivity.class);
+            startActivity(intent);
         });
 
+        return binding.getRoot();
+    }
 
-        return homeView;
+
+    private void setLayoutRCV() {
+        binding.rvBanner.setLayoutManager(new LinearLayoutManager(getContext(),
+                RecyclerView.HORIZONTAL, false));
+        binding.rvUpdated.setLayoutManager(new LinearLayoutManager(getContext(),
+                RecyclerView.HORIZONTAL, false));
+        binding.rvCompleted.setLayoutManager(new LinearLayoutManager(getContext(),
+                RecyclerView.HORIZONTAL, false));
+        binding.rvRanking.setLayoutManager(new LinearLayoutManager(getContext(),
+                RecyclerView.VERTICAL, false));
+    }
+
+    private void addTagsToFlexboxLayout() {
+        for (String tag : tags) {
+            TextView textView = new TextView(new ContextThemeWrapper(getContext(),
+                    R.style.TagTextViewStyle));
+            textView.setText(tag);
+
+            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.setMargins(0, 10, 5, 0);
+
+            textView.setLayoutParams(layoutParams);
+            binding.flexboxLayout.addView(textView);
+        }
+    }
+
+    private void observice() {
+        homeViewModel.getIsLoaded().observe(getViewLifecycleOwner(), isLoaded -> {
+            if (isLoaded) {
+                binding.pbBanner.setVisibility(View.GONE);
+                binding.pbUpdated.setVisibility(View.GONE);
+                binding.pbCompleted.setVisibility(View.GONE);
+                binding.pbRanking.setVisibility(View.GONE);
+            } else {
+                binding.pbBanner.setVisibility(View.VISIBLE);
+                binding.pbUpdated.setVisibility(View.VISIBLE);
+                binding.pbCompleted.setVisibility(View.VISIBLE);
+                binding.pbRanking.setVisibility(View.VISIBLE);
+            }
+
+        });
+
+        homeViewModel.getComics().observe(getViewLifecycleOwner(), comics -> {
+            if (comics != null) {
+                homeAdapter = new HomeAdapter(comics, 1);
+                binding.rvBanner.setAdapter(homeAdapter);
+                homeAdapter = new HomeAdapter(comics, 2);
+                binding.rvUpdated.setAdapter(homeAdapter);
+                binding.rvCompleted.setAdapter(homeAdapter);
+                homeAdapter = new HomeAdapter(comics, 3);
+                binding.rvRanking.setAdapter(homeAdapter);
+            }
+        });
     }
 }

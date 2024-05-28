@@ -13,15 +13,20 @@
         android:theme="@style/Theme.WebtoonGroupTT"
         tools:targetApi="31">
         <activity
-            android:name=".view.activity.MainActivity"
-            android:exported="false"
+            android:name=".view.activity.SignActivity"
+            android:exported="true"
             android:theme="@style/Theme.WebtoonGroupTT">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
 
-        <service
-            android:name=".api.ApiService"
-            android:enabled="true"
-            android:exported="true" />
+<!--        <service-->
+<!--            android:name=".api.ApiService"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true" />-->
 
         <activity
             android:name=".view.activity.IntroActivity"
@@ -35,13 +40,8 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".view.activity.SignActivity"
+            android:name=".view.activity.MainActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <meta-data
