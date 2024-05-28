@@ -47,6 +47,6 @@ dependencies {
     implementation libs.retrofit
     implementation libs.gson
     implementation libs.converterGson
-    implementation libs.picasso
+    implementation libs.glide
     implementation libs.flexbox
 }
