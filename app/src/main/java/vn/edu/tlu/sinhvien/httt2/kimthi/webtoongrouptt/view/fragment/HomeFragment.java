@@ -1,5 +1,6 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,8 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.flexbox.FlexboxLayout;
@@ -25,7 +28,9 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentHomeBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
@@ -61,6 +66,15 @@ public class HomeFragment extends Fragment {
         homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         observice();
+        // An tr_om imageview thong bao
+        ImageView btnLogout = (ImageView) binding.header.btnLogout;
+
+        btnLogout.setOnClickListener(v -> {
+            SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
+            sharedPrefManager.removeToken();
+            Intent intent = new Intent(getContext(), SignActivity.class);
+            startActivity(intent);
+        });
 
         return binding.getRoot();
     }
