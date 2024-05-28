@@ -54,7 +54,7 @@ public class LoginFragment extends Fragment {
         });
         binding.btnLogin.setOnClickListener(v -> {
             LoginRequest loginRequest = new LoginRequest(binding.edtEmail.getText().toString(), binding.edtPassword.getText().toString());
-            ApiService apiService = ApiClient.getRetrofit().create(ApiService.class);
+            ApiService apiService = ApiClient.getRetrofit(getContext()).create(ApiService.class);
             Call<LoginResponse> call = apiService.loginUser(loginRequest);
             call.enqueue(new Callback<LoginResponse>() {
                 @Override

@@ -25,11 +25,11 @@ public class SignActivity extends AppCompatActivity {
         binding = ActivitySignBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        SharedPrefManager sharedPrefManager = new SharedPrefManager(this);
-        if(sharedPrefManager.getToken() != null){
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
+//        SharedPrefManager sharedPrefManager = new SharedPrefManager(this);
+//        if(sharedPrefManager.getToken() != null){
+//            Intent intent = new Intent(this, MainActivity.class);
+//            startActivity(intent);
+//        }
 
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 

@@ -1,5 +1,6 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_BANNER = 1;
     private static final int TYPE_LIST = 2;
     private static final int TYPE_RANK = 3;
-    private int viewType;
+    private final int viewType;
     private List<Comic> listComic;
 
     public HomeAdapter(List<Comic> listComic, int viewType) {
@@ -47,6 +48,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof BannerViewHolder) {
             bannerViewHolder = (BannerViewHolder) holder;
             bannerViewHolder.tvName.setText(comic.getName());
+            bannerViewHolder.tvRating.setText(String.valueOf(comic.getRating()));
+            bannerViewHolder.tvNumChap.setText(String.valueOf(comic.getTotal_chapters()));
             Glide.with(bannerViewHolder.imgBanner).load(comic.getThumbnail()).into(bannerViewHolder.imgBanner);
         } else if (holder instanceof ListViewHolder) {
             ListViewHolder listViewHolder = (ListViewHolder) holder;
@@ -54,7 +57,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             RankViewHolder rankViewHolder = (RankViewHolder) holder;
             rankViewHolder.tvName.setText(comic.getName());
-//            rankViewHolder.tvViews.setText(comic.getViews());
+            rankViewHolder.tvViews.setText(String.valueOf(comic.getTotal_views()));
             Glide.with(rankViewHolder.imgThumbnail).load(comic.getThumbnail()).into(rankViewHolder.imgThumbnail);
         }
     }
@@ -71,11 +74,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public static class BannerViewHolder extends RecyclerView.ViewHolder {
         ImageView imgBanner;
-        TextView tvName;
+        TextView tvName, tvRating, tvNumChap;
         public BannerViewHolder(@NonNull View itemView) {
             super(itemView);
             imgBanner = itemView.findViewById(R.id.imgPoster);
             tvName = itemView.findViewById(R.id.tvName);
+            tvRating = itemView.findViewById(R.id.tvRating);
+            tvNumChap = itemView.findViewById(R.id.tvNumChap);
         }
     }
 
