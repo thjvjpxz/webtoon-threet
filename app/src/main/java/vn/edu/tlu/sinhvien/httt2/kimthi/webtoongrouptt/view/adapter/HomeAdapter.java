@@ -1,4 +1,4 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.adapter;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +21,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_BANNER = 1;
     private static final int TYPE_LIST = 2;
     private static final int TYPE_RANK = 3;
-    private final int viewType;
+    private int viewType;
     private List<Comic> listComic;
 
     public HomeAdapter(List<Comic> listComic, int viewType) {
@@ -43,18 +43,19 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Comic comic = listComic.get(position);
-        if(holder instanceof BannerViewHolder) {
-            BannerViewHolder bannerViewHolder = (BannerViewHolder) holder;
+        BannerViewHolder bannerViewHolder = null;
+        if (holder instanceof BannerViewHolder) {
+            bannerViewHolder = (BannerViewHolder) holder;
             bannerViewHolder.tvName.setText(comic.getName());
-            Glide.with(bannerViewHolder.itemView).load(comic.getThumbnail()).into(bannerViewHolder.imgBanner);
-        } else if(holder instanceof ListViewHolder) {
+            Glide.with(bannerViewHolder.imgBanner).load(comic.getThumbnail()).into(bannerViewHolder.imgBanner);
+        } else if (holder instanceof ListViewHolder) {
             ListViewHolder listViewHolder = (ListViewHolder) holder;
-            Glide.with(listViewHolder.itemView).load(comic.getThumbnail()).into(listViewHolder.imgThumbnail);
+            Glide.with(listViewHolder.imgThumbnail).load(comic.getThumbnail()).into(listViewHolder.imgThumbnail);
         } else {
             RankViewHolder rankViewHolder = (RankViewHolder) holder;
             rankViewHolder.tvName.setText(comic.getName());
 //            rankViewHolder.tvViews.setText(comic.getViews());
-            Glide.with(rankViewHolder.itemView).load(comic.getThumbnail()).into(rankViewHolder.imgThumbnail);
+            Glide.with(rankViewHolder.imgThumbnail).load(comic.getThumbnail()).into(rankViewHolder.imgThumbnail);
         }
     }
 

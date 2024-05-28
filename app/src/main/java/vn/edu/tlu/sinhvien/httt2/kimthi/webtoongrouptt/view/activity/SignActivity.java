@@ -3,17 +3,12 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.adapter.FragmentTabAdapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.FragmentTabAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivitySignBinding;
 
 public class SignActivity extends AppCompatActivity {
