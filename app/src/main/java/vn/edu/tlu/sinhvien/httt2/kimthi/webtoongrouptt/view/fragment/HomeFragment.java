@@ -19,6 +19,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
@@ -32,6 +35,9 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
     private HomeViewModel homeViewModel;
+
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -47,6 +53,12 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+
+        //Setup google sign out
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        gsc = GoogleSignIn.getClient(requireContext(), gso);
 
         setLayoutRCV();
 
@@ -68,9 +80,11 @@ public class HomeFragment extends Fragment {
         ImageView btnLogout = (ImageView) binding.header.btnLogout;
 
         btnLogout.setOnClickListener(v -> {
-            sharedPrefManager.removeToken();
-            Intent intent = new Intent(getContext(), SignActivity.class);
-            startActivity(intent);
+            gsc.signOut().addOnCompleteListener(task -> {
+                sharedPrefManager.removeToken();
+                Intent intent = new Intent(getContext(), SignActivity.class);
+                startActivity(intent);
+            });
         });
 
         return binding.getRoot();
