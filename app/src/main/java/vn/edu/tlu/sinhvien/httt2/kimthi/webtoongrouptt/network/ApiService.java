@@ -4,6 +4,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.LoginRequest;
@@ -12,7 +13,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterReq
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
 
 public interface ApiService {
-    @GET("comics/getComics")
+    @GET("mobile/comics/getComics")
     Call<HomeResponse> getComics();
 
     @POST("auth/register")

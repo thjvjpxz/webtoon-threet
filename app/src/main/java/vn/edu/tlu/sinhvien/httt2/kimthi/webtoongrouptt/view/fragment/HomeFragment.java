@@ -10,37 +10,28 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
 
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentHomeBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
 
 public class HomeFragment extends Fragment {
-    String[] tags = {"Action", "Adaptation", "Adult", "ABO", "Adventure"};
-    private HomeViewModel homeViewModel;
-    private HomeAdapter homeAdapter;
     private FragmentHomeBinding binding;
+    private HomeViewModel homeViewModel;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -59,18 +50,24 @@ public class HomeFragment extends Fragment {
 
         setLayoutRCV();
 
-        binding.header.tvName.setText("Nghiêm Công Thi");
+        SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
+        binding.header.tvName.setText(sharedPrefManager.getName());
+        String avatarUrl = sharedPrefManager.getAvatar();
+        Glide.with(this).load(avatarUrl).into(binding.header.imgAvatar);
 
-        addTagsToFlexboxLayout();
-
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this, new ViewModelProvider.Factory() {
+            @NonNull
+            @Override
+            public <T extends androidx.lifecycle.ViewModel> T create(@NonNull Class<T> modelClass) {
+                return (T) new HomeViewModel(getActivity().getApplicationContext());
+            }
+        }).get(HomeViewModel.class);
 
         observice();
         // An tr_om imageview thong bao
         ImageView btnLogout = (ImageView) binding.header.btnLogout;
 
         btnLogout.setOnClickListener(v -> {
-            SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
             sharedPrefManager.removeToken();
             Intent intent = new Intent(getContext(), SignActivity.class);
             startActivity(intent);
@@ -91,21 +88,6 @@ public class HomeFragment extends Fragment {
                 RecyclerView.VERTICAL, false));
     }
 
-    private void addTagsToFlexboxLayout() {
-        for (String tag : tags) {
-            TextView textView = new TextView(new ContextThemeWrapper(getContext(),
-                    R.style.TagTextViewStyle));
-            textView.setText(tag);
-
-            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 10, 5, 0);
-
-            textView.setLayoutParams(layoutParams);
-            binding.flexboxLayout.addView(textView);
-        }
-    }
-
     private void observice() {
         homeViewModel.getIsLoaded().observe(getViewLifecycleOwner(), isLoaded -> {
             if (isLoaded) {
@@ -122,15 +104,24 @@ public class HomeFragment extends Fragment {
 
         });
 
-        homeViewModel.getComics().observe(getViewLifecycleOwner(), comics -> {
-            if (comics != null) {
-                homeAdapter = new HomeAdapter(comics, 1);
-                binding.rvBanner.setAdapter(homeAdapter);
-                homeAdapter = new HomeAdapter(comics, 2);
-                binding.rvUpdated.setAdapter(homeAdapter);
-                binding.rvCompleted.setAdapter(homeAdapter);
-                homeAdapter = new HomeAdapter(comics, 3);
-                binding.rvRanking.setAdapter(homeAdapter);
+        homeViewModel.fetchHomeData().observe(getViewLifecycleOwner(), data -> {
+            if (data != null) {
+                binding.rvBanner.setAdapter(new HomeAdapter(data.getPopularComics(), 1));
+                binding.rvUpdated.setAdapter(new HomeAdapter(data.getRecentComics(), 2));
+                binding.rvCompleted.setAdapter(new HomeAdapter(data.getCompletedComics(), 2));
+                binding.rvRanking.setAdapter(new HomeAdapter(data.getRankingComics(), 3));
+                for (Category tag: data.getCategories()){
+                    TextView textView = new TextView(new ContextThemeWrapper(getContext(),
+                            R.style.TagTextViewStyle));
+                    textView.setText(tag.getName());
+
+                    FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(
+                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, 10, 5, 0);
+
+                    textView.setLayoutParams(layoutParams);
+                    binding.flexboxLayout.addView(textView);
+                }
             }
         });
     }

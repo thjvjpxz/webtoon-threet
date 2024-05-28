@@ -50,7 +50,7 @@ public class RegisterFragment extends Fragment {
                 Toast.makeText(getContext(), "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
             } else {
                 RegisterRequest registerRequest = new RegisterRequest(name.getText().toString(), email.getText().toString(), password.getText().toString());
-                ApiService apiService = ApiClient.getRetrofit().create(ApiService.class);
+                ApiService apiService = ApiClient.getRetrofit(getContext()).create(ApiService.class);
                 Call<ResponseBody> call = apiService.registerUser(registerRequest);
                 call.enqueue(new retrofit2.Callback<ResponseBody>() {
                     @Override

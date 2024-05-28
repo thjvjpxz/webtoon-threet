@@ -82,7 +82,7 @@ public class ForgotFragment extends Fragment {
         });
         binding.btnForgot.setOnClickListener(v -> {
             ForgotRequest forgotRequest = new ForgotRequest(binding.edtEmail.getText().toString());
-            ApiService apiService = ApiClient.getRetrofit().create(ApiService.class);
+            ApiService apiService = ApiClient.getRetrofit(getContext()).create(ApiService.class);
             Call<ResponseBody> call = apiService.forgotPassword(forgotRequest);
             call.enqueue(new Callback<ResponseBody>() {
                 @Override
