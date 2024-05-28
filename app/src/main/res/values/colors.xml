@@ -8,4 +8,5 @@
     <color name="dark">#171717</color>
     <color name="border_color">#EAEAF5</color>
     <color name="hint_color">#A8A7A7</color>
+    <color name="shimmer_bg_color">#BFBEBE</color>
 </resources>

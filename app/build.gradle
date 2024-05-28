@@ -51,5 +51,5 @@ dependencies {
     implementation libs.gson
     implementation libs.converterGson
     implementation libs.flexbox
-    implementation libs.flexbox
+    implementation libs.shimmer
 }
