@@ -49,10 +49,9 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <TextView
-                    android:id="@+id/tvScore"
+                    android:id="@+id/tvRating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="9.5"
                     android:textColor="#FFFFFF"
                     android:textSize="14sp"
                     android:layout_marginStart="5dp"
@@ -71,14 +70,13 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginBottom="25dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tvScore"
+                    app:layout_constraintStart_toEndOf="@+id/tvRating"
                     />
 
                 <TextView
                     android:id="@+id/tvNumChap"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="1067"
                     android:textColor="#FFFFFF"
                     android:layout_marginStart="2dp"
                     android:textSize="14sp"

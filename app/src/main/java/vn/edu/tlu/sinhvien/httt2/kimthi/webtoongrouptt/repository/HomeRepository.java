@@ -1,46 +1,52 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
+import android.content.Context;
+import android.util.Log;
 
-import java.util.List;
+import androidx.lifecycle.MutableLiveData;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 
 public class HomeRepository {
-    private static HomeRepository instance;
+    private static volatile HomeRepository instance;
     private ApiService apiService;
+    private Context context;
 
-    private HomeRepository() {
-        apiService = ApiClient.getRetrofit().create(ApiService.class);
+    public HomeRepository(Context context) {
+        this.context = context;
+        apiService = ApiClient.getRetrofit(this.context).create(ApiService.class);
     }
 
-    public static HomeRepository getInstance() {
+    public static HomeRepository getInstance(Context context) {
         if (instance == null) {
             synchronized (HomeRepository.class) {
                 if (instance == null) {
-                    instance = new HomeRepository();
+                    instance = new HomeRepository(context);
                 }
             }
         }
         return instance;
     }
 
-    public LiveData<List<Comic>> getComics(Runnable isLoaded) {
-        MutableLiveData<List<Comic>> comics = new MutableLiveData<>();
+    public MutableLiveData<HomeResponse> fetchHomeData(Runnable isLoaded) {
+        SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(context);
+        MutableLiveData<HomeResponse> homeResponseData = new MutableLiveData<>();
 
         apiService.getComics().enqueue(new Callback<HomeResponse>() {
             @Override
             public void onResponse(Call<HomeResponse> call, Response<HomeResponse> response) {
+                Log.d("Token", sharedPrefManager.getToken());
+                Log.d("API_CALL", "API response: " + response);
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
-                        comics.setValue(response.body().getComicsHot());
+                        HomeResponse homeResponse = response.body();
+                        homeResponseData.setValue(homeResponse);
                     }
                 }
                 isLoaded.run();
@@ -48,10 +54,10 @@ public class HomeRepository {
 
             @Override
             public void onFailure(Call<HomeResponse> call, Throwable t) {
-                comics.setValue(null);
+                homeResponseData.setValue(null);
                 isLoaded.run();
             }
         });
-        return comics;
+        return homeResponseData;
     }
 }

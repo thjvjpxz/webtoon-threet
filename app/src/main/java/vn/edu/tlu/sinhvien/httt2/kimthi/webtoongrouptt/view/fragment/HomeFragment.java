@@ -1,11 +1,14 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.lifecycle.ViewModelStoreOwner;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,28 +17,35 @@ import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.gson.Gson;
 
-import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import java.util.Objects;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentHomeBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModelFactory;
 
 public class HomeFragment extends Fragment {
-    String[] tags = {"Action", "Adaptation", "Adult", "ABO", "Adventure"};
-    private HomeViewModel homeViewModel;
-    private HomeAdapter homeAdapter;
     private FragmentHomeBinding binding;
+    private HomeViewModel homeViewModel;
+
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -52,15 +62,33 @@ public class HomeFragment extends Fragment {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
+        //Setup google sign out
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        gsc = GoogleSignIn.getClient(requireContext(), gso);
+
         setLayoutRCV();
 
-        binding.header.tvName.setText("Nghiêm Công Thi");
+        SharedPrefManager sharedPrefManager = new SharedPrefManager(getContext());
+        binding.header.tvName.setText(sharedPrefManager.getName());
+        String avatarUrl = sharedPrefManager.getAvatar();
+        Glide.with(this).load(avatarUrl).into(binding.header.imgAvatar);
 
-        addTagsToFlexboxLayout();
+        homeViewModel = new ViewModelProvider(this, new HomeViewModelFactory(getActivity())).get(HomeViewModel.class);
 
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         observice();
+        // An tr_om imageview thong bao
+        ImageView btnLogout = (ImageView) binding.header.btnLogout;
+
+        btnLogout.setOnClickListener(v -> {
+            gsc.signOut().addOnCompleteListener(task -> {
+                sharedPrefManager.removeToken();
+                Intent intent = new Intent(getContext(), SignActivity.class);
+                startActivity(intent);
+            });
+        });
 
         return binding.getRoot();
     }
@@ -75,21 +103,6 @@ public class HomeFragment extends Fragment {
                 RecyclerView.HORIZONTAL, false));
         binding.rvRanking.setLayoutManager(new LinearLayoutManager(getContext(),
                 RecyclerView.VERTICAL, false));
-    }
-
-    private void addTagsToFlexboxLayout() {
-        for (String tag : tags) {
-            TextView textView = new TextView(new ContextThemeWrapper(getContext(),
-                    R.style.TagTextViewStyle));
-            textView.setText(tag);
-
-            FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.setMargins(0, 10, 5, 0);
-
-            textView.setLayoutParams(layoutParams);
-            binding.flexboxLayout.addView(textView);
-        }
     }
 
     private void observice() {
@@ -108,15 +121,26 @@ public class HomeFragment extends Fragment {
 
         });
 
-        homeViewModel.getComics().observe(getViewLifecycleOwner(), comics -> {
-            if (comics != null) {
-                homeAdapter = new HomeAdapter(comics, 1);
-                binding.rvBanner.setAdapter(homeAdapter);
-                homeAdapter = new HomeAdapter(comics, 2);
-                binding.rvUpdated.setAdapter(homeAdapter);
-                binding.rvCompleted.setAdapter(homeAdapter);
-                homeAdapter = new HomeAdapter(comics, 3);
-                binding.rvRanking.setAdapter(homeAdapter);
+        homeViewModel.fetchHomeData().observe(getViewLifecycleOwner(), data -> {
+            if (data != null) {
+                binding.rvBanner.setAdapter(new HomeAdapter(data.getPopularComics(), 1));
+                binding.rvUpdated.setAdapter(new HomeAdapter(data.getRecentComics(), 2));
+                binding.rvCompleted.setAdapter(new HomeAdapter(data.getCompletedComics(), 2));
+                binding.rvRanking.setAdapter(new HomeAdapter(data.getRankingComics(), 3));
+//                for (Category tag: data.getCategories()){
+//                    TextView textView = new TextView(new ContextThemeWrapper(getContext(),
+//                            R.style.TagTextViewStyle));
+//                    textView.setText(tag.getName());
+//
+//                    FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(
+//                            ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//                    layoutParams.setMargins(0, 10, 5, 0);
+//
+//                    textView.setLayoutParams(layoutParams);
+//                    binding.flexboxLayout.addView(textView);
+//                }
+            } else {
+                Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
             }
         });
     }

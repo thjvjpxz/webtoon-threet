@@ -27,8 +27,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        navigationBarAdapter = new NavigationBarAdapter(getSupportFragmentManager(),
-                getLifecycle());
+        navigationBarAdapter = new NavigationBarAdapter(getSupportFragmentManager(), getLifecycle());
 
         binding.vpMain.setAdapter(navigationBarAdapter);
 

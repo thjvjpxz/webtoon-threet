@@ -1,5 +1,6 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private RequestOptions requestOptions =
             new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888);
     private int viewType;
+    private final int viewType;
     private List<Comic> listComic;
 
     public HomeAdapter(List<Comic> listComic, int viewType) {
@@ -72,7 +74,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return listComic.size();
+        return listComic == null ? 0 : listComic.size();
     }
 
     @Override
@@ -82,12 +84,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public static class BannerViewHolder extends RecyclerView.ViewHolder {
         ImageView imgBanner;
-        TextView tvName;
-
+        TextView tvName, tvRating, tvNumChap;
         public BannerViewHolder(@NonNull View itemView) {
             super(itemView);
             imgBanner = itemView.findViewById(R.id.imgPoster);
             tvName = itemView.findViewById(R.id.tvName);
+            tvRating = itemView.findViewById(R.id.tvRating);
+            tvNumChap = itemView.findViewById(R.id.tvNumChap);
         }
     }
 

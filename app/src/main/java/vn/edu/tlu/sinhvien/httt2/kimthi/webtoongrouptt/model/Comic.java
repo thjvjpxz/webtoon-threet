@@ -6,6 +6,17 @@ public class Comic {
     private String origin_name;
     private String content;
     private String thumbnail;
+    private Integer total_views;
+    private Float rating;
+    private Integer total_chapters;
+
+    public Float getRating() {
+        return rating;
+    }
+
+    public Integer getTotal_chapters() {
+        return total_chapters;
+    }
 
     public Integer getId() {
         return id;
@@ -25,5 +36,9 @@ public class Comic {
 
     public String getThumbnail() {
         return thumbnail;
+    }
+
+    public Integer getTotal_views() {
+        return total_views;
     }
 }
