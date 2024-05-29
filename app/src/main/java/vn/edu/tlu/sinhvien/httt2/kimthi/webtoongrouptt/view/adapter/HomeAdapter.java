@@ -10,9 +10,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DecodeFormat;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
-
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
@@ -21,6 +22,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_BANNER = 1;
     private static final int TYPE_LIST = 2;
     private static final int TYPE_RANK = 3;
+    private RequestOptions requestOptions =
+            new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888);
     private int viewType;
     private List<Comic> listComic;
 
@@ -32,9 +35,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if(viewType == TYPE_BANNER)
+        if (viewType == TYPE_BANNER)
             return new BannerViewHolder((ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_banner_home, parent, false));
-        else if(viewType == TYPE_LIST)
+        else if (viewType == TYPE_LIST)
             return new ListViewHolder((ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_slide_hori, parent, false));
         else
             return new RankViewHolder((ViewGroup) LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ranking, parent, false));
@@ -47,15 +50,23 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof BannerViewHolder) {
             bannerViewHolder = (BannerViewHolder) holder;
             bannerViewHolder.tvName.setText(comic.getName());
-            Glide.with(bannerViewHolder.imgBanner).load(comic.getThumbnail()).into(bannerViewHolder.imgBanner);
+            Glide.with(bannerViewHolder.imgBanner)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(comic.getThumbnail())
+                    .into(bannerViewHolder.imgBanner);
         } else if (holder instanceof ListViewHolder) {
             ListViewHolder listViewHolder = (ListViewHolder) holder;
-            Glide.with(listViewHolder.imgThumbnail).load(comic.getThumbnail()).into(listViewHolder.imgThumbnail);
+            Glide.with(listViewHolder.imgThumbnail)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(comic.getThumbnail())
+                    .into(listViewHolder.imgThumbnail);
         } else {
             RankViewHolder rankViewHolder = (RankViewHolder) holder;
             rankViewHolder.tvName.setText(comic.getName());
-//            rankViewHolder.tvViews.setText(comic.getViews());
-            Glide.with(rankViewHolder.imgThumbnail).load(comic.getThumbnail()).into(rankViewHolder.imgThumbnail);
+            Glide.with(rankViewHolder.imgThumbnail)
+                    .applyDefaultRequestOptions(requestOptions)
+                    .load(comic.getThumbnail())
+                    .into(rankViewHolder.imgThumbnail);
         }
     }
 
@@ -72,6 +83,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static class BannerViewHolder extends RecyclerView.ViewHolder {
         ImageView imgBanner;
         TextView tvName;
+
         public BannerViewHolder(@NonNull View itemView) {
             super(itemView);
             imgBanner = itemView.findViewById(R.id.imgPoster);
@@ -81,6 +93,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public static class ListViewHolder extends RecyclerView.ViewHolder {
         ImageView imgThumbnail;
+
         public ListViewHolder(@NonNull View itemView) {
             super(itemView);
             imgThumbnail = itemView.findViewById(R.id.imgThumbnail);
@@ -90,6 +103,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static class RankViewHolder extends RecyclerView.ViewHolder {
         ImageView imgThumbnail;
         TextView tvName, tvViews;
+
         public RankViewHolder(@NonNull View itemView) {
             super(itemView);
             imgThumbnail = itemView.findViewById(R.id.imgThumbnail);
