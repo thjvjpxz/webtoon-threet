@@ -9,8 +9,8 @@ import android.os.Bundle;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
 import retrofit2.Call;
 
@@ -22,8 +22,6 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-
-import java.util.Objects;
 
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -78,16 +76,16 @@ public class LoginFragment extends Fragment {
         binding.btnLogin.setOnClickListener(v -> {
             LoginRequest loginRequest = new LoginRequest(binding.edtEmail.getText().toString(), binding.edtPassword.getText().toString());
             ApiService apiService = ApiClient.getRetrofit(getContext()).create(ApiService.class);
-            Call<LoginResponse> call = apiService.loginUser(loginRequest);
-            call.enqueue(new Callback<LoginResponse>() {
+            apiService.loginUser(loginRequest).enqueue(new Callback<LoginResponse>() {
                 @Override
                 public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
                     if (response.isSuccessful()) {
                         LoginResponse loginResponse = response.body();
                         assert loginResponse != null;
-                        SharedPrefManager.getInstance(getContext()).saveToken(loginResponse.getToken());
-                        SharedPrefManager.getInstance(getContext()).saveAvatar(loginResponse.getAvatar());
-                        SharedPrefManager.getInstance(getContext()).saveName(loginResponse.getName());
+                        SharedPrefManager share = SharedPrefManager.getInstance(getContext());
+                        share.saveToken(loginResponse.getToken());
+                        share.saveAvatar(loginResponse.getAvatar());
+                        share.saveName(loginResponse.getName());
                         Intent intent = new Intent(getContext(), MainActivity.class);
                         startActivity(intent);
                     } else {

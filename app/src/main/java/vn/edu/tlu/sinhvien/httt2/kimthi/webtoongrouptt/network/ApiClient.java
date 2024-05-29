@@ -1,6 +1,7 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -26,7 +27,6 @@ public class ApiClient {
                         Request request = chain.request();
                         Request.Builder newRequest = request.newBuilder()
                                 .addHeader("Authorization", "Bearer " + token);
-
                         return chain.proceed(newRequest.build());
                     };
 
