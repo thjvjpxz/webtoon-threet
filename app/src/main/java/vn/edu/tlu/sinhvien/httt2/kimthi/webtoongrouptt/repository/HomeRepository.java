@@ -16,11 +16,9 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 public class HomeRepository {
     private static volatile HomeRepository instance;
     private ApiService apiService;
-    private Context context;
 
     public HomeRepository(Context context) {
-        this.context = context;
-        apiService = ApiClient.getRetrofit(this.context).create(ApiService.class);
+        apiService = ApiClient.getRetrofitHeader(context).create(ApiService.class);
     }
 
     public static HomeRepository getInstance(Context context) {
@@ -35,14 +33,10 @@ public class HomeRepository {
     }
 
     public MutableLiveData<HomeResponse> fetchHomeData(Runnable isLoaded) {
-        SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(context);
         MutableLiveData<HomeResponse> homeResponseData = new MutableLiveData<>();
-
         apiService.getComics().enqueue(new Callback<HomeResponse>() {
             @Override
             public void onResponse(Call<HomeResponse> call, Response<HomeResponse> response) {
-                Log.d("Token", sharedPrefManager.getToken());
-                Log.d("API_CALL", "API response: " + response);
                 if (response.isSuccessful()) {
                     if (response.body() != null) {
                         HomeResponse homeResponse = response.body();
@@ -58,6 +52,7 @@ public class HomeRepository {
                 isLoaded.run();
             }
         });
+
         return homeResponseData;
     }
 }

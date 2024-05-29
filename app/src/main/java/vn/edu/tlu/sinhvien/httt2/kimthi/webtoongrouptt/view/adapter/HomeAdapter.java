@@ -26,7 +26,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private RequestOptions requestOptions =
             new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888);
     private int viewType;
-    private final int viewType;
     private List<Comic> listComic;
 
     public HomeAdapter(List<Comic> listComic, int viewType) {

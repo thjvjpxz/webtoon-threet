@@ -77,18 +77,15 @@ public class HomeFragment extends Fragment {
 
         homeViewModel = new ViewModelProvider(this, new HomeViewModelFactory(getActivity())).get(HomeViewModel.class);
 
-
-        observice();
-        // An tr_om imageview thong bao
-        ImageView btnLogout = (ImageView) binding.header.btnLogout;
-
-        btnLogout.setOnClickListener(v -> {
+        binding.header.btnLogout.setOnClickListener(v -> {
             gsc.signOut().addOnCompleteListener(task -> {
                 sharedPrefManager.removeToken();
                 Intent intent = new Intent(getContext(), SignActivity.class);
                 startActivity(intent);
             });
         });
+
+        observice();
 
         return binding.getRoot();
     }
@@ -141,6 +138,7 @@ public class HomeFragment extends Fragment {
 //                }
             } else {
                 Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                Log.d("HomeFragment", "Không có dữ liệu");
             }
         });
     }
