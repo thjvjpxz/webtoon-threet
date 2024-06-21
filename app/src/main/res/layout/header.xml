@@ -6,12 +6,12 @@
     android:layout_marginTop="10dp"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgAvatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:scaleType="centerCrop"
-        android:background="@drawable/rounded_border"
+        app:shapeAppearanceOverlay="@style/circle_image"
         android:backgroundTint="#FDD7DE"
         android:contentDescription="@string/avatar"
         app:layout_constraintStart_toStartOf="parent"

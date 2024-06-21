@@ -11,4 +11,8 @@
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:textStyle">bold</item>
     </style>
+
+    <style name="circle_image">
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
