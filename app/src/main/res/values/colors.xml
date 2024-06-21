@@ -9,4 +9,5 @@
     <color name="border_color">#EAEAF5</color>
     <color name="hint_color">#A8A7A7</color>
     <color name="shimmer_bg_color">#BFBEBE</color>
+    <color name="gray">#525666</color>
 </resources>

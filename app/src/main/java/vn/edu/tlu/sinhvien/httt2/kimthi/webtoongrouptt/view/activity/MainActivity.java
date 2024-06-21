@@ -1,12 +1,11 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
@@ -14,7 +13,6 @@ import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivityMainBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.NavigationBarAdapter;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
     ActivityMainBinding binding;
@@ -30,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
         navigationBarAdapter = new NavigationBarAdapter(getSupportFragmentManager(), getLifecycle());
 
         binding.vpMain.setAdapter(navigationBarAdapter);
+        binding.vpMain.setUserInputEnabled(false);
 
         binding.bottomNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
@@ -48,7 +47,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                super.onPageSelected(position);
+               switch (position) {
+                   case 0:
+                       binding.bottomNavigationBar.setItemSelected(R.id.home, true);
+                       break;
+                   case 1:
+                       binding.bottomNavigationBar.setItemSelected(R.id.heart, true);
+                       break;
+                   case 2:
+                       binding.bottomNavigationBar.setItemSelected(R.id.compass, true);
+                       break;
+               }
             }
         });
+    }
+
+    public void openDetailActivity(String id) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("COMIC_ID", id);
+        startActivity(intent);
     }
 }

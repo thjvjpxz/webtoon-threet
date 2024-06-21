@@ -17,6 +17,7 @@ import java.util.List;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_BANNER = 1;
@@ -24,10 +25,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_RANK = 3;
     private final int viewType;
     private List<Comic> listComic;
+    private final MainActivity mainActivity;
 
-    public HomeAdapter(List<Comic> listComic, int viewType) {
+    public HomeAdapter(MainActivity mainActivity, List<Comic> listComic, int viewType) {
         this.listComic = listComic;
         this.viewType = viewType;
+        this.mainActivity = mainActivity;
     }
 
     @NonNull
@@ -51,14 +54,23 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             bannerViewHolder.tvRating.setText(String.valueOf(comic.getRating()));
             bannerViewHolder.tvNumChap.setText(String.valueOf(comic.getTotal_chapters()));
             Glide.with(bannerViewHolder.imgBanner).load(comic.getThumbnail()).into(bannerViewHolder.imgBanner);
+            bannerViewHolder.imgBanner.setOnClickListener(v -> {
+                mainActivity.openDetailActivity(String.valueOf(comic.getId()));
+            });
         } else if (holder instanceof ListViewHolder) {
             ListViewHolder listViewHolder = (ListViewHolder) holder;
             Glide.with(listViewHolder.imgThumbnail).load(comic.getThumbnail()).into(listViewHolder.imgThumbnail);
+            listViewHolder.imgThumbnail.setOnClickListener(v -> {
+                mainActivity.openDetailActivity(String.valueOf(comic.getId()));
+            });
         } else {
             RankViewHolder rankViewHolder = (RankViewHolder) holder;
             rankViewHolder.tvName.setText(comic.getName());
             rankViewHolder.tvViews.setText(String.valueOf(comic.getTotal_views()));
             Glide.with(rankViewHolder.imgThumbnail).load(comic.getThumbnail()).into(rankViewHolder.imgThumbnail);
+            rankViewHolder.imgThumbnail.setOnClickListener(v -> {
+                mainActivity.openDetailActivity(String.valueOf(comic.getId()));
+            });
         }
     }
 
@@ -102,4 +114,5 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             tvViews = itemView.findViewById(R.id.tvViews);
         }
     }
+
 }

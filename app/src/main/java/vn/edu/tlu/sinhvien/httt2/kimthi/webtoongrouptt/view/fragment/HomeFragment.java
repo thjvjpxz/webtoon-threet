@@ -25,6 +25,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentHomeBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
@@ -100,10 +101,10 @@ public class HomeFragment extends Fragment {
 
         homeViewModel.fetchHomeData().observe(getViewLifecycleOwner(), data -> {
             if (data != null) {
-                binding.rvBanner.setAdapter(new HomeAdapter(data.getPopularComics(), 1));
-                binding.rvUpdated.setAdapter(new HomeAdapter(data.getRecentComics(), 2));
-                binding.rvCompleted.setAdapter(new HomeAdapter(data.getCompletedComics(), 2));
-                binding.rvRanking.setAdapter(new HomeAdapter(data.getRankingComics(), 3));
+                binding.rvBanner.setAdapter(new HomeAdapter((MainActivity) getActivity(), data.getPopularComics(), 1));
+                binding.rvUpdated.setAdapter(new HomeAdapter((MainActivity) getActivity(),data.getRecentComics(), 2));
+                binding.rvCompleted.setAdapter(new HomeAdapter((MainActivity) getActivity(),data.getCompletedComics(), 2));
+                binding.rvRanking.setAdapter(new HomeAdapter((MainActivity) getActivity(),data.getRankingComics(), 3));
                 for (Category tag: data.getCategories()){
                     TextView textView = new TextView(new ContextThemeWrapper(getContext(),
                             R.style.TagTextViewStyle));

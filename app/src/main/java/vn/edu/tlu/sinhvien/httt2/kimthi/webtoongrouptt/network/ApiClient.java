@@ -21,7 +21,8 @@ public class ApiClient {
             synchronized (ApiClient.class) {
                 if (retrofit == null) {
                     SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(context);
-                    String token = sharedPrefManager.getToken();
+//                    String token = sharedPrefManager.getToken();
+                    String token = "304|QOfHLTUmpqy0vnOiBvWg4pZLEVoBd88qxluf7Jtz14506d9f";
                     Interceptor intercepter = chain -> {
                         Request request = chain.request();
                         Request.Builder newRequest = request.newBuilder()
@@ -31,7 +32,7 @@ public class ApiClient {
                     };
 
                     OkHttpClient.Builder client = new OkHttpClient.Builder().addInterceptor(intercepter);
-
+//                    OkHttpClient.Builder client = new OkHttpClient.Builder();
                     retrofit = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())

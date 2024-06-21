@@ -1,5 +1,7 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model;
 
+import java.util.List;
+
 public class Comic {
     private Integer id;
     private String name;
@@ -9,6 +11,9 @@ public class Comic {
     private Integer total_views;
     private Float rating;
     private Integer total_chapters;
+    private List<Category> categories;
+    private List<Author> authors;
+    private String status;
 
     public Float getRating() {
         return rating;
@@ -40,5 +45,17 @@ public class Comic {
 
     public Integer getTotal_views() {
         return total_views;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public List<Author> getAuthors() {
+        return authors;
+    }
+
+    public String getStatus() {
+        return status;
     }
 }
