@@ -52,7 +52,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             bannerViewHolder = (BannerViewHolder) holder;
             bannerViewHolder.tvName.setText(comic.getName());
             bannerViewHolder.tvRating.setText(String.valueOf(comic.getRating()));
-            bannerViewHolder.tvNumChap.setText(String.valueOf(comic.getTotal_chapters()));
+            bannerViewHolder.tvNumChap.setText(String.valueOf(comic.getChapters_count()));
             Glide.with(bannerViewHolder.imgBanner).load(comic.getThumbnail()).into(bannerViewHolder.imgBanner);
             bannerViewHolder.imgBanner.setOnClickListener(v -> {
                 mainActivity.openDetailActivity(String.valueOf(comic.getId()));

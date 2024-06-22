@@ -10,18 +10,19 @@ public class Comic {
     private String thumbnail;
     private Integer total_views;
     private Float rating;
-    private Integer total_chapters;
     private List<Category> categories;
     private List<Author> authors;
     private String status;
+    private Integer chapters_count;
+
+    public Integer getChapters_count() {
+        return chapters_count;
+    }
 
     public Float getRating() {
         return rating;
     }
 
-    public Integer getTotal_chapters() {
-        return total_chapters;
-    }
 
     public Integer getId() {
         return id;
