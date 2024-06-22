@@ -5,6 +5,8 @@ public class Chapter {
     private String name;
     private String title;
     private String image;
+    private Integer prevChap;
+    private Integer nextChap;
 
     public Integer getId() {
         return id;
@@ -20,5 +22,13 @@ public class Chapter {
 
     public String getImage() {
         return image;
+    }
+
+    public Integer getPrevChap() {
+        return prevChap;
+    }
+
+    public Integer getNextChap() {
+        return nextChap;
     }
 }

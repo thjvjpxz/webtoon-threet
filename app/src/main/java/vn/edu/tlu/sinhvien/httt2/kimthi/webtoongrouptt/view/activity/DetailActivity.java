@@ -43,8 +43,10 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
         binding.listChapter.setLayoutManager(new LinearLayoutManager(this,
                 RecyclerView.VERTICAL, false));
-        detailViewModel = new DetailViewModel(comicId, this);
-        observice();
+        if (comicId != null) {
+            detailViewModel = new DetailViewModel(comicId, this);
+            observice();
+        }
         binding.ivBack.setOnClickListener(v -> {
             finish();
         });
@@ -105,8 +107,13 @@ public class DetailActivity extends AppCompatActivity {
                 textView.setLayoutParams(layoutParams);
                 binding.flexboxCategory.addView(textView);
             }
-            binding.listChapter.setAdapter(new DetailAdapter(data.getChapters()));
+            binding.listChapter.setAdapter(new DetailAdapter(data.getChapters(), this));
         });
     }
 
+    public void openReadActivity(String id) {
+        Intent intent = new Intent(this, ReadActivity.class);
+        intent.putExtra("CHAPTER_ID", id);
+        startActivity(intent);
+    }
 }

@@ -14,6 +14,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailResp
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.RegisterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ReadComicResponse;
 
 public interface ApiService {
     @GET("mobile/comics/getComics")
@@ -21,6 +22,9 @@ public interface ApiService {
 
     @GET("mobile/comics/getDetail/{id}")
     Call<DetailResponse> getDetailComic(@Path("id") String id);
+
+    @GET("mobile/comics/getChapter/{id}")
+    Call<ReadComicResponse> getChapterComic(@Path("id") String id);
 
     @POST("auth/register")
     Call<ResponseBody> registerUser(@Body RegisterRequest registerRequest);
