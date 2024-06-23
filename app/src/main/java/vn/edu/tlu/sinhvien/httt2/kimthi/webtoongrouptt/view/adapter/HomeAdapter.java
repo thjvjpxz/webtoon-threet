@@ -18,6 +18,7 @@ import java.util.List;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_BANNER = 1;
@@ -52,20 +53,20 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             bannerViewHolder = (BannerViewHolder) holder;
             bannerViewHolder.tvName.setText(comic.getName());
             Glide.with(bannerViewHolder.imgBanner)
-                    .applyDefaultRequestOptions(requestOptions)
+                    .applyDefaultRequestOptions(Constants.ARGB_8888)
                     .load(comic.getThumbnail())
                     .into(bannerViewHolder.imgBanner);
         } else if (holder instanceof ListViewHolder) {
             ListViewHolder listViewHolder = (ListViewHolder) holder;
             Glide.with(listViewHolder.imgThumbnail)
-                    .applyDefaultRequestOptions(requestOptions)
+                    .applyDefaultRequestOptions(Constants.ARGB_8888)
                     .load(comic.getThumbnail())
                     .into(listViewHolder.imgThumbnail);
         } else {
             RankViewHolder rankViewHolder = (RankViewHolder) holder;
             rankViewHolder.tvName.setText(comic.getName());
             Glide.with(rankViewHolder.imgThumbnail)
-                    .applyDefaultRequestOptions(requestOptions)
+                    .applyDefaultRequestOptions(Constants.ARGB_8888)
                     .load(comic.getThumbnail())
                     .into(rankViewHolder.imgThumbnail);
         }

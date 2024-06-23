@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.fragment.StoryHomeFragment">
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -49,6 +50,15 @@
                     android:layout_height="4dp"
                     android:layout_marginTop="35dp"
                     android:background="#F97892" />
+
+                <ImageView
+                    android:id="@+id/btnHotAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:clickable="true"
+                    android:src="@drawable/baseline_arrow_forward_ios_24" />
             </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,9 +78,9 @@
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/pbHot"
-                    android:layout_marginTop="10dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -111,6 +121,15 @@
                     android:layout_height="4dp"
                     android:layout_marginTop="35dp"
                     android:background="#F97892" />
+
+                <ImageView
+                    android:id="@+id/btnCompletedAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_arrow_forward_ios_24" />
             </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -130,9 +149,9 @@
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/pbCompleted"
-                    android:layout_marginTop="10dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -173,6 +192,15 @@
                     android:layout_height="4dp"
                     android:layout_marginTop="35dp"
                     android:background="#F97892" />
+
+                <ImageView
+                    android:id="@+id/btnConvertAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_arrow_forward_ios_24" />
             </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -192,9 +220,9 @@
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/pbConvert"
-                    android:layout_marginTop="10dp"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -235,6 +263,15 @@
                     android:layout_height="4dp"
                     android:layout_marginTop="35dp"
                     android:background="#F97892" />
+
+                <ImageView
+                    android:id="@+id/btnTranslationAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/baseline_arrow_forward_ios_24" />
             </RelativeLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -254,56 +291,57 @@
 
                 <com.facebook.shimmer.ShimmerFrameLayout
                     android:id="@+id/pbTranslation"
-                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
+
                     <include layout="@layout/shimmer_ranking" />
                 </com.facebook.shimmer.ShimmerFrameLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp">
+            <!--            <RelativeLayout-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginTop="15dp">-->
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true"
-                    android:fontFamily="@font/oswald"
-                    android:letterSpacing="-0.02"
-                    android:text="@string/total"
-                    android:textColor="#F97892"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+            <!--                <TextView-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_alignParentTop="true"-->
+            <!--                    android:fontFamily="@font/oswald"-->
+            <!--                    android:letterSpacing="-0.02"-->
+            <!--                    android:text="@string/total"-->
+            <!--                    android:textColor="#F97892"-->
+            <!--                    android:textSize="22sp"-->
+            <!--                    android:textStyle="bold" />-->
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginTop="36.5dp"
-                    android:background="@drawable/line" />
+            <!--                <View-->
+            <!--                    android:layout_width="match_parent"-->
+            <!--                    android:layout_height="1dp"-->
+            <!--                    android:layout_alignParentTop="true"-->
+            <!--                    android:layout_marginTop="36.5dp"-->
+            <!--                    android:background="@drawable/line" />-->
 
-                <View
-                    android:layout_width="70dp"
-                    android:layout_height="4dp"
-                    android:layout_marginTop="35dp"
-                    android:background="#F97892" />
-            </RelativeLayout>
+            <!--                <View-->
+            <!--                    android:layout_width="70dp"-->
+            <!--                    android:layout_height="4dp"-->
+            <!--                    android:layout_marginTop="35dp"-->
+            <!--                    android:background="#F97892" />-->
+            <!--            </RelativeLayout>-->
 
-            <com.google.android.flexbox.FlexboxLayout
-                android:id="@+id/flexboxLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="100dp"
-                app:flexWrap="wrap"
-                app:justifyContent="flex_start" />
+            <!--            <com.google.android.flexbox.FlexboxLayout-->
+            <!--                android:id="@+id/flexboxLayout"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginBottom="100dp"-->
+            <!--                app:flexWrap="wrap"-->
+            <!--                app:justifyContent="flex_start" />-->
 
         </LinearLayout>
 
