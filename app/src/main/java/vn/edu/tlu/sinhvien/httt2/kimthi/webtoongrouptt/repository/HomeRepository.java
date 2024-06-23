@@ -17,7 +17,7 @@ public class HomeRepository {
     private static volatile HomeRepository instance;
     private ApiService apiService;
 
-    public HomeRepository(Context context) {
+    private HomeRepository(Context context) {
         apiService = ApiClient.getRetrofitHeader(context).create(ApiService.class);
     }
 

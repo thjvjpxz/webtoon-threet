@@ -6,7 +6,15 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.CompositePageTransformer;
+import androidx.viewpager2.widget.MarginPageTransformer;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,17 +23,32 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.bumptech.glide.request.RequestOptions;
 
+import java.util.List;
+
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentStoryHomeBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.OnScrollChangeListener;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.StoryHomeAdapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.StoryHomeViewModel;
 
 public class StoryHomeFragment extends Fragment {
 
-    FragmentStoryHomeBinding binding;
-    OnScrollChangeListener scrollChangeListener;
+    private FragmentStoryHomeBinding binding;
+    private OnScrollChangeListener scrollChangeListener;
+    private StoryHomeViewModel viewModel;
+    private StoryHomeAdapter adapter;
+    private Handler sliderHandler = new Handler();
+
+    private Runnable sliderRunnable = new Runnable() {
+        @Override
+        public void run() {
+            binding.vpHot.setCurrentItem(binding.vpHot.getCurrentItem() + 1);
+        }
+    };
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -54,6 +77,8 @@ public class StoryHomeFragment extends Fragment {
         handleClickBtnStory();
         setProfile();
 
+        viewModel = new ViewModelProvider(this).get(StoryHomeViewModel.class);
+
         binding.scrollView2.getViewTreeObserver().addOnScrollChangedListener(() -> {
             int scrollY = binding.scrollView2.getScrollY();
             int oldScrollY = binding.scrollView2.getTag() != null ?
@@ -72,7 +97,46 @@ public class StoryHomeFragment extends Fragment {
             binding.scrollView2.setTag(scrollY);
         });
 
+        handleStoriesHot();
+
         return binding.getRoot();
+    }
+
+    public void handleStoriesHot() {
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                binding.pbHot.setVisibility(View.GONE);
+            } else {
+                binding.pbHot.setVisibility(View.VISIBLE);
+            }
+        });
+
+        viewModel.fetchStoryHomeData().observe(getViewLifecycleOwner(), storyHomeResponse -> {
+            if (storyHomeResponse != null) {
+                adapter = new StoryHomeAdapter(storyHomeResponse.getStoriesHot(), binding.vpHot);
+                binding.vpHot.setAdapter(adapter);
+                binding.vpHot.setClipToPadding(false);
+                binding.vpHot.setClipChildren(false);
+                binding.vpHot.setOffscreenPageLimit(3);
+                binding.vpHot.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+                CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+                compositePageTransformer.addTransformer(new MarginPageTransformer(40));
+                compositePageTransformer.addTransformer((page, position) -> {
+                    float r = 1 - Math.abs(position);
+                    page.setScaleY(0.85f + r * 0.15f);
+                });
+
+                binding.vpHot.setPageTransformer(compositePageTransformer);
+                binding.vpHot.setCurrentItem(1);
+                binding.vpHot.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+                    @Override
+                    public void onPageSelected(int position) {
+                        super.onPageSelected(position);
+                        sliderHandler.removeCallbacks(sliderRunnable);
+                    }
+                });
+            }
+        });
     }
 
     private void handleClickBtnStory() {
@@ -102,5 +166,17 @@ public class StoryHomeFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         scrollChangeListener = null;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        sliderHandler.removeCallbacks(sliderRunnable);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        sliderHandler.postDelayed(sliderRunnable, 3000);
     }
 }

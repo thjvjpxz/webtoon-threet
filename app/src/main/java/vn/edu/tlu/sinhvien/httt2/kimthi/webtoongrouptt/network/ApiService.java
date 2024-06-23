@@ -14,6 +14,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResp
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.StoryHomeResponse;
 
 public interface ApiService {
     @GET("mobile/comics/getComics")
@@ -30,4 +31,9 @@ public interface ApiService {
 
     @POST("auth/google")
     Call<GoogleResponse> loginGoogle(@Body GoogleRequest googleRequest);
+
+
+    // Story
+    @GET("mobile/stories/getStories")
+    Call<StoryHomeResponse> getStories();
 }

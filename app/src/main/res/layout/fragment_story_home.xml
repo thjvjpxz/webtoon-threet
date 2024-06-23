@@ -63,14 +63,14 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="250dp">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvHot"
+                <androidx.viewpager2.widget.ViewPager2
+                    android:id="@+id/vpHot"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginTop="10dp"
-                    android:orientation="horizontal"
+                    android:paddingHorizontal="100dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +86,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <include layout="@layout/shimmer_banner" />
+                    <include layout="@layout/shimmer_story_hot" />
 
                 </com.facebook.shimmer.ShimmerFrameLayout>
 

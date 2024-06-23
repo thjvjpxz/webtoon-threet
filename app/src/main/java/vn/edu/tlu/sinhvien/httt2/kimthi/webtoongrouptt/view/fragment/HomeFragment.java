@@ -34,13 +34,11 @@ import java.util.Objects;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentHomeBinding;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModelFactory;
 
 public class HomeFragment extends Fragment {
     private FragmentHomeBinding binding;
@@ -79,7 +77,7 @@ public class HomeFragment extends Fragment {
         String avatarUrl = sharedPrefManager.getAvatar();
         Glide.with(this).load(avatarUrl).into(binding.header.imgAvatar);
 
-        homeViewModel = new ViewModelProvider(this, new HomeViewModelFactory(getActivity())).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
 
         binding.header.btnLogout.setOnClickListener(v -> {
             gsc.signOut().addOnCompleteListener(task -> {
