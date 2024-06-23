@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.CompositePageTransformer;
@@ -29,7 +31,9 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentStoryHomeBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Story;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.StoryHomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.TypeStoryConst;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.OnScrollChangeListener;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.StoryHomeAdapter;
@@ -56,8 +60,8 @@ public class StoryHomeFragment extends Fragment {
         if (context instanceof OnScrollChangeListener) {
             scrollChangeListener = (OnScrollChangeListener) context;
         } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnScrollChangeListener");
+            throw new RuntimeException(context.toString() + " must implement " +
+                    "OnScrollChangeListener");
         }
     }
 
@@ -97,46 +101,87 @@ public class StoryHomeFragment extends Fragment {
             binding.scrollView2.setTag(scrollY);
         });
 
-        handleStoriesHot();
+        handleLoading();
+        handleStories();
 
         return binding.getRoot();
     }
 
-    public void handleStoriesHot() {
+    private void handleLoading() {
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
                 binding.pbHot.setVisibility(View.GONE);
+                binding.pbCompleted.setVisibility(View.GONE);
+                binding.pbTranslation.setVisibility(View.GONE);
+                binding.pbConvert.setVisibility(View.GONE);
             } else {
                 binding.pbHot.setVisibility(View.VISIBLE);
+                binding.pbCompleted.setVisibility(View.VISIBLE);
+                binding.pbTranslation.setVisibility(View.VISIBLE);
+                binding.pbConvert.setVisibility(View.VISIBLE);
             }
         });
+    }
 
+    public void handleHot(List<Story> stories) {
+        adapter = new StoryHomeAdapter(stories, binding.vpHot, TypeStoryConst.TYPE_HOT);
+        binding.vpHot.setAdapter(adapter);
+        binding.vpHot.setClipToPadding(false);
+        binding.vpHot.setClipChildren(false);
+        binding.vpHot.setOffscreenPageLimit(3);
+        binding.vpHot.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
+        CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
+        compositePageTransformer.addTransformer(new MarginPageTransformer(40));
+        compositePageTransformer.addTransformer((page, position) -> {
+            float r = 1 - Math.abs(position);
+            page.setScaleY(0.85f + r * 0.15f);
+        });
+
+        binding.vpHot.setPageTransformer(compositePageTransformer);
+        binding.vpHot.setCurrentItem(1);
+        binding.vpHot.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                super.onPageSelected(position);
+                sliderHandler.removeCallbacks(sliderRunnable);
+            }
+        });
+    }
+
+    public void handleStories() {
         viewModel.fetchStoryHomeData().observe(getViewLifecycleOwner(), storyHomeResponse -> {
             if (storyHomeResponse != null) {
-                adapter = new StoryHomeAdapter(storyHomeResponse.getStoriesHot(), binding.vpHot);
-                binding.vpHot.setAdapter(adapter);
-                binding.vpHot.setClipToPadding(false);
-                binding.vpHot.setClipChildren(false);
-                binding.vpHot.setOffscreenPageLimit(3);
-                binding.vpHot.getChildAt(0).setOverScrollMode(RecyclerView.OVER_SCROLL_NEVER);
-                CompositePageTransformer compositePageTransformer = new CompositePageTransformer();
-                compositePageTransformer.addTransformer(new MarginPageTransformer(40));
-                compositePageTransformer.addTransformer((page, position) -> {
-                    float r = 1 - Math.abs(position);
-                    page.setScaleY(0.85f + r * 0.15f);
-                });
-
-                binding.vpHot.setPageTransformer(compositePageTransformer);
-                binding.vpHot.setCurrentItem(1);
-                binding.vpHot.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
-                    @Override
-                    public void onPageSelected(int position) {
-                        super.onPageSelected(position);
-                        sliderHandler.removeCallbacks(sliderRunnable);
-                    }
-                });
+                handleHot(storyHomeResponse.getStoriesHot());
+                handleStoriesHori(
+                        storyHomeResponse.getStoriesComplete(),
+                        storyHomeResponse.getStoriesConvert(),
+                        storyHomeResponse.getStoriesTranslation()
+                );
             }
         });
+    }
+
+    private void handleStoriesHori(List<Story> storiesCompleted, List<Story> storiesConvert,
+                                   List<Story> storiesTranslation) {
+        // get 6 stories completed
+        if (storiesCompleted.size() > 6) {
+            storiesCompleted = storiesCompleted.subList(0, 6);
+        }
+        adapter = new StoryHomeAdapter(storiesCompleted, TypeStoryConst.TYPE_COMPLETED);
+        binding.rvCompleted.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        binding.rvCompleted.setAdapter(adapter);
+
+        adapter = new StoryHomeAdapter(storiesConvert, TypeStoryConst.TYPE_CONVERT);
+        binding.rvConvert.setLayoutManager(new LinearLayoutManager(getContext(),
+                RecyclerView.HORIZONTAL, false));
+        binding.rvConvert.setAdapter(adapter);
+
+        if (storiesTranslation.size() > 6) {
+            storiesTranslation = storiesTranslation.subList(0, 6);
+        }
+        adapter = new StoryHomeAdapter(storiesTranslation, TypeStoryConst.TYPE_TRANSLATION);
+        binding.rvTranslation.setLayoutManager(new GridLayoutManager(getContext(), 3));
+        binding.rvTranslation.setAdapter(adapter);
     }
 
     private void handleClickBtnStory() {
@@ -155,10 +200,7 @@ public class StoryHomeFragment extends Fragment {
         SharedPrefManager share = SharedPrefManager.getInstance(getContext());
         if (share.isLoggedIn()) {
             binding.header.tvName.setText(share.getName());
-            Glide.with(getContext())
-                    .applyDefaultRequestOptions(Constants.ARGB_8888)
-                    .load(share.getAvatar())
-                    .into(binding.header.imgAvatar);
+            Glide.with(getContext()).applyDefaultRequestOptions(Constants.ARGB_8888).load(share.getAvatar()).into(binding.header.imgAvatar);
         }
     }
 
