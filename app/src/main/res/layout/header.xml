@@ -54,6 +54,19 @@
         app:layout_constraintStart_toEndOf="@+id/imgAvatar"
         app:layout_constraintTop_toBottomOf="@+id/home" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnStory"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/select_edit"
+        app:layout_constraintEnd_toStartOf="@id/btnSearch"
+        app:layout_constraintTop_toTopOf="@id/btnSearch"
+        app:layout_constraintBottom_toBottomOf="@id/btnSearch"
+        android:text="Truyện Chữ" />
+
 
     <ImageView
         android:id="@+id/btnLogout"
@@ -66,6 +79,7 @@
         app:srcCompat="@drawable/ic_bell" />
 
     <ImageView
+        android:id="@+id/btnSearch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:contentDescription="@string/search"

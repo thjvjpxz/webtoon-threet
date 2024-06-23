@@ -36,7 +36,9 @@ public class MainActivity extends AppCompatActivity {
             finish();
         }
 
-        navigationBarAdapter = new NavigationBarAdapter(getSupportFragmentManager(), getLifecycle());
+        SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(this);
+
+        navigationBarAdapter = new NavigationBarAdapter(getSupportFragmentManager(), getLifecycle(), sharedPrefManager.getTypeWebtoon());
 
         binding.vpMain.setAdapter(navigationBarAdapter);
 

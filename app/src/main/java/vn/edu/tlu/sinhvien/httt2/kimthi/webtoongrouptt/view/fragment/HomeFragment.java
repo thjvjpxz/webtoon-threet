@@ -35,6 +35,8 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentHomeBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
@@ -61,6 +63,8 @@ public class HomeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
 
         binding = FragmentHomeBinding.inflate(inflater, container, false);
+
+        handleClickBtnStory();
 
         //Setup google sign out
         gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -90,6 +94,17 @@ public class HomeFragment extends Fragment {
         return binding.getRoot();
     }
 
+    private void handleClickBtnStory() {
+        binding.header.btnStory.setText("Truyện chữ");
+        binding.header.btnStory.setOnClickListener(v -> {
+            SharedPrefManager share = SharedPrefManager.getInstance(getContext());
+            share.saveTypeWebtoon(Constants.TYPE_WEBTOON_STORY);
+            Intent intent = new Intent(getContext(), MainActivity.class);
+            startActivity(intent);
+
+            getActivity().finish();
+        });
+    }
 
     private void setLayoutRCV() {
         binding.rvBanner.setLayoutManager(new LinearLayoutManager(getContext(),

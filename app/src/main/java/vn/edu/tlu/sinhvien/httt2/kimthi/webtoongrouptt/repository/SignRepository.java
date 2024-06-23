@@ -23,6 +23,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResp
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
 
 public class SignRepository {
     private ApiService apiService;
@@ -55,6 +56,7 @@ public class SignRepository {
                     share.saveToken(response.body().getToken());
                     share.saveAvatar(response.body().getAvatar());
                     share.saveName(response.body().getName());
+                    share.saveTypeWebtoon(Constants.TYPE_WEBTOON_COMIC);
                     loginResponseData.setValue(response.body());
                 }
             }
@@ -80,6 +82,7 @@ public class SignRepository {
                     share.saveToken(googleResponse.getToken());
                     share.saveAvatar(googleResponse.getAvatar());
                     share.saveName(googleResponse.getName());
+                    share.saveTypeWebtoon(Constants.TYPE_WEBTOON_COMIC);
                     loginResponseData.setValue(response.body());
                 }
             }
