@@ -1,5 +1,7 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +26,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ItemStoryHotB
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.TypeStoryConst;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.DetailStoryActivity;
 
 public class StoryHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<Story> stories;
@@ -67,10 +70,27 @@ public class StoryHomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     notifyDataSetChanged();
                 });
             }
+            storyHotViewHolder.binding.imgAvatar.setOnClickListener(v -> {
+                Story story = stories.get(position);
+                intentToDetailStory(v, story);
+            });
         } else {
             StoryHoriViewHolder storyHoriViewHolder = (StoryHoriViewHolder) holder;
             storyHoriViewHolder.bind(stories.get(position));
+            storyHoriViewHolder.binding.imgThumbnail.setOnClickListener(v -> {
+                Story story = stories.get(position);
+                intentToDetailStory(v, story);
+            });
         }
+
+    }
+
+    private void intentToDetailStory(View v, Story story) {
+        Intent intent = new Intent(v.getContext(), DetailStoryActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("story", story);
+        intent.putExtras(bundle);
+        v.getContext().startActivity(intent);
     }
 
     @Override

@@ -191,7 +191,6 @@ public class StoryHomeFragment extends Fragment {
             share.saveTypeWebtoon(Constants.TYPE_WEBTOON_COMIC);
             Intent intent = new Intent(getContext(), MainActivity.class);
             startActivity(intent);
-
             getActivity().finish();
         });
     }
