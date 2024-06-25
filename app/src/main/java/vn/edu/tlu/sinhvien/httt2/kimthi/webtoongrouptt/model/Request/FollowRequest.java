@@ -1,4 +1,4 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request;
 
 public class FollowRequest {
     String id;

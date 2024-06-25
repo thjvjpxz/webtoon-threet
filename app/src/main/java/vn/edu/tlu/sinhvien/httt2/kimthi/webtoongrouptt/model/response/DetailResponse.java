@@ -5,6 +5,7 @@ import java.util.List;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Chapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comment;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.User;
 
 public class DetailResponse {
     private Comic comic;
@@ -13,6 +14,7 @@ public class DetailResponse {
     private List<Comic> relatedComics;
     private List<String> history;
     private List<Comment> comments;
+    private User user;
 
     public Comic getComic() {
         return comic;
@@ -36,5 +38,9 @@ public class DetailResponse {
 
     public List<Comment> getComments() {
         return comments;
+    }
+
+    public User getUser() {
+        return user;
     }
 }

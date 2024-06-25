@@ -1,8 +1,8 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,21 +18,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivityDetailBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Author;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comment;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.User;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository.CommentRepository;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.CommentComicAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.DetailAdapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.CommentViewModel;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.DetailViewModel;
 
 public class DetailActivity extends AppCompatActivity {
     private ActivityDetailBinding binding;
     private DetailViewModel detailViewModel;
     private boolean isCommentsVisible = false;
+    private Integer id;
+    private User user;
+    private CommentComicAdapter adapterComment;
+    private CommentViewModel commentViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +52,9 @@ public class DetailActivity extends AppCompatActivity {
         binding.listChapter.setLayoutManager(new LinearLayoutManager(this,
                 RecyclerView.VERTICAL, false));
         if (comicId != null) {
+            id = Integer.parseInt(comicId);
             detailViewModel = new DetailViewModel(comicId, this);
+            commentViewModel = new CommentViewModel(this);
             observice();
         }
         binding.ivBack.setOnClickListener(v -> {
@@ -111,6 +119,7 @@ public class DetailActivity extends AppCompatActivity {
             }else{
                 binding.tvAuthor.setText("Đang cập nhật");
             }
+            user = data.getUser();
             binding.tvStatus.setText(data.getComic().getStatus());
             String thumbnail = data.getComic().getThumbnail();
             Glide.with(this).load(thumbnail).into(binding.imageView);
@@ -125,9 +134,9 @@ public class DetailActivity extends AppCompatActivity {
             }
             DetailAdapter adapter = new DetailAdapter(data.getChapters(), data.getHistory(), this);
             binding.listChapter.setAdapter(adapter);
-            CommentComicAdapter adapter1 = new CommentComicAdapter(data.getComments(), this);
+            adapterComment = new CommentComicAdapter(data.getComments(), this);
             binding.rvComments.setLayoutManager(new LinearLayoutManager(this));
-            binding.rvComments.setAdapter(adapter1);
+            binding.rvComments.setAdapter(adapterComment);
         });
     }
 
@@ -142,10 +151,51 @@ public class DetailActivity extends AppCompatActivity {
         EditText editText = binding.edtComment;
         String content = editText.getText().toString();
         if (!content.isEmpty()) {
-            Log.d("Comment", content);
-            editText.setText("");
+            commentViewModel.comment(id, content).observe(this, isSuccess -> {
+                if (isSuccess) {
+                    editText.setText("");
+                    Comment comment = new Comment();
+                    comment.setContent(content);
+                    comment.setLike(0);
+                    comment.setDislike(0);
+                    comment.setUser(user);
+                    adapterComment.addComment(comment);
+                } else {
+                    Toast.makeText(this, "Bình luận thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
         }else{
             Toast.makeText(this, "Vui lòng nhập nội dung bình luận", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void likeComment(String commentId) {
+        commentViewModel.likeComment(commentId).observe(this, isSuccess -> {
+            if (isSuccess) {
+                Comment comment = adapterComment.getCommentById(commentId);
+                if (comment != null) {
+                    comment.setLike(comment.getLike() + 1);
+                    adapterComment.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void dislikeComment(String commentId) {
+        commentViewModel.dislikeComment(commentId).observe(this, isSuccess -> {
+            if (isSuccess) {
+                Comment comment = adapterComment.getCommentById(commentId);
+                if (comment != null) {
+                    comment.setDislike(comment.getDislike() + 1);
+                    adapterComment.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    public void reportComment(String commentId) {
+        commentViewModel.reportComment(commentId);
     }
 }

@@ -7,7 +7,8 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.FollowRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.CommentRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.FollowRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.LoginRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ComicByCategoryResponse;
@@ -42,4 +43,16 @@ public interface ApiService {
 
     @POST("follow")
     Call<BaseResponse> follow(@Body FollowRequest followRequest);
+
+    @POST("comment")
+    Call<BaseResponse> comment(@Body CommentRequest commentRequest);
+
+    @POST("comment/like/{id}")
+    Call<BaseResponse> likeComment(@Path("id") String id);
+
+    @POST("comment/dislike/{id}")
+    Call<BaseResponse> dislikeComment(@Path("id") String id);
+
+    @POST("comment/report/{id}")
+    Call<BaseResponse> reportComment(@Path("id") String id);
 }

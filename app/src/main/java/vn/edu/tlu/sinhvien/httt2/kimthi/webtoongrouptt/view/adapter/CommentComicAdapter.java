@@ -3,6 +3,7 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -50,6 +52,8 @@ public class CommentComicAdapter extends RecyclerView.Adapter<CommentComicAdapte
                 .load(comment.getUser().getLevel().getImage())
                 .into(holder.ivGifBoder);
         holder.tvName.setText(comment.getUser().getName());
+        holder.tvLike.setText(String.valueOf(comment.getLike()));
+        holder.tvDislike.setText(String.valueOf(comment.getDislike()));
         holder.tvBadge.setText(comment.getUser().getLevel().getLevel());
         int color = Color.parseColor(comment.getUser().getLevel().getStyle());
         holder.tvBadge.setTextColor(color);
@@ -58,31 +62,80 @@ public class CommentComicAdapter extends RecyclerView.Adapter<CommentComicAdapte
         border.setStroke(2, color);
         border.setCornerRadius(10);
         holder.tvBadge.setBackground(border);
-        holder.tvComment.setText(parseHTML(comment.getContent())[0]);
-        Glide.with(holder.ivComment.getContext())
-                .load(parseHTML(comment.getContent()).length > 1 ? parseHTML(comment.getContent())[1] : null)
-                .into(holder.ivComment);
+        List<String> parsedContent = parseHTML(comment.getContent());
+        holder.tvComment.setText(parsedContent.get(0));
+        if (parsedContent.size() > 1) {
+            Glide.with(holder.ivComment.getContext())
+                    .load(parsedContent.get(1))
+                    .override(200, 200)
+                    .into(holder.ivComment);
+        } else {
+            holder.ivComment.setImageDrawable(null);
+        }
+        holder.ivLike.setOnClickListener(v -> {
+            ((DetailActivity) context).likeComment(String.valueOf(comment.getId()));
+        });
+
+        holder.ivDislike.setOnClickListener(v -> {
+            ((DetailActivity) context).dislikeComment(String.valueOf(comment.getId()));
+        });
+
+        holder.tvReport.setOnClickListener(v -> {
+            ((DetailActivity) context).reportComment(String.valueOf(comment.getId()));
+        });
     }
 
-    public static String[] parseHTML(String html) {
+    public static List<String> parseHTML(String html) {
         Pattern commentPattern = Pattern.compile(">([^<]+)<");
+
         Pattern urlPattern = Pattern.compile("src=\"([^\"]+)\"");
 
         Matcher commentMatcher = commentPattern.matcher(html);
-        String comment = commentMatcher.find() ? commentMatcher.group(1).trim() : null;
-
         Matcher urlMatcher = urlPattern.matcher(html);
-        String urlImage = urlMatcher.find() ? urlMatcher.group(1) : null;
 
-        if (comment != null && !comment.isEmpty() && urlImage != null) {
-            return new String[]{comment, urlImage};
-        } else if (comment != null && !comment.isEmpty()) {
-            return new String[]{comment};
-        } else if (urlImage != null) {
-            return new String[]{urlImage};
-        } else {
-            return new String[]{"No comment or image found"};
+        List<String> results = new ArrayList<>();
+
+        while (commentMatcher.find()) {
+            String comment = commentMatcher.group(1).trim();
+            if (!comment.isEmpty()) {
+                results.add(comment);
+            }
         }
+
+        while (urlMatcher.find()) {
+            String urlImage = urlMatcher.group(1);
+            results.add(urlImage);
+        }
+
+        String unwrappedTextPattern = "(?<!>)([^<>]+)(?!<)";
+        Matcher unwrappedTextMatcher = Pattern.compile(unwrappedTextPattern).matcher(html);
+        while (unwrappedTextMatcher.find()) {
+            String unwrappedText = unwrappedTextMatcher.group(1).trim();
+            if (!unwrappedText.isEmpty()) {
+                results.add(unwrappedText);
+            }
+        }
+
+        if (results.isEmpty()) {
+            results.add("No comment or image found");
+        }
+
+        return results;
+    }
+
+
+    public void addComment(Comment comment) {
+        this.commentList.add(0, comment);
+        notifyItemInserted(0);
+    }
+
+    public Comment getCommentById(String commentId) {
+        for (Comment comment : commentList) {
+            if (String.valueOf(comment.getId()).equals(commentId)) {
+                return comment;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -91,8 +144,8 @@ public class CommentComicAdapter extends RecyclerView.Adapter<CommentComicAdapte
     }
 
     public static class CommentComicViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivAvatar, ivComment, ivGifBoder;
-        TextView tvName, tvBadge, tvComment;
+        ImageView ivAvatar, ivComment, ivGifBoder, ivLike, ivDislike;
+        TextView tvName, tvBadge, tvComment, tvLike, tvDislike, tvReport;
         public CommentComicViewHolder(@NonNull ViewGroup itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
@@ -101,6 +154,11 @@ public class CommentComicAdapter extends RecyclerView.Adapter<CommentComicAdapte
             tvComment = itemView.findViewById(R.id.tvComment);
             ivComment = itemView.findViewById(R.id.ivComment);
             ivGifBoder = itemView.findViewById(R.id.gifBorder);
+            tvLike = itemView.findViewById(R.id.tvLike);
+            tvDislike = itemView.findViewById(R.id.tvDislike);
+            tvReport = itemView.findViewById(R.id.tvReport);
+            ivLike = itemView.findViewById(R.id.ivLike);
+            ivDislike = itemView.findViewById(R.id.ivDislike);
         }
     }
 }

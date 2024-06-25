@@ -69,12 +69,6 @@ public class ComicByCategoryAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         }
     }
 
-    public void addItems(List<Comic> newComics) {
-        int positionStart = comicList.size();
-        comicList.addAll(newComics);
-        notifyItemRangeInserted(positionStart, newComics.size());
-    }
-
     @Override
     public int getItemCount() {
         return comicList == null ? 0 : comicList.size();
