@@ -23,12 +23,14 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 
@@ -38,51 +40,76 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Author;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Utility;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.StoryChapterAdapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.TabDetailStoryAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.DetailStoryViewModel;
 
 public class DetailStoryActivity extends AppCompatActivity {
 
     private ActivityDetailStoryBinding binding;
-    private DetailStoryViewModel viewModel;
-    private StoryChapterAdapter storyChapterAdapter;
+    private TabDetailStoryAdapter tab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivityDetailStoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        handleTabLayout();
         processFollow();
         processBack();
-        processShowMore();
 
         Story story = getStoryIntent();
+
+        processTab(story);
 
         if (story == null) {
             Toast.makeText(this, "Đã xảy ra lỗi!", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        viewModel = new ViewModelProvider(this).get(DetailStoryViewModel.class);
-        storyChapterAdapter = new StoryChapterAdapter(new ArrayList<>());
-        binding.rvChapters.setLayoutManager(new LinearLayoutManager(this));
-
         fillData(story);
-        observer(story);
-
-        binding.rvChapters.setAdapter(storyChapterAdapter);
     }
 
-    private void observer(Story story) {
-        viewModel.getDetailStoryResponse(story.getId()).observe(this, detailStoryResponse -> {
-            if (detailStoryResponse != null) {
-                storyChapterAdapter.setChapters(detailStoryResponse.getChapters());
+    private void processTab(Story story) {
+        tab = new TabDetailStoryAdapter(getSupportFragmentManager(),
+                getLifecycle(), story);
+        binding.viewPager2.setAdapter(tab);
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                if (tab != null) {
+                    binding.viewPager2.setCurrentItem(tab.getPosition());
+                }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+        binding.viewPager2.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+            @Override
+            public void onPageSelected(int position) {
+                binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position));
             }
         });
     }
+
+    private void handleTabLayout() {
+        binding.tabLayout.removeAllTabs();
+        binding.tabLayout.setVisibility(View.VISIBLE);
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Giới thiệu"));
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Chương truyện"));
+        binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Bình luận"));
+    }
+
 
     private Story getStoryIntent() {
         Intent intent = getIntent();
@@ -92,9 +119,6 @@ public class DetailStoryActivity extends AppCompatActivity {
     }
 
     private void fillData(Story story) {
-        binding.tvNameStory2.setText(story.getOrigin_name() == null ? "Không có" :
-                story.getOrigin_name());
-
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
 
@@ -106,50 +130,6 @@ public class DetailStoryActivity extends AppCompatActivity {
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(binding.imgThumbnailLarge);
         binding.tvNameStory.setText(story.getName());
-        binding.tvRate.setText(String.valueOf(story.getRating()));
-        binding.tvView.setText(String.valueOf(story.getTotal_views()));
-        String authors = "";
-        for (int i = 0; i < story.getAuthors().size(); i++) {
-            String author = story.getAuthors().get(i).getName();
-            author = Utility.capitalizeFirstLetter(author);
-            authors += author;
-            if (i < story.getAuthors().size() - 1) {
-                authors += ", ";
-            }
-        }
-        binding.tvAuthor.setText(authors);
-        binding.tvStatus.setText(story.getStatus());
-
-        String categories = "";
-        for (int i = 0; i < story.getCategories().size(); i++) {
-            String category = story.getCategories().get(i).getName();
-            category = Utility.capitalizeFirstLetter(category);
-            categories += category;
-            if (i < story.getCategories().size() - 1) {
-                categories += ", ";
-            }
-        }
-        binding.tvCategories.setText(categories);
-
-        String content = story.getContent() != null ? String.valueOf(HtmlCompat.fromHtml(story.getContent(),
-                HtmlCompat.FROM_HTML_MODE_COMPACT)) : "Truyện rất hay, vui lòng đọc để biết thêm chi tiết!";
-        binding.tvIntro.setText(content);
-    }
-
-    private void processShowMore() {
-        binding.btnShowMore.setOnClickListener(v -> {
-            boolean isSeleted = !binding.btnShowMore.isSelected();
-            binding.btnShowMore.setSelected(isSeleted);
-            if (isSeleted) {
-                binding.tvIntro.setMaxLines(Integer.MAX_VALUE);
-                binding.tvIntro.setEllipsize(null);
-                binding.btnShowMore.setImageResource(R.drawable.baseline_arrow_drop_up_24);
-            } else {
-                binding.tvIntro.setMaxLines(3);
-                binding.tvIntro.setEllipsize(TextUtils.TruncateAt.END);
-                binding.btnShowMore.setImageResource(R.drawable.baseline_arrow_drop_down_24);
-            }
-        });
     }
 
     private void processFollow() {
