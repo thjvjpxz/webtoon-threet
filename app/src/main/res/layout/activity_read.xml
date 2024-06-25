@@ -7,6 +7,94 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.ReadActivity">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/top_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@color/white"
+        android:padding="10dp"
+        app:layout_constraintTop_toTopOf="parent">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ivHome"
+            android:contentDescription="@string/icon"
+            android:src="@drawable/home"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/primary_color" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ivBack"
+            android:contentDescription="@string/icon"
+            android:layout_marginStart="10dp"
+            android:src="@drawable/ic_list_ul_alt"
+            app:layout_constraintStart_toEndOf="@id/ivHome"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:tint="@color/primary_color" />
+
+        <ImageView
+            android:id="@+id/ivPrevious"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/previous_button_background"
+            android:contentDescription="@string/icon"
+            android:src="@drawable/ic_left"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/ivBack"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvChap"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@color/dark"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/ivNext"
+            app:layout_constraintStart_toEndOf="@+id/ivPrevious"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/ivNext"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/previous_button_background"
+            android:backgroundTint="@color/primary_color"
+            android:contentDescription="@string/icon"
+            android:src="@drawable/ic_right"
+            android:layout_marginEnd="10dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/tvFollow"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvFollow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/style_button_follow"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <com.facebook.shimmer.ShimmerFrameLayout
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -26,120 +114,77 @@
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/rcImage">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_marginTop="60dp"
+        android:id="@+id/rcImage" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/top_nav"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:background="#80000000"
-        android:padding="10dp"
-        app:layout_constraintTop_toTopOf="parent">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ivBack"
-            android:contentDescription="@string/icon"
-            android:src="@drawable/left_arrow_inside_a_circle_svgrepo_com"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="#80000000"-->
+<!--        android:id="@+id/bottom_nav"-->
+<!--        android:paddingVertical="10dp"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/rcImage"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent">-->
 
-        <TextView
-            android:id="@+id/tvChap"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/ivDots"
-            app:layout_constraintStart_toEndOf="@+id/ivBack"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--        <GridLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:columnCount="5"-->
+<!--            android:rowCount="1"-->
+<!--            android:orientation="horizontal"-->
+<!--            app:layout_constraintBottom_toBottomOf="parent"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent">-->
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/ivDots"
-            android:contentDescription="@string/icon"
-            android:src="@drawable/ic_dots"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/ivPrev"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:contentDescription="@string/icon"-->
+<!--                android:src="@drawable/ic_left" />-->
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/ivComment"-->
+<!--                android:contentDescription="@string/icon"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:src="@drawable/ic_message" />-->
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#80000000"
-        android:id="@+id/bottom_nav"
-        android:paddingVertical="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rcImage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/ivFollow"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:contentDescription="@string/icon"-->
+<!--                android:src="@drawable/heart_svgrepo_com" />-->
 
-        <GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:columnCount="5"
-            android:rowCount="1"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/ivSetting"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:contentDescription="@string/icon"-->
+<!--                android:src="@drawable/ic_setting" />-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ivPrev"
-                android:layout_columnWeight="1"
-                android:layout_gravity="center"
-                android:contentDescription="@string/icon"
-                android:src="@drawable/ic_left" />
+<!--            <ImageView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:id="@+id/ivNext"-->
+<!--                android:layout_columnWeight="1"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:contentDescription="@string/icon"-->
+<!--                android:src="@drawable/ic_right" />-->
+<!--        </GridLayout>-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ivComment"
-                android:contentDescription="@string/icon"
-                android:layout_columnWeight="1"
-                android:layout_gravity="center"
-                android:src="@drawable/ic_message" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ivFollow"
-                android:layout_columnWeight="1"
-                android:layout_gravity="center"
-                android:contentDescription="@string/icon"
-                android:src="@drawable/heart_svgrepo_com" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ivSetting"
-                android:layout_columnWeight="1"
-                android:layout_gravity="center"
-                android:contentDescription="@string/icon"
-                android:src="@drawable/ic_setting" />
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/ivNext"
-                android:layout_columnWeight="1"
-                android:layout_gravity="center"
-                android:contentDescription="@string/icon"
-                android:src="@drawable/ic_right" />
-        </GridLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,4 +24,7 @@
     <string name="list_chap">Danh sách chương</string>
     <string name="temp_chap">Chapter 1</string>
     <string name="icon">ICON</string>
+    <string name="updatedAt">Cập nhật lần cuối:</string>
+    <string name="textFollow">Theo dõi</string>
+    <string name="bookcase">Tủ sách</string>
 </resources>

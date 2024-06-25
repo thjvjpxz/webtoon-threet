@@ -73,7 +73,6 @@ public class DetailRepository {
                 if (response.isSuccessful()) {
                     BaseResponse baseResponse = response.body();
                     if(baseResponse != null) {
-//                        Log.d("Follow", baseResponse.getMessage());
                         Toast.makeText(context, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
                         result.setValue(true);
                     }

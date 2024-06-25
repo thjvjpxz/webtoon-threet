@@ -9,6 +9,7 @@ public class ReadComicResponse {
     private String status;
     private Chapter chapter;
     private List<Image> images;
+    private Boolean follow;
 
     public String getStatus() {
         return status;
@@ -20,5 +21,9 @@ public class ReadComicResponse {
 
     public List<Image> getImages() {
         return images;
+    }
+
+    public Boolean getFollow() {
+        return follow;
     }
 }

@@ -31,6 +31,7 @@ android {
     }
 }
 
+
 dependencies {
 
     implementation libs.appcompat
@@ -46,8 +47,6 @@ dependencies {
 
     // import chipnavigation
     implementation 'com.github.ismaeldivita:chip-navigation-bar:1.4.0'
-    implementation 'com.github.bumptech.glide:recyclerview-integration:4.12.0'
-
 
     implementation libs.retrofit
     implementation libs.gson

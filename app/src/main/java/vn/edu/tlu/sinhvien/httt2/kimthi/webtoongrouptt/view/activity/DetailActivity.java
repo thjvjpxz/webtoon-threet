@@ -6,32 +6,34 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListAdapter;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivityDetailBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Author;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.CommentComicAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.DetailAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.DetailViewModel;
 
 public class DetailActivity extends AppCompatActivity {
     private ActivityDetailBinding binding;
     private DetailViewModel detailViewModel;
+    private boolean isCommentsVisible = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +56,26 @@ public class DetailActivity extends AppCompatActivity {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Webtoon Group TT");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, "truyenhdc.com");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "http://truyenhdc.com");
             startActivity(Intent.createChooser(shareIntent, "Chia sẻ ứng dụng"));
         });
 
         binding.ivFollow.setOnClickListener(v -> {
             detailViewModel.followComic(comicId, "comic");
+        });
+
+        binding.ivComment.setOnClickListener(v -> {
+            binding.commentsLayout.setVisibility(View.VISIBLE);
+            isCommentsVisible = true;
+        });
+
+        binding.ivClose.setOnClickListener(v -> {
+            binding.commentsLayout.setVisibility(View.GONE);
+            isCommentsVisible = false;
+        });
+
+        binding.btnSend.setOnClickListener(v -> {
+            comment();
         });
     }
 
@@ -107,13 +123,29 @@ public class DetailActivity extends AppCompatActivity {
                 textView.setLayoutParams(layoutParams);
                 binding.flexboxCategory.addView(textView);
             }
-            binding.listChapter.setAdapter(new DetailAdapter(data.getChapters(), this));
+            DetailAdapter adapter = new DetailAdapter(data.getChapters(), data.getHistory(), this);
+            binding.listChapter.setAdapter(adapter);
+            CommentComicAdapter adapter1 = new CommentComicAdapter(data.getComments(), this);
+            binding.rvComments.setLayoutManager(new LinearLayoutManager(this));
+            binding.rvComments.setAdapter(adapter1);
         });
     }
 
     public void openReadActivity(String id) {
         Intent intent = new Intent(this, ReadActivity.class);
         intent.putExtra("CHAPTER_ID", id);
+        intent.putExtra("COMIC_ID", getIntent().getStringExtra("COMIC_ID"));
         startActivity(intent);
+    }
+
+    public void comment () {
+        EditText editText = binding.edtComment;
+        String content = editText.getText().toString();
+        if (!content.isEmpty()) {
+            Log.d("Comment", content);
+            editText.setText("");
+        }else{
+            Toast.makeText(this, "Vui lòng nhập nội dung bình luận", Toast.LENGTH_SHORT).show();
+        }
     }
 }

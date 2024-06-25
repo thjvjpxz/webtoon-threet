@@ -25,6 +25,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentHomeBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.CategoryActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
@@ -96,7 +97,6 @@ public class HomeFragment extends Fragment {
                 binding.pbCompleted.setVisibility(View.VISIBLE);
                 binding.pbRanking.setVisibility(View.VISIBLE);
             }
-
         });
 
         homeViewModel.fetchHomeData().observe(getViewLifecycleOwner(), data -> {
@@ -108,16 +108,38 @@ public class HomeFragment extends Fragment {
                 for (Category tag: data.getCategories()){
                     TextView textView = new TextView(new ContextThemeWrapper(getContext(),
                             R.style.TagTextViewStyle));
-                    textView.setText(tag.getName());
-
+                    String text = tag.getName();
+                    String capitalizedText = capitalizeWords(text);
+                    textView.setText(capitalizedText);
                     FlexboxLayout.LayoutParams layoutParams = new FlexboxLayout.LayoutParams(
                             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     layoutParams.setMargins(0, 10, 5, 0);
 
                     textView.setLayoutParams(layoutParams);
                     binding.flexboxLayout.addView(textView);
+                    textView.setOnClickListener(v -> {
+                        Intent intent = new Intent(getContext(), CategoryActivity.class);
+                        intent.putExtra("categoryId", String.valueOf(tag.getId()));
+                        intent.putExtra("page", 1);
+                        startActivity(intent);
+                    });
                 }
             }
         });
+    }
+
+    public String capitalizeWords(String str) {
+        String[] words = str.split(" ");
+        StringBuilder capitalizedWords = new StringBuilder();
+
+        for (String word : words) {
+            if (word.length() > 0) {
+                capitalizedWords.append(Character.toUpperCase(word.charAt(0)))
+                        .append(word.substring(1).toLowerCase());
+            }
+            capitalizedWords.append(" ");
+        }
+
+        return capitalizedWords.toString().trim();
     }
 }

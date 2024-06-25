@@ -1,15 +1,16 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
+
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -31,7 +32,8 @@ public class ReadComicAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         Image image = images.get(position);
         ReadComicViewHolder readComicViewHolder = (ReadComicViewHolder) holder;
-        Glide.with(readComicViewHolder.ivImage).load(image.getLink()).into(readComicViewHolder.ivImage);
+        Glide.with(readComicViewHolder.ivImage).load(image.getLink())
+                .diskCacheStrategy(DiskCacheStrategy.ALL).into(readComicViewHolder.ivImage);
     }
 
     @Override

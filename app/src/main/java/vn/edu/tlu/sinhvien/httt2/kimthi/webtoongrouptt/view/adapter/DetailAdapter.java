@@ -20,9 +20,12 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.DetailActiv
 public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     private List<Chapter> listChapter;
     private final DetailActivity detailActivity;
-    public DetailAdapter(List<Chapter> listChapter, DetailActivity detailActivity) {
+    private List<String> historyList;
+
+    public DetailAdapter(List<Chapter> listChapter, List<String> historyList, DetailActivity detailActivity) {
         this.detailActivity = detailActivity;
         this.listChapter = listChapter;
+        this.historyList = historyList;
     }
     @NonNull
     @Override
@@ -35,6 +38,15 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         Chapter chapter = listChapter.get(position);
         DetailViewHolder detailViewHolder = (DetailViewHolder) holder;
         detailViewHolder.chapter_number.setText("Chapter " + chapter.getName());
+        if (historyList != null){
+            if (historyList.contains(String.valueOf(chapter.getId()))){
+                detailViewHolder.chapter_number.setTextColor(detailActivity.getResources().getColor(R.color.primary_color));
+                detailViewHolder.chapter_title.setTextColor(detailActivity.getResources().getColor(R.color.primary_color));
+            }else{
+                detailViewHolder.chapter_number.setTextColor(detailActivity.getResources().getColor(R.color.black));
+                detailViewHolder.chapter_title.setTextColor(detailActivity.getResources().getColor(R.color.black));
+            }
+        }
         detailViewHolder.chapter_title.setText(chapter.getTitle());
         Glide.with(detailViewHolder.chapter_image).load(chapter.getImage()).into(detailViewHolder.chapter_image);
         detailViewHolder.item_chapter.setOnClickListener(v -> {

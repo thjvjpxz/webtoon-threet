@@ -22,9 +22,9 @@ public class NavigationBarAdapter extends FragmentStateAdapter {
         if (position == 0) {
             return new HomeFragment();
         } else if (position == 1) {
-            return new CompassFragment();
-        } else {
             return new HeartFragment();
+        } else {
+            return new CompassFragment();
         }
     }
 

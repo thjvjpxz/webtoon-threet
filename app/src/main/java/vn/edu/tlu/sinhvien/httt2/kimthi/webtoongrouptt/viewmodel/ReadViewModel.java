@@ -26,4 +26,7 @@ public class ReadViewModel extends ViewModel {
     public MutableLiveData<Boolean> getIsLoaded() {
         return isLoaded;
     }
+    public LiveData<Boolean> followComic(String comicId, String type) {
+        return readRepository.followComic(comicId, type);
+    }
 }

@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -66,9 +67,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             RankViewHolder rankViewHolder = (RankViewHolder) holder;
             rankViewHolder.tvName.setText(comic.getName());
-            rankViewHolder.tvViews.setText(String.valueOf(comic.getTotal_views()));
+            rankViewHolder.tvViews.setText(String.valueOf(comic.getViews()));
             Glide.with(rankViewHolder.imgThumbnail).load(comic.getThumbnail()).into(rankViewHolder.imgThumbnail);
-            rankViewHolder.imgThumbnail.setOnClickListener(v -> {
+            rankViewHolder.itemRank.setOnClickListener(v -> {
                 mainActivity.openDetailActivity(String.valueOf(comic.getId()));
             });
         }
@@ -107,11 +108,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static class RankViewHolder extends RecyclerView.ViewHolder {
         ImageView imgThumbnail;
         TextView tvName, tvViews;
+        ConstraintLayout itemRank;
         public RankViewHolder(@NonNull View itemView) {
             super(itemView);
             imgThumbnail = itemView.findViewById(R.id.imgThumbnail);
             tvName = itemView.findViewById(R.id.tvName);
             tvViews = itemView.findViewById(R.id.tvViews);
+            itemRank = itemView.findViewById(R.id.item_ranking);
         }
     }
 
