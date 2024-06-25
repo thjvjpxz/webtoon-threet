@@ -58,7 +58,7 @@ public class StoryChapterAdapter extends RecyclerView.Adapter<StoryChapterAdapte
             chapters.addAll(chaptersFull);
         } else {
             for (Chapter item : chaptersFull) {
-                if (item.getChapterNumber().contains(text) | item.getTitle().toLowerCase().contains(text.toLowerCase())) {
+                if (item.getChapterNumber().contains(text)) {
                     chapters.add(item);
                 }
             }

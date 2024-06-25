@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.SearchView;
 
 import java.lang.reflect.Field;
@@ -104,6 +105,11 @@ public class ChaptersStoryListFragment extends Fragment {
             searchEditText.setHintTextColor(Color.GRAY); // Đặt màu cho hint text
             searchEditText.setTextColor(Color.BLACK); // Đặt màu cho văn bản
 
+            // Tùy chỉnh nút "x" bên trong SearchView
+            Field closeButtonField = SearchView.class.getDeclaredField("mCloseButton");
+            closeButtonField.setAccessible(true);
+            ImageView closeButton = (ImageView) closeButtonField.get(searchView);
+            closeButton.setImageResource(R.drawable.ic_exit);
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         };
