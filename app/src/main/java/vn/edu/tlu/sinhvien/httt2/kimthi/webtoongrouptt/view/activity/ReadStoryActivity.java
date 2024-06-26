@@ -2,6 +2,7 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +26,8 @@ public class ReadStoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityReadStoryBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Intent intent = getIntent();
         String slugChapter = intent.getStringExtra("slug_chapter");

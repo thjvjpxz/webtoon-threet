@@ -10,13 +10,15 @@ public class DetailStoryResponse {
     private Story story;
     private List<Chapter> chapters;
     private List<Comment> comments;
+    private List<String> history;
 
     public DetailStoryResponse() {}
 
-    public DetailStoryResponse(Story story, List<Chapter> chapters, List<Comment> comments) {
+    public DetailStoryResponse(Story story, List<Chapter> chapters, List<Comment> comments, List<String> history) {
         this.story = story;
         this.chapters = chapters;
         this.comments = comments;
+        this.history = history;
     }
 
     public Story getStory() {
@@ -41,5 +43,13 @@ public class DetailStoryResponse {
 
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+
+    public List<String> getHistory() {
+        return history;
+    }
+
+    public void setHistory(List<String> history) {
+        this.history = history;
     }
 }

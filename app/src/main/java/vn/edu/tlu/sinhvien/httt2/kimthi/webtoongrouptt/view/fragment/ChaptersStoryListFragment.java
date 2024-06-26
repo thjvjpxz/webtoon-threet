@@ -19,6 +19,7 @@ import android.widget.SearchView;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.List;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentChaptersStoryListBinding;
@@ -32,7 +33,6 @@ public class ChaptersStoryListFragment extends Fragment {
     private Story story;
     private DetailStoryViewModel viewModel;
     private StoryChapterAdapter storyChapterAdapter;
-
 
     public ChaptersStoryListFragment(Story story) {
         this.story = story;
@@ -55,7 +55,7 @@ public class ChaptersStoryListFragment extends Fragment {
 
 
         viewModel = new ViewModelProvider(this).get(DetailStoryViewModel.class);
-        storyChapterAdapter = new StoryChapterAdapter(new ArrayList<>(), story);
+        storyChapterAdapter = new StoryChapterAdapter(new ArrayList<>(), story, new ArrayList<>());
         observer(story);
         binding.rvChapters.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvChapters.setAdapter(storyChapterAdapter);
@@ -98,6 +98,7 @@ public class ChaptersStoryListFragment extends Fragment {
                 detailStoryResponse -> {
             if (detailStoryResponse != null) {
                 storyChapterAdapter.setChapters(detailStoryResponse.getChapters());
+                storyChapterAdapter.setHistory(detailStoryResponse.getHistory());
             }
         });
     }
