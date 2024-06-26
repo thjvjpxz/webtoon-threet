@@ -15,4 +15,18 @@ public class Utility {
         return sb.toString().trim();
     }
 
+    public static String getFullHtml(String tag) {
+        return "<html>" +
+                "<head>" +
+                "<meta charset='UTF-8'>" +
+                "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
+                "<link href='https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind" +
+                ".min.css' rel='stylesheet'>" +
+                "<title>Chapter Content</title>" +
+                "</head>" +
+                "<body>" +
+                tag +
+                "</body>" +
+                "</html>";
+    }
 }

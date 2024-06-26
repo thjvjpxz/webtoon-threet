@@ -1,5 +1,7 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +15,20 @@ import java.util.List;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ItemStoryChapterBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Chapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Story;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Utility;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.ReadStoryActivity;
 
 public class StoryChapterAdapter extends RecyclerView.Adapter<StoryChapterAdapter.StoryChapterViewHolder> {
 
     private List<Chapter> chapters;
     private List<Chapter> chaptersFull;
+    private Story story;
 
-    public StoryChapterAdapter(List<Chapter> chapters) {
+    public StoryChapterAdapter(List<Chapter> chapters, Story story) {
         this.chapters = chapters;
         chaptersFull = new ArrayList<>(chapters);
+        this.story = story;
     }
 
     public void setChapters(List<Chapter> chapters) {
@@ -40,7 +47,7 @@ public class StoryChapterAdapter extends RecyclerView.Adapter<StoryChapterAdapte
 
     @Override
     public void onBindViewHolder(@NonNull StoryChapterViewHolder holder, int position) {
-        holder.bind(chapters.get(position));
+        holder.bind(chapters.get(position), story);
     }
 
     @Override
@@ -74,9 +81,18 @@ public class StoryChapterAdapter extends RecyclerView.Adapter<StoryChapterAdapte
             binding = ItemStoryChapterBinding.bind(itemView);
         }
 
-        public void bind(Chapter chapter) {
+        public void bind(Chapter chapter, Story story) {
             binding.tvChapter.setText(chapter.getName() + ": ");
-            binding.tvTitle.setText(chapter.getTitle());
+            binding.tvTitle.setText(Utility.capitalizeFirstLetter(chapter.getTitle()));
+            binding.llItem.setOnClickListener(v -> {
+                String slug_chapter = chapter.getSlug();
+                String slug_story = story.getSlug();
+
+                Intent intent = new Intent(v.getContext(), ReadStoryActivity.class);
+                intent.putExtra("slug_chapter", slug_chapter);
+                intent.putExtra("slug_story", slug_story);
+                v.getContext().startActivity(intent);
+            });
         }
     }
 }

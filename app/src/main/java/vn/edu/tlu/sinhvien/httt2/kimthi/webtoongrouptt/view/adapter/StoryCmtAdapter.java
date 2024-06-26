@@ -18,6 +18,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentCmtSt
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ItemStoryCmtBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comment;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Utility;
 
 public class StoryCmtAdapter extends RecyclerView.Adapter<StoryCmtAdapter.StoryCmtViewHolder> {
     private List<Comment> comments;
@@ -87,7 +88,7 @@ public class StoryCmtAdapter extends RecyclerView.Adapter<StoryCmtAdapter.StoryC
         }
 
         private void fetchCmtContent(String content) {
-            String htmlContent = getStringHtml(content);
+            String htmlContent = Utility.getFullHtml(content);
             binding.wvCmtContent.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null);
         }
 
@@ -96,43 +97,29 @@ public class StoryCmtAdapter extends RecyclerView.Adapter<StoryCmtAdapter.StoryC
                     " " +
                     "style=\"background-image: url(&quot;" + linkGif + "&quot;" +
                     ");\">" + nameUser + "</h6>";
-            String htmlContent = getStringHtml(tag);
+            String htmlContent = Utility.getFullHtml(tag);
             binding.wvName.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null);
         }
 
         private void fetchLevel(String levelName, String color) {
             String tag = "<span class=\"text-xs rounded px-1 border\" style=\"color: " + color +
                     "; border-color: " + color + ";\">" + levelName + "</span>";
-            String htmlContent = getStringHtml(tag);
+            String htmlContent = Utility.getFullHtml(tag);
             binding.wvLevel.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null);
         }
 
         private void fetchLevelNotLevel() {
-            String tag = "<span class=\"text-xs rounded px-1 border\" style=\"border-color: #999999 !important;\">Cấp vô danh</span>";
-            String htmlContent = getStringHtml(tag);
+            String tag = "<span class=\"text-xs rounded px-1 border\" style=\"border-color: " +
+                    "#999999 !important;\">Cấp vô danh</span>";
+            String htmlContent = Utility.getFullHtml(tag);
             binding.wvLevel.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null);
         }
 
         private void fetchNameNotLevel(String nameUser) {
             String tag = "<h6 class=\"font-bold bg-auto bg-center bg-clip-text\" " +
                     "style=\"background-image: url(&quot;null&quot;); color: #0033ff\">" + nameUser + "</h6>";
-            String htmlContent = getStringHtml(tag);
+            String htmlContent = Utility.getFullHtml(tag);
             binding.wvName.loadDataWithBaseURL(null, htmlContent, "text/html", "UTF-8", null);
-        }
-
-        private String getStringHtml(String tag) {
-            return "<html>" +
-                    "<head>" +
-                    "<meta charset='UTF-8'>" +
-                    "<meta name='viewport' content='width=device-width, initial-scale=1.0'>" +
-                    "<link href='https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind" +
-                    ".min.css' rel='stylesheet'>" +
-                    "<title>Chapter Content</title>" +
-                    "</head>" +
-                    "<body>" +
-                    tag +
-                    "</body>" +
-                    "</html>";
         }
     }
 }

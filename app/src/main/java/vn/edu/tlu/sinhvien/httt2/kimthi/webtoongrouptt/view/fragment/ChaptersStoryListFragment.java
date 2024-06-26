@@ -55,7 +55,7 @@ public class ChaptersStoryListFragment extends Fragment {
 
 
         viewModel = new ViewModelProvider(this).get(DetailStoryViewModel.class);
-        storyChapterAdapter = new StoryChapterAdapter(new ArrayList<>());
+        storyChapterAdapter = new StoryChapterAdapter(new ArrayList<>(), story);
         observer(story);
         binding.rvChapters.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvChapters.setAdapter(storyChapterAdapter);
