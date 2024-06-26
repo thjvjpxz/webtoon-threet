@@ -3,14 +3,10 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.text.Html;
 
 
 import androidx.annotation.NonNull;
@@ -25,7 +21,8 @@ import java.util.regex.Pattern;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comment;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.DetailActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.GifTextShaderView;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.CommentInterface;
 
 public class CommentComicAdapter extends RecyclerView.Adapter<CommentComicAdapter.CommentComicViewHolder> {
     private List<Comment> commentList;
@@ -47,21 +44,23 @@ public class CommentComicAdapter extends RecyclerView.Adapter<CommentComicAdapte
         Glide.with(holder.ivAvatar.getContext())
                 .load(comment.getUser().getAvatar())
                 .into(holder.ivAvatar);
-        Glide.with(holder.ivGifBoder.getContext())
-                .asGif()
-                .load(comment.getUser().getLevel().getImage())
-                .into(holder.ivGifBoder);
-        holder.tvName.setText(comment.getUser().getName());
+        if (comment.getUser().getLevel() != null){
+            holder.gifTextShaderView.setText(comment.getUser().getName());
+            holder.gifTextShaderView.setGifUrl(comment.getUser().getLevel().getImage());
+            holder.tvBadge.setText(comment.getUser().getLevel().getLevel());
+            int color = Color.parseColor(comment.getUser().getLevel().getStyle());
+            holder.tvBadge.setTextColor(color);
+            GradientDrawable border = new GradientDrawable();
+            border.setShape(GradientDrawable.RECTANGLE);
+            border.setStroke(2, color);
+            border.setCornerRadius(10);
+            holder.tvBadge.setBackground(border);
+        }else{
+            holder.tvName.setText(comment.getUser().getName());
+            holder.tvBadge.setText("Cấp vô danh");
+        }
         holder.tvLike.setText(String.valueOf(comment.getLike()));
         holder.tvDislike.setText(String.valueOf(comment.getDislike()));
-        holder.tvBadge.setText(comment.getUser().getLevel().getLevel());
-        int color = Color.parseColor(comment.getUser().getLevel().getStyle());
-        holder.tvBadge.setTextColor(color);
-        GradientDrawable border = new GradientDrawable();
-        border.setShape(GradientDrawable.RECTANGLE);
-        border.setStroke(2, color);
-        border.setCornerRadius(10);
-        holder.tvBadge.setBackground(border);
         List<String> parsedContent = parseHTML(comment.getContent());
         holder.tvComment.setText(parsedContent.get(0));
         if (parsedContent.size() > 1) {
@@ -73,15 +72,15 @@ public class CommentComicAdapter extends RecyclerView.Adapter<CommentComicAdapte
             holder.ivComment.setImageDrawable(null);
         }
         holder.ivLike.setOnClickListener(v -> {
-            ((DetailActivity) context).likeComment(String.valueOf(comment.getId()));
+            ((CommentInterface) context).likeComment(String.valueOf(comment.getId()));
         });
 
         holder.ivDislike.setOnClickListener(v -> {
-            ((DetailActivity) context).dislikeComment(String.valueOf(comment.getId()));
+            ((CommentInterface) context).dislikeComment(String.valueOf(comment.getId()));
         });
 
         holder.tvReport.setOnClickListener(v -> {
-            ((DetailActivity) context).reportComment(String.valueOf(comment.getId()));
+            ((CommentInterface) context).reportComment(String.valueOf(comment.getId()));
         });
     }
 
@@ -144,8 +143,9 @@ public class CommentComicAdapter extends RecyclerView.Adapter<CommentComicAdapte
     }
 
     public static class CommentComicViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivAvatar, ivComment, ivGifBoder, ivLike, ivDislike;
+        ImageView ivAvatar, ivComment, ivLike, ivDislike;
         TextView tvName, tvBadge, tvComment, tvLike, tvDislike, tvReport;
+        GifTextShaderView gifTextShaderView;
         public CommentComicViewHolder(@NonNull ViewGroup itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvName);
@@ -153,12 +153,12 @@ public class CommentComicAdapter extends RecyclerView.Adapter<CommentComicAdapte
             tvBadge = itemView.findViewById(R.id.tvBadge);
             tvComment = itemView.findViewById(R.id.tvComment);
             ivComment = itemView.findViewById(R.id.ivComment);
-            ivGifBoder = itemView.findViewById(R.id.gifBorder);
             tvLike = itemView.findViewById(R.id.tvLike);
             tvDislike = itemView.findViewById(R.id.tvDislike);
             tvReport = itemView.findViewById(R.id.tvReport);
             ivLike = itemView.findViewById(R.id.ivLike);
             ivDislike = itemView.findViewById(R.id.ivDislike);
+            gifTextShaderView = itemView.findViewById(R.id.gifTextShaderView);
         }
     }
 }

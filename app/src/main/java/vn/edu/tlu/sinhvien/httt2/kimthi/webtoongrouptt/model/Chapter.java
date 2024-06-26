@@ -7,6 +7,7 @@ public class Chapter {
     private String image;
     private Integer prevChap;
     private Integer nextChap;
+    private Integer comic_id;
 
     public Integer getId() {
         return id;
@@ -30,5 +31,9 @@ public class Chapter {
 
     public Integer getNextChap() {
         return nextChap;
+    }
+
+    public Integer getComic_id() {
+        return comic_id;
     }
 }

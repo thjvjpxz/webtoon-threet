@@ -14,8 +14,8 @@ public class CommentViewModel extends ViewModel {
         commentRepository = CommentRepository.getInstance(context);
     }
 
-    public LiveData<Boolean> comment(Integer comicId, String content) {
-        return commentRepository.comment(comicId, content);
+    public LiveData<Boolean> comment(Integer comicId, Integer chapterId, String content) {
+        return commentRepository.comment(comicId, chapterId, content);
     }
 
     public LiveData<Boolean> likeComment(String commentId) {

@@ -32,10 +32,9 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.DetailAdapte
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.CommentViewModel;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.DetailViewModel;
 
-public class DetailActivity extends AppCompatActivity {
+public class DetailActivity extends AppCompatActivity implements CommentInterface {
     private ActivityDetailBinding binding;
     private DetailViewModel detailViewModel;
-    private boolean isCommentsVisible = false;
     private Integer id;
     private User user;
     private CommentComicAdapter adapterComment;
@@ -74,12 +73,10 @@ public class DetailActivity extends AppCompatActivity {
 
         binding.ivComment.setOnClickListener(v -> {
             binding.commentsLayout.setVisibility(View.VISIBLE);
-            isCommentsVisible = true;
         });
 
         binding.ivClose.setOnClickListener(v -> {
             binding.commentsLayout.setVisibility(View.GONE);
-            isCommentsVisible = false;
         });
 
         binding.btnSend.setOnClickListener(v -> {
@@ -151,7 +148,7 @@ public class DetailActivity extends AppCompatActivity {
         EditText editText = binding.edtComment;
         String content = editText.getText().toString();
         if (!content.isEmpty()) {
-            commentViewModel.comment(id, content).observe(this, isSuccess -> {
+            commentViewModel.comment(id, null, content).observe(this, isSuccess -> {
                 if (isSuccess) {
                     editText.setText("");
                     Comment comment = new Comment();

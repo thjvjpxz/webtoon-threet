@@ -1,9 +1,12 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -14,13 +17,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivityReadBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comment;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.User;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.CommentComicAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.ReadComicAdapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.CommentViewModel;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.ReadViewModel;
 
-public class ReadActivity extends AppCompatActivity {
+public class ReadActivity extends AppCompatActivity implements CommentInterface {
     private ActivityReadBinding binding;
     ReadViewModel readViewModel;
     private String currentChapterId;
+    private CommentViewModel commentViewModel;
+    private CommentComicAdapter adapterComment;
+    private Integer id;
+    private Integer chapter_id;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,16 +49,12 @@ public class ReadActivity extends AppCompatActivity {
         if (chapterId != null) {
             currentChapterId = chapterId;
             readViewModel = new ReadViewModel(currentChapterId, this);
+            commentViewModel = new CommentViewModel(this);
             observe();
         }
 
         binding.ivBack.setOnClickListener(v -> {
             finish();
-        });
-
-        binding.ivHome.setOnClickListener(v -> {
-            Intent intent1 = new Intent(this, MainActivity.class);
-            startActivity(intent1);
         });
 
         binding.rcImage.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -69,6 +77,18 @@ public class ReadActivity extends AppCompatActivity {
         binding.tvFollow.setOnClickListener(v -> {
             readViewModel.followComic(comicId, "comic").observe(this, this::changeIconFollow);
         });
+
+        binding.ivComment.setOnClickListener(v -> {
+            binding.commentsLayout.setVisibility(View.VISIBLE);
+        });
+
+        binding.ivClose.setOnClickListener(v -> {
+            binding.commentsLayout.setVisibility(View.GONE);
+        });
+
+        binding.btnSend.setOnClickListener(v -> {
+            comment();
+        });
     }
 
     private void observe() {
@@ -86,6 +106,9 @@ public class ReadActivity extends AppCompatActivity {
 
         readViewModel.fetchChapterData().observe(this, chapterResponse -> {
             if (chapterResponse != null && chapterResponse.getImages() != null) {
+                user = chapterResponse.getUser();
+                id = chapterResponse.getChapter().getComic_id();
+                chapter_id = chapterResponse.getChapter().getId();
                 binding.rcImage.setAdapter(new ReadComicAdapter(chapterResponse.getImages()));
                 binding.rcImage.setItemViewCacheSize(20);
                 binding.rcImage.setHasFixedSize(true);
@@ -114,6 +137,9 @@ public class ReadActivity extends AppCompatActivity {
                 } else {
                     binding.ivPrevious.setBackgroundTintList(null);
                 }
+                adapterComment = new CommentComicAdapter(chapterResponse.getComments(), this);
+                binding.rvComments.setLayoutManager(new LinearLayoutManager(this));
+                binding.rvComments.setAdapter(adapterComment);
             }
         });
     }
@@ -126,5 +152,57 @@ public class ReadActivity extends AppCompatActivity {
             binding.tvFollow.setText("Theo dõi");
             binding.tvFollow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.heart, 0, 0, 0);
         }
+    }
+
+    public void comment () {
+        EditText editText = binding.edtComment;
+        String content = editText.getText().toString();
+        if (!content.isEmpty()) {
+            commentViewModel.comment(id, chapter_id, content).observe(this, isSuccess -> {
+                if (isSuccess) {
+                    editText.setText("");
+                    Comment comment = new Comment();
+                    comment.setContent(content);
+                    comment.setLike(0);
+                    comment.setDislike(0);
+                    comment.setUser(user);
+                    adapterComment.addComment(comment);
+                } else {
+                    Toast.makeText(this, "Bình luận thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            Toast.makeText(this, "Vui lòng nhập nội dung bình luận", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void likeComment(String commentId) {
+        commentViewModel.likeComment(commentId).observe(this, isSuccess -> {
+            if (isSuccess) {
+                Comment comment = adapterComment.getCommentById(commentId);
+                if (comment != null) {
+                    comment.setLike(comment.getLike() + 1);
+                    adapterComment.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void dislikeComment(String commentId) {
+        commentViewModel.dislikeComment(commentId).observe(this, isSuccess -> {
+            if (isSuccess) {
+                Comment comment = adapterComment.getCommentById(commentId);
+                if (comment != null) {
+                    comment.setDislike(comment.getDislike() + 1);
+                    adapterComment.notifyDataSetChanged();
+                }
+            }
+        });
+    }
+
+    public void reportComment(String commentId) {
+        commentViewModel.reportComment(commentId);
     }
 }

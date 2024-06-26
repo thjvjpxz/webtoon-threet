@@ -7,6 +7,11 @@
     android:layout_height="match_parent"
     tools:context=".view.activity.ReadActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rcImage" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,9 +24,9 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ivHome"
+            android:id="@+id/ivBack"
             android:contentDescription="@string/icon"
-            android:src="@drawable/home"
+            android:src="@drawable/ic_list_ul_alt"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -30,11 +35,11 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ivBack"
+            android:id="@+id/ivComment"
             android:contentDescription="@string/icon"
             android:layout_marginStart="10dp"
-            android:src="@drawable/ic_list_ul_alt"
-            app:layout_constraintStart_toEndOf="@id/ivHome"
+            android:src="@drawable/ic_message"
+            app:layout_constraintStart_toEndOf="@id/ivBack"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:tint="@color/primary_color" />
@@ -48,7 +53,7 @@
             android:contentDescription="@string/icon"
             android:src="@drawable/ic_left"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ivBack"
+            app:layout_constraintStart_toEndOf="@id/ivComment"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
@@ -111,80 +116,93 @@
 
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <androidx.cardview.widget.CardView
+        android:id="@+id/commentsLayout"
+        android:layout_marginTop="100dp"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        android:id="@+id/rcImage" />
+        app:cardCornerRadius="20dp"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="#80000000"-->
-<!--        android:id="@+id/bottom_nav"-->
-<!--        android:paddingVertical="10dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/rcImage"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent">-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="10dp">
 
-<!--        <GridLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:columnCount="5"-->
-<!--            android:rowCount="1"-->
-<!--            android:orientation="horizontal"-->
-<!--            app:layout_constraintBottom_toBottomOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent">-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout1"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="10dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/ivPrev"-->
-<!--                android:layout_columnWeight="1"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:contentDescription="@string/icon"-->
-<!--                android:src="@drawable/ic_left" />-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bình luận"
+                    android:textColor="@color/dark"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/ivComment"-->
-<!--                android:contentDescription="@string/icon"-->
-<!--                android:layout_columnWeight="1"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:src="@drawable/ic_message" />-->
+                <ImageView
+                    android:id="@+id/ivClose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/icon"
+                    android:src="@drawable/times_svgrepo_com"
+                    android:layout_marginEnd="10dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/ivFollow"-->
-<!--                android:layout_columnWeight="1"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:contentDescription="@string/icon"-->
-<!--                android:src="@drawable/heart_svgrepo_com" />-->
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/ivSetting"-->
-<!--                android:layout_columnWeight="1"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:contentDescription="@string/icon"-->
-<!--                android:src="@drawable/ic_setting" />-->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvComments"
+                android:layout_marginTop="5dp"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                app:layout_constraintTop_toBottomOf="@id/constraintLayout1"
+                app:layout_constraintBottom_toTopOf="@id/layoutComment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
 
-<!--            <ImageView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:id="@+id/ivNext"-->
-<!--                android:layout_columnWeight="1"-->
-<!--                android:layout_gravity="center"-->
-<!--                android:contentDescription="@string/icon"-->
-<!--                android:src="@drawable/ic_right" />-->
-<!--        </GridLayout>-->
+            <LinearLayout
+                android:id="@+id/layoutComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+                <EditText
+                    android:id="@+id/edtComment"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="Nhập bình luận"
+                    android:padding="10dp"
+                    android:layout_marginEnd="10dp"/>
+                <Button
+                    android:id="@+id/btnSend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Gửi"
+                    android:background="@color/primary_color"
+                    android:textColor="@color/white"
+                    android:padding="10dp"/>
+            </LinearLayout>
 
-<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
