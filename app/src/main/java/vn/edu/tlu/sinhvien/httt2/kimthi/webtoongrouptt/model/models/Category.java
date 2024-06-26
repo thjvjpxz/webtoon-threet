@@ -1,4 +1,4 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.models;
 
 public class Category {
     private int id;

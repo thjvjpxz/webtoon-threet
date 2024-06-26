@@ -4,6 +4,7 @@ public class LoginResponse {
     private String token;
     private String avatar;
     private String name;
+    private String message;
     public String getToken() {
         return token;
     }
@@ -21,5 +22,13 @@ public class LoginResponse {
     }
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

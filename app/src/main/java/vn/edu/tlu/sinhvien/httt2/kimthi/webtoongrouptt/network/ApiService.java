@@ -4,19 +4,29 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.LoginRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.TwitterResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.UserResponse;
 
 public interface ApiService {
     @GET("mobile/comics/getComics")
     Call<HomeResponse> getComics();
+
+    @GET("user")
+    Call<UserResponse> getUser();
+
+    @POST("logout")
+    Call<ResponseBody> logOut();
 
     @POST("auth/register")
     Call<ResponseBody> registerUser(@Body RegisterRequest registerRequest);
@@ -29,4 +39,7 @@ public interface ApiService {
 
     @POST("auth/google")
     Call<GoogleResponse> loginGoogle(@Body GoogleRequest googleRequest);
+
+    @POST("auth/twitter")
+    Call<TwitterResponse> loginTwitter(@Body TwitterRequest twitterRequest);
 }
