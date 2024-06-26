@@ -1,8 +1,11 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 
 import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,6 +48,12 @@ public class ChaptersStoryListFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentChaptersStoryListBinding.inflate(inflater, container, false);
 
+        // Tùy chỉnh màu của ProgressBar
+        Drawable indeterminateDrawable = binding.pbChapters.getIndeterminateDrawable();
+        indeterminateDrawable.setColorFilter(ContextCompat.getColor(getContext(), R.color.primary_color), PorterDuff.Mode.SRC_IN);
+        binding.pbChapters.setIndeterminateDrawable(indeterminateDrawable);
+
+
         viewModel = new ViewModelProvider(this).get(DetailStoryViewModel.class);
         storyChapterAdapter = new StoryChapterAdapter(new ArrayList<>());
         observer(story);
@@ -78,6 +87,13 @@ public class ChaptersStoryListFragment extends Fragment {
     }
 
     private void observer(Story story) {
+        viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
+            if (isLoading) {
+                binding.pbChapters.setVisibility(View.VISIBLE);
+            } else {
+                binding.pbChapters.setVisibility(View.GONE);
+            }
+        });
         viewModel.getDetailStoryResponse(story.getId()).observe(getViewLifecycleOwner(),
                 detailStoryResponse -> {
             if (detailStoryResponse != null) {

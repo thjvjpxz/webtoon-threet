@@ -8,11 +8,14 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.ChaptersStoryListFragment;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.CmtStoryListFragment;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.IntroStoryFragment;
 
 public class TabDetailStoryAdapter extends FragmentStateAdapter {
     private Story story;
-    public TabDetailStoryAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, Story story) {
+
+    public TabDetailStoryAdapter(@NonNull FragmentManager fragmentManager,
+                                 @NonNull Lifecycle lifecycle, Story story) {
         super(fragmentManager, lifecycle);
         this.story = story;
     }
@@ -22,8 +25,10 @@ public class TabDetailStoryAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         if (position == 0) {
             return new IntroStoryFragment(story);
-        } else {
+        } else if (position == 1) {
             return new ChaptersStoryListFragment(story);
+        } else {
+            return new CmtStoryListFragment(story);
         }
     }
 

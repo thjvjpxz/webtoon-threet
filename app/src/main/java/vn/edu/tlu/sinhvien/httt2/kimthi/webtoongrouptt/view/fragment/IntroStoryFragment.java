@@ -1,10 +1,12 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.core.text.HtmlCompat;
 import androidx.fragment.app.Fragment;
 
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,9 +76,15 @@ public class IntroStoryFragment extends Fragment {
         binding.tvCategories.setText(categories);
 
         String content = "Giới thiệu: ";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            content += story.getContent() != null ? Html.fromHtml(story.getContent(),
+                    Html.FROM_HTML_MODE_COMPACT) : "Truyện rất hay, vui lòng đọc để biết thêm chi" +
+                    " tiết!";
+        } else {
+            content += story.getContent() != null ? Html.fromHtml(story.getContent()) : "Truyện " +
+                    "rất hay, vui lòng đọc để biết thêm chi tiết!";
+        }
 
-        content += story.getContent() != null ? String.valueOf(HtmlCompat.fromHtml(story.getContent(),
-                HtmlCompat.FROM_HTML_MODE_COMPACT)) : "Truyện rất hay, vui lòng đọc để biết thêm chi tiết!";
         binding.tvIntro.setText(content);
     }
 

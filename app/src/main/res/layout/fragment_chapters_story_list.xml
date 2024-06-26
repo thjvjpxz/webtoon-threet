@@ -6,29 +6,46 @@
     android:layout_height="match_parent"
     tools:context=".view.fragment.ChaptersStoryListFragment">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="15dp"
-        android:orientation="vertical">
+        android:layout_marginTop="15dp">
 
-        <SearchView
-            android:id="@+id/svChapter"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:inputType="number"
-            android:iconifiedByDefault="false"
-            android:searchIcon="@drawable/ic_search_2"
-            android:background="@drawable/shape_bg_search"
-            android:queryHint="Nhập số chương muốn tìm" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvChapters"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </LinearLayout>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <SearchView
+                android:id="@+id/svChapter"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:background="@drawable/shape_bg_search"
+                android:iconifiedByDefault="false"
+                android:inputType="number"
+                android:queryHint="Nhập số chương muốn tìm"
+                android:searchIcon="@drawable/ic_search_2" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvChapters"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/pbChapters"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingVertical="37dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </FrameLayout>
