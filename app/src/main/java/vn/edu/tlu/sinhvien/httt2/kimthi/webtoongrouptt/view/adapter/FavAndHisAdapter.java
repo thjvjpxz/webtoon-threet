@@ -106,10 +106,10 @@ public class FavAndHisAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 intent.putExtras(bundle);
                 binding.getRoot().getContext().startActivity(intent);
 
-                Context context = binding.getRoot().getContext();
-                if (context instanceof MainActivity) {
-                    ((MainActivity) context).finish();
-                }
+//                Context context = binding.getRoot().getContext();
+//                if (context instanceof MainActivity) {
+//                    ((MainActivity) context).finish();
+//                }
             });
         }
 
@@ -140,10 +140,10 @@ public class FavAndHisAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 intent.putExtras(bundle);
                 binding.getRoot().getContext().startActivity(intent);
 
-                Context context = binding.getRoot().getContext();
-                if (context instanceof MainActivity) {
-                    ((MainActivity) context).finish();
-                }
+//                Context context = binding.getRoot().getContext();
+//                if (context instanceof MainActivity) {
+//                    ((MainActivity) context).finish();
+//                }
             });
         }
     }

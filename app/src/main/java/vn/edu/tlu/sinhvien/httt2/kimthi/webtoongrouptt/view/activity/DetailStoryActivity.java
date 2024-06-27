@@ -157,8 +157,6 @@ public class DetailStoryActivity extends AppCompatActivity {
 
     private void processBack() {
         binding.btnBack.setOnClickListener(v -> {
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
             finish();
         });
     }
