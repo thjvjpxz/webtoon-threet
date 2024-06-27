@@ -5,6 +5,7 @@ public class LoginResponse {
     private String avatar;
     private String name;
     private String message;
+    private String status;
     public String getToken() {
         return token;
     }

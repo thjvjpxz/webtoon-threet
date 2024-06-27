@@ -11,6 +11,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotReque
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.LoginRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.UpdateRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
@@ -24,6 +25,9 @@ public interface ApiService {
 
     @GET("user")
     Call<UserResponse> getUser();
+
+    @POST("/user/update")
+    Call<LoginResponse> updateUser(@Body UpdateRequest updateRequest);
 
     @POST("logout")
     Call<ResponseBody> logOut();

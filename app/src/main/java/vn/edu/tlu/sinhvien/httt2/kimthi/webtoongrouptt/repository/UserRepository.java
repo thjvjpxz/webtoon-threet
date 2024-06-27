@@ -12,6 +12,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.UpdateRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.UserResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
@@ -19,20 +21,10 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 public class UserRepository {
     private static volatile UserRepository instance;
     ApiService apiService;
+    Context context;
 
     public UserRepository(Context context) {
         apiService = ApiClient.getRetrofitHeader(context).create(ApiService.class);
-    }
-
-    public static UserRepository getInstance(Context context) {
-        if (instance == null) {
-            synchronized (UserRepository.class) {
-                if (instance == null) {
-                    instance = new UserRepository(context);
-                }
-            }
-        }
-        return instance;
     }
 
     public MutableLiveData<UserResponse> fetchUserData() {
@@ -80,6 +72,27 @@ public class UserRepository {
         });
 
         return logoutResponseData;
+    }
+
+    public LiveData<LoginResponse> updateUser(UpdateRequest updateRequest) {
+        MutableLiveData<LoginResponse> updateResponseData = new MutableLiveData<>();
+        apiService.updateUser(updateRequest).enqueue(new Callback<LoginResponse>() {
+            @Override
+            public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                if (response.isSuccessful()) {
+                    updateResponseData.setValue(response.body());
+                } else {
+                    updateResponseData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<LoginResponse> call, Throwable t) {
+                updateResponseData.setValue(null);
+            }
+        });
+
+        return updateResponseData;
     }
 
 }

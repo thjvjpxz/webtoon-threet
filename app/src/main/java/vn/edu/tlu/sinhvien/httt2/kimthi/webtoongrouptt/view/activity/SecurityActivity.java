@@ -11,31 +11,26 @@ import android.provider.DocumentsContract;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.widget.Toast;
-
 import android.provider.MediaStore;
-
 import java.io.File;
 import java.io.IOException;
 
 import okhttp3.Call;
 import okhttp3.Callback;
-import okhttp3.OkHttpClient;
 import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.MultipartBody;
-import okhttp3.Request;
-import okhttp3.Response;
-
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
-
 import com.bumptech.glide.Glide;
 
-
+import okhttp3.Response;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivitySecurityBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.UserDialogFragment;
@@ -121,7 +116,7 @@ public class SecurityActivity extends AppCompatActivity {
                 binding.tvName.setText(user.getUser().getName());
                 binding.tvEmail.setText(user.getUser().getEmail());
                 Glide.with(this)
-                        .load(sharedPrefManager.getAvatar()).circleCrop()
+                        .load(user.getUser().getAvatar()).circleCrop()
                         .into(binding.ivAvatar);
             }
         });
@@ -161,53 +156,63 @@ public class SecurityActivity extends AppCompatActivity {
         return result;
     }
 
+//    private void uploadFileToServer (String token) {
+//        try {
+//            if (fileUri == null) {
+//                Toast.makeText(this, "Please select a file first", Toast.LENGTH_SHORT).show();
+//                return;
+//            }
+//
+//            String path = getPathFromUri(this, fileUri);
+//            if (path == null) {
+//                Toast.makeText(this, "Unable to get file path", Toast.LENGTH_SHORT).show();
+//                Log.d("TAG", "uploadFileToServer: " + fileUri.getPath());
+//                return;
+//            }
+//
+//            File file = new File(path);
+//
+//            Log.d("TAG", "uploadFileToServer: " + file.getName());
+//            Log.d("TOKEN SHARE", "TOKEN: " + token);
+//
+//            RequestBody fileBody = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), file);
+//            MultipartBody.Part filePart = MultipartBody.Part.createFormData("avatar", file.getName(), fileBody);
+//
+//            userViewModel.updateUser(binding.tvName.getText().toString(), binding.tvEmail.getText().toString(), 1, filePart).observe(this, updateResponse -> {
+//                if (updateResponse != null) {
+//                    Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+//                } else {
+//                    Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+//                }
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
+
     private void uploadFileToServer() {
         try {
-            if (fileUri == null) {
-                Toast.makeText(this, "Please select a file first", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            String path = getPathFromUri(this ,fileUri);
-            if (path == null) {
-                Toast.makeText(this, "Unable to get file path", Toast.LENGTH_SHORT).show();
-                Log.d("TAG", "uploadFileToServer: " + fileUri.getPath());
-                return;
-            }
-
-            File file = new File(path);
-
-            Log.d("TAG", "uploadFileToServer: " + file.getName());
+            String token = sharedPrefManager.getToken();
+            Log.d("TOKEN SHARE", "TOKEN: " + token);
             OkHttpClient client = new OkHttpClient();
 
-            // Tạo RequestBody cho tệp
-            RequestBody fileBody = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), file);
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("avatar", file.getName(), fileBody);
+            RequestBody name = RequestBody.create(binding.tvName.getText().toString(), MediaType.parse("multipart/form-data"));
+            RequestBody email = RequestBody.create(binding.tvEmail.getText().toString(), MediaType.parse("multipart/form-data"));
+            RequestBody roadId = RequestBody.create("1", MediaType.parse("multipart/form-data"));
 
-
-            RequestBody name = RequestBody.create(MediaType.parse("multipart/form-data"), binding.tvName.getText().toString());
-            RequestBody email = RequestBody.create(MediaType.parse("multipart/form-data"), binding.tvEmail.getText().toString());
-            RequestBody roadId = RequestBody.create(MediaType.parse("multipart/form-data"), "1");
-            // Tạo MultipartBody
             MultipartBody requestBody = new MultipartBody.Builder()
                     .setType(MultipartBody.FORM)
-                    .addFormDataPart("name", binding.tvName.getText().toString())
-                    .addFormDataPart("email", binding.tvEmail.getText().toString())
-                    .addFormDataPart("road_id", "1")
-                    .addPart(filePart)
+                    .addFormDataPart("name", name.toString())
+                    .addFormDataPart("email", email.toString())
+                    .addFormDataPart("road_id", roadId.toString())
                     .build();
 
-            // Tạo Request với header Authorization
-            String token = "Bearer 384|vIkjtHGRLyqJ7nZjeI52pUfN5iMtjW2goTbpgpwub623be1e";
-
-            // Tạo Request
             Request request = new Request.Builder()
                     .url("https://truyenhdc.com/api/user/update")
                     .post(requestBody)
                     .addHeader("Authorization", token)
                     .build();
 
-            // Thực hiện yêu cầu
             client.newCall(request).enqueue(new Callback() {
                 @Override
                 public void onFailure(Call call, IOException e) {
@@ -218,6 +223,7 @@ public class SecurityActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     if (response.isSuccessful()) {
+                        Log.d("TAG", "PARAM: " + call.request().body());
                         runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show());
                     } else {
                         runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show());
@@ -229,6 +235,7 @@ public class SecurityActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
 
     private String getPathFromUri(Context context, Uri uri) {
         Log.d("TAG", "URI: " + uri.toString());
