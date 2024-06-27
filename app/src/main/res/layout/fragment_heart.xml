@@ -27,6 +27,14 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ProgressBar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="200dp"
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_below="@+id/container_title"/>
+
     <View
         android:id="@+id/view3"
         android:layout_width="match_parent"
