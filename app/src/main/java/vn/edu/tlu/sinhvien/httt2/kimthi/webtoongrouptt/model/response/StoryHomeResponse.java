@@ -2,7 +2,7 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response;
 
 import java.util.List;
 
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Story;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
 
 public class StoryHomeResponse {
     private List<Story> storiesHot;

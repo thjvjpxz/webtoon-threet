@@ -5,12 +5,10 @@ import java.io.Serializable;
 public class Author implements Serializable {
     private int id;
     private String name;
-    private String slug;
 
-    public Author(int id, String name, String slug) {
+    public Author(int id, String name) {
         this.id = id;
         this.name = name;
-        this.slug = slug;
     }
 
     public int getId() {
@@ -29,11 +27,4 @@ public class Author implements Serializable {
         this.name = name;
     }
 
-    public String getSlug() {
-        return slug;
-    }
-
-    public void setSlug(String slug) {
-        this.slug = slug;
-    }
 }

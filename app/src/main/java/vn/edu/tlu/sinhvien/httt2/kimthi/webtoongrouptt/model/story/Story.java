@@ -1,7 +1,9 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story;
 
 import java.io.Serializable;
 import java.util.List;
+
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Author;
 
 public class Story implements Serializable {
     private int id;

@@ -3,7 +3,6 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -14,9 +13,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import java.util.List;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentCmtStoryListBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ItemStoryCmtBinding;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comment;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Comment;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Utility;
 

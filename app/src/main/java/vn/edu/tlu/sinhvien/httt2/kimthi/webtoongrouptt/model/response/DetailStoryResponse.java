@@ -2,9 +2,9 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response;
 
 import java.util.List;
 
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Chapter;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comment;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Story;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Chapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Comment;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
 
 public class DetailStoryResponse {
     private Story story;
