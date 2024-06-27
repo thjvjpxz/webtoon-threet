@@ -37,7 +37,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.HistoryV
         History history = listHistory.get(position);
         holder.tvName.setText(history.getComic().getName());
         holder.tvLastChapter.setText("Chapter " + history.getLastChapter().getName());
-        holder.tvLastRead.setText("Chapter " + history.getLastRead().getName());
+        if(history.getLastRead() != null){
+            holder.tvLastRead.setText("Chapter " + history.getLastRead().getName());
+        }
         Glide.with(holder.ivThumbnail.getContext()).load(history.getComic().getThumbnail()).into(holder.ivThumbnail);
         holder.layout.setOnClickListener(v -> {
             Intent intent = new Intent(v.getContext(), DetailActivity.class);
