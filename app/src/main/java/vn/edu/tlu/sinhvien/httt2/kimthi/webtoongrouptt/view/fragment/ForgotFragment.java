@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentForgotBinding;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.ForgotRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.SignViewModel;
 

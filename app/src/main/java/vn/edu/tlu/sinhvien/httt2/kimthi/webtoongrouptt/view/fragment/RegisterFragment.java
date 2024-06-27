@@ -12,7 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentRegisterBinding;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.RegisterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.SignViewModel;
 

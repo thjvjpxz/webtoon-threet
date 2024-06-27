@@ -15,9 +15,9 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.GoogleReque
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.LoginRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.RegisterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.TwitterRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.GoogleResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.LoginResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.TwitterResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.TwitterResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 
@@ -117,7 +117,7 @@ public class SignRepository {
         return loginResponseData;
     }
 
-    public LiveData<ResponseBody> forgotPass(vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest request) {
+    public LiveData<ResponseBody> forgotPass(vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.ForgotRequest request) {
         MutableLiveData<ResponseBody> forgotResponseData = new MutableLiveData<>();
         apiService.forgotPassword(request).enqueue(new Callback<ResponseBody>() {
             @Override

@@ -8,11 +8,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import okhttp3.ResponseBody;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.LoginRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.ForgotRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.GoogleRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.LoginRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.RegisterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.TwitterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ForgotResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;

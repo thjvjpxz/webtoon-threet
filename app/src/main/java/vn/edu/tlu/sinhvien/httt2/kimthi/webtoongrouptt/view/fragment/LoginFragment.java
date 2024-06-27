@@ -21,7 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.TwitterActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentLoginBinding;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.GoogleRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.SignViewModel;

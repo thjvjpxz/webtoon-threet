@@ -8,7 +8,7 @@ import androidx.lifecycle.LiveData;
 
 import okhttp3.MultipartBody;
 import okhttp3.ResponseBody;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.UpdateRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.UpdateRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.UserResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository.UserRepository;
