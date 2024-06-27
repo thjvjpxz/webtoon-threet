@@ -10,8 +10,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.SaveHistoryRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ReadStoryResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ResponseBase;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 
@@ -36,18 +36,18 @@ public class ReadStoryRepository {
         return instance;
     }
 
-    private LiveData<ResponseBase> saveHistory(SaveHistoryRequest saveHistoryRequest) {
-        MutableLiveData<ResponseBase> mutableLiveData = new MutableLiveData<>();
-        apiServiceHeader.saveHistory(saveHistoryRequest).enqueue(new Callback<ResponseBase>() {
+    private LiveData<BaseResponse> saveHistory(SaveHistoryRequest saveHistoryRequest) {
+        MutableLiveData<BaseResponse> mutableLiveData = new MutableLiveData<>();
+        apiServiceHeader.saveHistory(saveHistoryRequest).enqueue(new Callback<BaseResponse>() {
             @Override
-            public void onResponse(Call<ResponseBase> call, Response<ResponseBase> response) {
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
                 if (response.isSuccessful()) {
                     mutableLiveData.setValue(response.body());
                 }
             }
 
             @Override
-            public void onFailure(Call<ResponseBase> call, Throwable t) {
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
                 mutableLiveData.setValue(null);
             }
         });

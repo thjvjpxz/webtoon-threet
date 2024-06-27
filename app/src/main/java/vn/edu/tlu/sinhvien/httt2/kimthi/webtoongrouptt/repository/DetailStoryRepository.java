@@ -9,6 +9,8 @@ import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.FollowRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailStoryResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
@@ -51,6 +53,27 @@ public class DetailStoryRepository {
                 isLoading.run();
             }
         });
+        return data;
+    }
+
+    public MutableLiveData<BaseResponse> followStory(String storyId) {
+        MutableLiveData<BaseResponse> data = new MutableLiveData<>();
+        FollowRequest followRequest = new FollowRequest(storyId, "story");
+        apiService.follow(followRequest).enqueue(new Callback<BaseResponse>() {
+            @Override
+            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+                if (response.isSuccessful()) {
+                    data.setValue(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse> call, Throwable t) {
+                Log.d("DetailStoryRepository", "onFailure: " + t.getMessage());
+                data.setValue(null);
+            }
+        });
+
         return data;
     }
 }

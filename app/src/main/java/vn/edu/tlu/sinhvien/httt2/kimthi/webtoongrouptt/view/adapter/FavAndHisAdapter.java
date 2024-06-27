@@ -1,6 +1,8 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
-import android.util.Log;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +19,11 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ItemStoryFavBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ItemStoryHoriBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.FavouriteStoryResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.DetailStoryActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.FavAndHisFragment;
 
 public class FavAndHisAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private List<FavouriteStoryResponse.Follow> follows;
@@ -88,14 +94,30 @@ public class FavAndHisAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     .apply(Constants.IMG_CENTER_CROP_ROUND_30_OPTIONS)
                     .into(binding.imgThumbnail);
             binding.tvNameStory.setText(history.getStory().getName());
-            binding.tvChapLatest.setText(history.getLastChapter().getName());
-            binding.tvChapLastRead.setText(history.getLastRead().getName());
+            binding.tvChapLatest.setText("Mới nhất: " + history.getLastChapter().getName());
+            binding.tvChapLastRead.setText("Đang đọc: " + history.getLastRead().getName());
+
+            binding.rlItemStoryFav.setOnClickListener(v -> {
+                Story story = history.getStory();
+                Intent intent = new Intent(binding.getRoot().getContext(),
+                        DetailStoryActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("story", story);
+                intent.putExtras(bundle);
+                binding.getRoot().getContext().startActivity(intent);
+
+                Context context = binding.getRoot().getContext();
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).finish();
+                }
+            });
         }
 
     }
 
     static class FavouriteViewHolder extends RecyclerView.ViewHolder {
         ItemStoryHoriBinding binding;
+
         public FavouriteViewHolder(@NonNull View itemView) {
             super(itemView);
             binding = ItemStoryHoriBinding.bind(itemView);
@@ -109,6 +131,20 @@ public class FavAndHisAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                     .apply(Constants.IMG_CENTER_CROP_ROUND_30_OPTIONS)
                     .into(binding.imgThumbnail);
             binding.txtStoryName.setText(follow.getStory().getName());
+            binding.linearLayout2.setOnClickListener(v -> {
+                Story story = follow.getStory();
+                Intent intent = new Intent(binding.getRoot().getContext(),
+                        DetailStoryActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("story", story);
+                intent.putExtras(bundle);
+                binding.getRoot().getContext().startActivity(intent);
+
+                Context context = binding.getRoot().getContext();
+                if (context instanceof MainActivity) {
+                    ((MainActivity) context).finish();
+                }
+            });
         }
     }
 

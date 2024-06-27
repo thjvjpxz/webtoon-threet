@@ -41,12 +41,12 @@ public class DetailStoryActivity extends AppCompatActivity {
         viewModel = new ViewModelProvider(this).get(DetailStoryViewModel.class);
 
         handleTabLayout();
-        processFollow();
         processBack();
 
         Story story = getStoryIntent();
 
         processTab(story);
+        processFollow(story);
 
         observer(story.getId());
 
@@ -120,7 +120,7 @@ public class DetailStoryActivity extends AppCompatActivity {
         binding.tvNameStory.setText(story.getName());
     }
 
-    private void processFollow() {
+    private void processFollow(Story story) {
         binding.ivFollow.setOnClickListener(v -> {
             
             boolean isSeleted = !binding.ivFollow.isSelected();
@@ -142,11 +142,23 @@ public class DetailStoryActivity extends AppCompatActivity {
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.playSequentially(scaleUp, scaleDown);
             animatorSet.start();
+
+            processCallFollow(String.valueOf(story.getId()));
+        });
+    }
+
+    private void processCallFollow(String storyId) {
+        viewModel.followStory(storyId).observe(this, response -> {
+            if (response != null) {
+                Toast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
     }
 
     private void processBack() {
         binding.btnBack.setOnClickListener(v -> {
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
             finish();
         });
     }

@@ -3,6 +3,8 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response;
 import java.io.Serializable;
 import java.util.List;
 
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
+
 public class FavouriteStoryResponse implements Serializable {
     private List<Follow> follows;
 
@@ -26,29 +28,6 @@ public class FavouriteStoryResponse implements Serializable {
 
         public Story getStory() {
             return story;
-        }
-    }
-
-    public class Story {
-        private int id;
-        private String name;
-        private String slug;
-        private String thumbnail;
-
-        public String getThumbnail() {
-            return thumbnail;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getSlug() {
-            return slug;
         }
     }
 

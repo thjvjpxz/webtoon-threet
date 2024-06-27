@@ -7,6 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.FollowRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailStoryResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository.DetailStoryRepository;
 
@@ -50,5 +52,9 @@ public class DetailStoryViewModel extends AndroidViewModel {
         });
 
         return detailStoryResponse;
+    }
+
+    public LiveData<BaseResponse> followStory(String storyId) {
+        return repository.followStory(storyId);
     }
 }
