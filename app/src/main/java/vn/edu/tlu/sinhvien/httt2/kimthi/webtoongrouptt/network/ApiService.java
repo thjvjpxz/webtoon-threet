@@ -12,6 +12,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.FollowReque
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ComicByCategoryResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.FavouriteStoryResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HeartResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
@@ -94,8 +95,9 @@ public interface ApiService {
     @GET("stories/getContentStory/{slug_story}/{slug_chapter}")
     Call<ReadStoryResponse> getContentStory(@Path("slug_story") String slug_story,
                                             @Path("slug_chapter") String slug_chapter);
-    // apt save history read story user
     @POST("user/saveHistory")
     Call<ResponseBase> saveHistory(@Body SaveHistoryRequest saveHistoryRequest);
 
+    @GET("mobile/stories/getListFavoriteStory")
+    Call<FavouriteStoryResponse> getListFavoriteStory();
 }

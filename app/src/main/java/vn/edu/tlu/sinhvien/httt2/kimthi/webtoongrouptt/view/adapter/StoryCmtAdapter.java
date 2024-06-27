@@ -62,7 +62,7 @@ public class StoryCmtAdapter extends RecyclerView.Adapter<StoryCmtAdapter.StoryC
                     .applyDefaultRequestOptions(Constants.ARGB_8888)
                     .load(comment.getUser().getAvatar())
                     .diskCacheStrategy(DiskCacheStrategy.ALL)
-                    .apply(Constants.imgCenterCropOption)
+                    .apply(Constants.IMG_CENTER_CROP_ROUND_30_OPTIONS)
                     .into(binding.sivAvatar);
 
 

@@ -41,4 +41,5 @@
     <style name="circle_image">
         <item name="cornerSize">50%</item>
     </style>
+
 </resources>
