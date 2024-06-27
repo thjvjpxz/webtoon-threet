@@ -11,7 +11,7 @@ import java.util.Objects;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.FollowRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.FollowRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ReadComicResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;

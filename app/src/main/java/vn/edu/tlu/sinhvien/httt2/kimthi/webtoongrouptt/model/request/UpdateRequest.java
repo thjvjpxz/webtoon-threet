@@ -1,4 +1,4 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request;
 
 import okhttp3.MultipartBody;
 
