@@ -1,4 +1,4 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.models;
 
 import java.util.List;
 
@@ -6,6 +6,7 @@ public class Comic {
     private Integer id;
     private String name;
     private String origin_name;
+    private String slug;
     private String content;
     private String thumbnail;
     private Integer total_views;

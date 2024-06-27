@@ -14,10 +14,21 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseRespon
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ComicByCategoryResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HeartResponse;
+import retrofit2.http.Header;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.LoginRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.UpdateRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.RegisterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ReadComicResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.TwitterResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.UserResponse;
 
 public interface ApiService {
     @GET("mobile/comics/getComics")
@@ -34,6 +45,14 @@ public interface ApiService {
 
     @GET("mobile/comics/getChapter/{id}")
     Call<ReadComicResponse> getChapterComic(@Path("id") String id);
+    @GET("user")
+    Call<UserResponse> getUser();
+
+    @POST("/user/update")
+    Call<LoginResponse> updateUser(@Body UpdateRequest updateRequest);
+
+    @POST("logout")
+    Call<ResponseBody> logOut();
 
     @POST("auth/register")
     Call<ResponseBody> registerUser(@Body RegisterRequest registerRequest);
@@ -55,4 +74,12 @@ public interface ApiService {
 
     @POST("comment/report/{id}")
     Call<BaseResponse> reportComment(@Path("id") String id);
+    @POST("auth/forgot")
+    Call<ResponseBody> forgotPassword(@Body ForgotRequest forgotRequest);
+
+    @POST("auth/google")
+    Call<GoogleResponse> loginGoogle(@Body GoogleRequest googleRequest);
+
+    @POST("auth/twitter")
+    Call<TwitterResponse> loginTwitter(@Body TwitterRequest twitterRequest);
 }

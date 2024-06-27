@@ -63,25 +63,9 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="55dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal">
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/loginFacebook"
-                android:clickable="true"
-                android:layout_marginEnd="30dp"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                app:cardCornerRadius="25dp"
-                app:cardElevation="3dp">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="5dp"
-                    android:src="@mipmap/ic_facebook" />
-            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/loginGoogle"
@@ -92,6 +76,7 @@
                 app:cardElevation="3dp">
 
                 <ImageView
+                    android:id="@+id/imvGoogle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="5dp"

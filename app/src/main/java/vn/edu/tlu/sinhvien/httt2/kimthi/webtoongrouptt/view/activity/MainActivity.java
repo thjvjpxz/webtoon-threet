@@ -11,6 +11,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivityMainBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.NavigationBarAdapter;
 
@@ -25,20 +26,27 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
+            startActivity(new Intent(this, SignActivity.class));
+            finish();
+        }
+
         navigationBarAdapter = new NavigationBarAdapter(getSupportFragmentManager(), getLifecycle());
 
         binding.vpMain.setAdapter(navigationBarAdapter);
         binding.vpMain.setUserInputEnabled(false);
+
+        binding.bottomNavigationBar.setItemSelected(R.id.home, true);
 
         binding.bottomNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override
             public void onItemSelected(int i) {
                 if (i == R.id.home) {
                     binding.vpMain.setCurrentItem(0);
-                } else if (i == R.id.compass) {
-                    binding.vpMain.setCurrentItem(2);
-                } else {
+                } else if (i == R.id.heart) {
                     binding.vpMain.setCurrentItem(1);
+                } else {
+                    binding.vpMain.setCurrentItem(2);
                 }
             }
         });

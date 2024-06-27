@@ -1,25 +1,29 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 
-import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
-
+import android.Manifest;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
@@ -30,10 +34,12 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivit
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModelFactory;
 
 public class HomeFragment extends Fragment {
-    private HomeViewModel homeViewModel;
     private FragmentHomeBinding binding;
+    private HomeViewModel homeViewModel;
+    private ActivityResultLauncher<String> requestPermissionLauncher;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -57,21 +63,12 @@ public class HomeFragment extends Fragment {
         String avatarUrl = sharedPrefManager.getAvatar();
         Glide.with(this).load(avatarUrl).into(binding.header.imgAvatar);
 
-        homeViewModel = new ViewModelProvider(this).get(HomeViewModel.class);
+        homeViewModel = new ViewModelProvider(this, new HomeViewModelFactory(getActivity())).get(HomeViewModel.class);
 
         observice();
-        // An tr_om imageview thong bao
-        ImageView btnLogout = (ImageView) binding.header.btnLogout;
-
-        btnLogout.setOnClickListener(v -> {
-            sharedPrefManager.removeToken();
-            Intent intent = new Intent(getContext(), SignActivity.class);
-            startActivity(intent);
-        });
 
         return binding.getRoot();
     }
-
 
     private void setLayoutRCV() {
         binding.rvBanner.setLayoutManager(new LinearLayoutManager(getContext(),
@@ -124,6 +121,9 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                     });
                 }
+            } else {
+                Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                Log.d("HomeFragment", "Không có dữ liệu");
             }
         });
     }

@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="blue">#0000FF</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary_color">#F97892</color>
     <color name="text_color">#BD7C89</color>
+    <color name="pink_bold">#F97892</color>
     <color name="ligt_pink">#FDD7DE</color>
     <color name="dark">#171717</color>
     <color name="border_color">#EAEAF5</color>
@@ -12,4 +14,5 @@
     <color name="gray">#525666</color>
     <color name="startColor">#FF0000</color> <!-- Start color of the gradient -->
     <color name="endColor">#0000FF</color>
+    <color name="gray1">#D3D3D3</color>
 </resources>

@@ -1,37 +1,38 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import retrofit2.Call;
-
-import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
-import java.util.List;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import retrofit2.Callback;
-import retrofit2.Response;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.TwitterActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentLoginBinding;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.LoginRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.SignViewModel;
 
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
+    private SignViewModel signViewModel;
+    GoogleSignInOptions gso;
+    GoogleSignInClient gsc;
+
 
     public LoginFragment() {
         // Required empty public constructor
@@ -45,49 +46,113 @@ public class LoginFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        String message = "Chưa làm xong nhấn cc";
 
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+        gsc = GoogleSignIn.getClient(requireContext(), gso);
         binding = FragmentLoginBinding.inflate(inflater, container, false);
 
-        binding.forgotPassword.setOnClickListener(v -> {
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        });
-        binding.btnLogin.setOnClickListener(v -> {
-            LoginRequest loginRequest = new LoginRequest(binding.edtEmail.getText().toString(), binding.edtPassword.getText().toString());
-            ApiService apiService = ApiClient.getRetrofit(getContext()).create(ApiService.class);
-            Call<LoginResponse> call = apiService.loginUser(loginRequest);
-            call.enqueue(new Callback<LoginResponse>() {
-                @Override
-                public void onResponse(@NonNull Call<LoginResponse> call, @NonNull Response<LoginResponse> response) {
-                    if (response.isSuccessful()) {
-                        LoginResponse loginResponse = response.body();
-                        assert loginResponse != null;
-                        SharedPrefManager.getInstance(getContext()).saveToken(loginResponse.getToken());
-                        SharedPrefManager.getInstance(getContext()).saveAvatar(loginResponse.getAvatar());
-                        SharedPrefManager.getInstance(getContext()).saveName(loginResponse.getName());
-                        Intent intent = new Intent(getContext(), MainActivity.class);
-                        startActivity(intent);
-                    } else {
-                        Toast.makeText(getContext(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
-                    }
-                }
+        signViewModel = new ViewModelProvider(this).get(SignViewModel.class);
 
-                @Override
-                public void onFailure(@NonNull Call<LoginResponse> call, @NonNull Throwable t) {
-                    Toast.makeText(getContext(), "Đăng nhập thất bại", Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
-        binding.loginFacebook.setOnClickListener(v -> {
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        });
-        binding.loginGoogle.setOnClickListener(v -> {
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        });
-        binding.loginTwitter.setOnClickListener(v -> {
-            Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-        });
+        processLoginUser();
+        processForgotPassword();
+        processLoginGoogle();
+        processLoginTwitter();
+
         return binding.getRoot();
     }
 
+    private void processLoginUser() {
+        binding.btnLogin.setOnClickListener(v -> {
+            String email = binding.edtEmail.getText().toString();
+            String password = binding.edtPassword.getText().toString();
+            signViewModel.loginUser(email, password).observe(getViewLifecycleOwner(),
+                    loginResponse -> {
+                        if (loginResponse != null) {
+                            Intent intent = new Intent(getContext(), MainActivity.class);
+                            startActivity(intent);
+                        } else {
+                            Log.d("TOKEN", "null");
+                            showAlertDialog("Thông báo", "Đăng nhập thất bại");
+                        }
+                    });
+
+        });
+    }
+
+    private void processForgotPassword() {
+        binding.forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((SignActivity) requireActivity()).switchToForgotPassword();
+            }
+        });
+
+    }
+
+    private void processLoginGoogle() {
+        binding.imvGoogle.setOnClickListener(v -> {
+            signIn();
+        });
+    }
+
+    private void processLoginTwitter() {
+        binding.loginTwitter.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), TwitterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+        });
+    }
+
+    private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if (result.getResultCode() == Activity.RESULT_OK) {
+                    Intent data = result.getData();
+                    GoogleSignIn.getSignedInAccountFromIntent(data)
+                            .addOnSuccessListener(googleSignInAccount -> {
+                                Uri url = googleSignInAccount.getPhotoUrl();
+                                if (url == null) {
+                                    url = Uri.parse("https://webdoctor.vn/wp-content/uploads/2018" +
+                                            "/02/Cach-dang-xuat-de-thay-doi-tai-khoan-google-mac" +
+                                            "-dinh-tren-android-03.jpg");
+                                }
+                                GoogleRequest googleRequest =
+                                        new GoogleRequest(
+                                                googleSignInAccount.getDisplayName(),
+                                                googleSignInAccount.getEmail(),
+                                                url.toString());
+
+                                signViewModel.loginGoogle(googleRequest).observe(getViewLifecycleOwner(), googleResponse -> {
+                                    if (googleResponse != null) {
+                                        Intent intent = new Intent(getContext(),
+                                                MainActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        showAlertDialog("Thông báo", "Đăng nhập thất bại");
+                                    }
+                                });
+                            })
+                            .addOnFailureListener(e -> {
+                                showAlertDialog("Thông báo", "Đăng nhập thất bại");
+                            });
+                }
+            }
+    );
+
+    private void signIn() {
+        Intent signInIntent = gsc.getSignInIntent();
+        signInLauncher.launch(signInIntent);
+    }
+
+    private void showAlertDialog(String title, String message) {
+        new AlertDialog.Builder(getContext())
+                .setTitle(title)
+                .setMessage(message)
+                .setPositiveButton("OK", (dialog, which) -> {
+                    dialog.dismiss();
+                })
+                .show();
+    }
 }

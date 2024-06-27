@@ -2,12 +2,9 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network;
 
 import android.content.Context;
 
-import java.io.IOException;
-
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
@@ -15,25 +12,38 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedP
 public class ApiClient {
     private static final String BASE_URL = "https://db.truyenhdc.com/api/";
     private static Retrofit retrofit;
+    private static Retrofit retrofitHeader;
 
-    public static Retrofit getRetrofit(Context context) {
+    public static Retrofit getRetrofit() {
         if (retrofit == null) {
             synchronized (ApiClient.class) {
                 if (retrofit == null) {
-                    SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(context);
-//                    String token = sharedPrefManager.getToken();
-                    String token = "304|QOfHLTUmpqy0vnOiBvWg4pZLEVoBd88qxluf7Jtz14506d9f";
+                    retrofit = new Retrofit.Builder()
+                            .baseUrl(BASE_URL)
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                }
+            }
+        }
+        return retrofit;
+    }
+
+    public static Retrofit getRetrofitHeader(Context context) {
+        if (retrofitHeader == null) {
+            synchronized (ApiClient.class) {
+                if (retrofitHeader == null) {
+                    SharedPrefManager sharedPrefManager =
+                            SharedPrefManager.getInstance(context);
+                    String fullToken = "Bearer " + sharedPrefManager.getToken();
                     Interceptor intercepter = chain -> {
                         Request request = chain.request();
                         Request.Builder newRequest = request.newBuilder()
-                                .addHeader("Authorization", "Bearer " + token);
-
+                                .addHeader("Authorization", fullToken);
                         return chain.proceed(newRequest.build());
                     };
-
-                    OkHttpClient.Builder client = new OkHttpClient.Builder().addInterceptor(intercepter);
-//                    OkHttpClient.Builder client = new OkHttpClient.Builder();
-                    retrofit = new Retrofit.Builder()
+                    OkHttpClient.Builder client =
+                            new OkHttpClient.Builder().addInterceptor(intercepter);
+                    retrofitHeader = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
                             .client(client.build())
@@ -41,6 +51,6 @@ public class ApiClient {
                 }
             }
         }
-        return retrofit;
+        return retrofitHeader;
     }
 }
