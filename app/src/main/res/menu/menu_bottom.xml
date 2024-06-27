@@ -15,7 +15,7 @@
         android:title="" />
     <item
         android:id="@+id/compass"
-        android:icon="@drawable/compass"
+        android:icon="@drawable/user"
         app:cnb_backgroundColor="@color/primary_color"
         app:cnb_iconColor="@color/white"
         android:title="" />

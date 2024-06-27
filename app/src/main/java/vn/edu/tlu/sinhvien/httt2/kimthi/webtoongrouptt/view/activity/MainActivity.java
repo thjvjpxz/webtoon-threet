@@ -9,9 +9,6 @@ import android.view.View;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.ismaeldivita.chipnavigation.ChipNavigationBar;
@@ -30,22 +27,21 @@ public class MainActivity extends AppCompatActivity implements OnScrollChangeLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        if (!SharedPrefManager.getInstance(this).isLoggedIn())
-        {
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
             startActivity(new Intent(this, SignActivity.class));
             finish();
         }
 
-        SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(this);
 
-        navigationBarAdapter = new NavigationBarAdapter(getSupportFragmentManager(), getLifecycle(), sharedPrefManager.getTypeWebtoon());
+        navigationBarAdapter = new NavigationBarAdapter(getSupportFragmentManager(),
+                getLifecycle(), SharedPrefManager.getInstance(this).getTypeWebtoon());
 
         binding.vpMain.setAdapter(navigationBarAdapter);
-
-        Log.d("MainActivity", "active");
+        binding.vpMain.setUserInputEnabled(false);
 
         binding.bottomNavigationBar.setItemSelected(R.id.home, true);
         binding.vpMain.setUserInputEnabled(false);
@@ -55,10 +51,10 @@ public class MainActivity extends AppCompatActivity implements OnScrollChangeLis
             public void onItemSelected(int i) {
                 if (i == R.id.home) {
                     binding.vpMain.setCurrentItem(0);
-                } else if (i == R.id.compass) {
-                    binding.vpMain.setCurrentItem(2);
-                } else {
+                } else if (i == R.id.heart) {
                     binding.vpMain.setCurrentItem(1);
+                } else {
+                    binding.vpMain.setCurrentItem(2);
                 }
             }
         });
@@ -66,9 +62,26 @@ public class MainActivity extends AppCompatActivity implements OnScrollChangeLis
         binding.vpMain.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
-               super.onPageSelected(position);
+                super.onPageSelected(position);
+                switch (position) {
+                    case 0:
+                        binding.bottomNavigationBar.setItemSelected(R.id.home, true);
+                        break;
+                    case 1:
+                        binding.bottomNavigationBar.setItemSelected(R.id.heart, true);
+                        break;
+                    case 2:
+                        binding.bottomNavigationBar.setItemSelected(R.id.compass, true);
+                        break;
+                }
             }
         });
+    }
+
+    public void openDetailActivity(String id) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("COMIC_ID", id);
+        startActivity(intent);
     }
 
     private void hideNavigationButton() {

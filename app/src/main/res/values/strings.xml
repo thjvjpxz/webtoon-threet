@@ -15,7 +15,18 @@
     <string name="eye">Eye</string>
     <string name="notification">Notification</string>
     <string name="search">search</string>
-    <!-- Strings used for fragments for navigation -->
+    <string name="more">Xem thêm</string>
+    <string name="rate">10.0</string>
+    <string name="view">1000000</string>
+    <string name="origin_name">Tên khác:</string>
+    <string name="author">Tác giả:</string>
+    <string name="status">Tình trạng:</string>
+    <string name="list_chap">Danh sách chương</string>
+    <string name="temp_chap">Chapter 1</string>
+    <string name="icon">ICON</string>
+    <string name="updatedAt">Cập nhật lần cuối:</string>
+    <string name="textFollow">Theo dõi</string>
+    <string name="bookcase">Tủ sách</string>
     <string name="first_fragment_label">First Fragment</string>
     <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>

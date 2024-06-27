@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GifTextView">
+        <attr name="gifText" format="string" />
+        <attr name="gifUrl" format="string" />
+    </declare-styleable>
+</resources>

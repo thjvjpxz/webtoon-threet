@@ -5,14 +5,13 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -20,15 +19,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.TwitterActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentLoginBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.SignViewModel;
@@ -64,6 +57,8 @@ public class LoginFragment extends Fragment {
 
         processLoginUser();
         processForgotPassword();
+        processLoginGoogle();
+        processLoginTwitter();
 
         return binding.getRoot();
     }
@@ -78,6 +73,7 @@ public class LoginFragment extends Fragment {
                             Intent intent = new Intent(getContext(), MainActivity.class);
                             startActivity(intent);
                         } else {
+                            Log.d("TOKEN", "null");
                             showAlertDialog("Thông báo", "Đăng nhập thất bại");
                         }
                     });
@@ -93,6 +89,20 @@ public class LoginFragment extends Fragment {
             }
         });
 
+    }
+
+    private void processLoginGoogle() {
+        binding.imvGoogle.setOnClickListener(v -> {
+            signIn();
+        });
+    }
+
+    private void processLoginTwitter() {
+        binding.loginTwitter.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), TwitterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+            startActivity(intent);
+        });
     }
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(

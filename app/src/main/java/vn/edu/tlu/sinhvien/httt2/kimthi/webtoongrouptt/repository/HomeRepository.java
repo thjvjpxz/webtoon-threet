@@ -1,14 +1,12 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
@@ -17,7 +15,7 @@ public class HomeRepository {
     private static volatile HomeRepository instance;
     private ApiService apiService;
 
-    private HomeRepository(Context context) {
+    public HomeRepository(Context context) {
         apiService = ApiClient.getRetrofitHeader(context).create(ApiService.class);
     }
 

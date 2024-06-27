@@ -3,24 +3,16 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import retrofit2.Call;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Toast;
-
-import okhttp3.ResponseBody;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentRegisterBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SignActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.SignViewModel;
 

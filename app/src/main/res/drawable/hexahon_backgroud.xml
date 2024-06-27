@@ -1,0 +1,29 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+
+    <!-- Outer border -->
+    <path
+        android:pathData="M50,5 L93,25 L93,75 L50,95 L7,75 L7,25 Z"
+        android:strokeWidth="4"
+        android:strokeColor="#FFDF00"
+        android:fillColor="#FFFFFF"
+        android:fillType="evenOdd"/>
+
+    <!-- Inner gradient fill -->
+    <path
+        android:pathData="M50,5 L93,25 L93,75 L50,95 L7,75 L7,25 Z"
+        android:strokeWidth="0"
+        android:fillType="evenOdd">
+        <gradient
+            android:type="radial"
+            android:centerX="50%"
+            android:centerY="50%"
+            android:gradientRadius="50"
+            android:startColor="#1E88E5"
+            android:endColor="#90CAF9"
+            android:tileMode="clamp"/>
+    </path>
+</vector>

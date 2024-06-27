@@ -1,10 +1,6 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.util.Log;
-import android.widget.Toast;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -14,16 +10,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.LoginRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ForgotResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.TwitterResponse;
 
 public class SignRepository {
     private ApiService apiService;
@@ -63,7 +59,6 @@ public class SignRepository {
 
             @Override
             public void onFailure(Call<LoginResponse> call, Throwable t) {
-                Log.d("API_CALL", "API call failed: " + t.getMessage());
                 loginResponseData.setValue(null);
             }
         });
@@ -82,7 +77,6 @@ public class SignRepository {
                     share.saveToken(googleResponse.getToken());
                     share.saveAvatar(googleResponse.getAvatar());
                     share.saveName(googleResponse.getName());
-                    share.saveTypeWebtoon(Constants.TYPE_WEBTOON_COMIC);
                     loginResponseData.setValue(response.body());
                 }
             }
@@ -95,7 +89,33 @@ public class SignRepository {
         return loginResponseData;
     }
 
-    public LiveData<ResponseBody> forgotPass(ForgotRequest request) {
+    public LiveData<TwitterResponse> loginTwitter(TwitterRequest request) {
+        MutableLiveData<TwitterResponse> loginResponseData = new MutableLiveData<>();
+        apiService.loginTwitter(request).enqueue(new Callback<TwitterResponse>() {
+            @Override
+            public void onResponse(Call<TwitterResponse> call, Response<TwitterResponse> response) {
+                if (response.isSuccessful()) {
+                    TwitterResponse googleResponse = response.body();
+                    assert googleResponse != null;
+                    SharedPrefManager share = SharedPrefManager.getInstance(context);
+                    share.saveToken(googleResponse.getToken());
+                    share.saveAvatar(googleResponse.getAvatar());
+                    share.saveName(googleResponse.getName());
+                    loginResponseData.setValue(response.body());
+                } else {
+                    loginResponseData.setValue(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<TwitterResponse> call, Throwable t) {
+                loginResponseData.setValue(null);
+            }
+        });
+        return loginResponseData;
+    }
+
+    public LiveData<ResponseBody> forgotPass(vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest request) {
         MutableLiveData<ResponseBody> forgotResponseData = new MutableLiveData<>();
         apiService.forgotPassword(request).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -121,6 +141,8 @@ public class SignRepository {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     registerResponseData.setValue(response.body());
+                } else {
+                    registerResponseData.setValue(null);
                 }
             }
 

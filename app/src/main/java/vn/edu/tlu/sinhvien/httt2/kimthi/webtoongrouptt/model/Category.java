@@ -1,4 +1,4 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model;
 
 import java.io.Serializable;
 
