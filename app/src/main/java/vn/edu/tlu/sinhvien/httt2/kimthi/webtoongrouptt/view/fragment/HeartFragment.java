@@ -33,6 +33,13 @@ public class HeartFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        viewModel = new HeartViewModel();
+        observeData();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -47,10 +54,17 @@ public class HeartFragment extends Fragment {
     }
 
     private void observeData() {
+        viewModel.getIsLoaded().observe(getViewLifecycleOwner(), isLoaded -> {
+            if (isLoaded) {
+                binding.progressBar.setVisibility(View.VISIBLE);
+            }else{
+                binding.progressBar.setVisibility(View.GONE);
+            }
+        });
+
         viewModel.fetchData().observe(getViewLifecycleOwner(), data -> {
             listFollow = data.getFollows();
             listHistory = data.getHistories();
-
             initTabLayout();
         });
     }
