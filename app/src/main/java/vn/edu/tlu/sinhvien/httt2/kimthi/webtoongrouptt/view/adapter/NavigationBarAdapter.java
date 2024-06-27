@@ -24,7 +24,7 @@ public class NavigationBarAdapter extends FragmentStateAdapter {
         } else if (position == 1) {
             return new HeartFragment();
         } else {
-            return new CompassFragment();
+            return new UserFragment();
         }
     }
 

@@ -1,6 +1,7 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network;
 
 import android.content.Context;
+import android.util.Log;
 
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -35,6 +36,7 @@ public class ApiClient {
                     SharedPrefManager sharedPrefManager =
                             SharedPrefManager.getInstance(context);
                     String fullToken = "Bearer " + sharedPrefManager.getToken();
+                    Log.d("Token", fullToken);
                     Interceptor intercepter = chain -> {
                         Request request = chain.request();
                         Request.Builder newRequest = request.newBuilder()

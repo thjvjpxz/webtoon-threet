@@ -23,7 +23,7 @@ public class CommentRepository {
     Context context;
     private CommentRepository(Context context) {
         this.context = context.getApplicationContext();
-        apiService = ApiClient.getRetrofit(this.context).create(ApiService.class);
+        apiService = ApiClient.getRetrofitHeader(this.context).create(ApiService.class);
     }
 
     public static synchronized CommentRepository getInstance(Context context) {

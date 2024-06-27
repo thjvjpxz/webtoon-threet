@@ -11,14 +11,13 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.LoginRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.TwitterResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.GoogleRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.LoginRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.RegisterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.TwitterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.GoogleResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.LoginResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request.TwitterResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 
@@ -118,7 +117,7 @@ public class SignRepository {
         return loginResponseData;
     }
 
-    public LiveData<ResponseBody> forgotPass(ForgotRequest request) {
+    public LiveData<ResponseBody> forgotPass(vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest request) {
         MutableLiveData<ResponseBody> forgotResponseData = new MutableLiveData<>();
         apiService.forgotPassword(request).enqueue(new Callback<ResponseBody>() {
             @Override

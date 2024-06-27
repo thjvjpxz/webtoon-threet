@@ -23,7 +23,7 @@ public class DetailRepository {
     private Context context;
     private DetailRepository(Context context) {
         this.context = context.getApplicationContext();
-        apiService = ApiClient.getRetrofit(this.context).create(ApiService.class);
+        apiService = ApiClient.getRetrofitHeader(this.context).create(ApiService.class);
     }
 
     public static DetailRepository getInstance(Context context) {

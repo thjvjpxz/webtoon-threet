@@ -23,7 +23,7 @@ public class ReadRepository {
     private Context context;
     private ReadRepository(Context context) {
         this.context = context.getApplicationContext();
-        apiService = ApiClient.getRetrofit(this.context).create(ApiService.class);
+        apiService = ApiClient.getRetrofitHeader(this.context).create(ApiService.class);
     }
 
     public static ReadRepository getInstance(Context context) {

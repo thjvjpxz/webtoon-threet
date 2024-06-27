@@ -18,7 +18,7 @@ public class HeartRepository {
     ApiService apiService;
     Context context;
     public HeartRepository() {
-        apiService = ApiClient.getRetrofit(context).create(ApiService.class);
+        apiService = ApiClient.getRetrofitHeader(context).create(ApiService.class);
     }
 
     public static HeartRepository getInstance() {

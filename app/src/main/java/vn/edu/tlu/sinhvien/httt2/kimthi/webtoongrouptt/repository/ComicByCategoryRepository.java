@@ -17,7 +17,7 @@ public class ComicByCategoryRepository {
     Context context;
     ApiService apiService;
     private ComicByCategoryRepository() {
-        apiService = ApiClient.getRetrofit(context).create(ApiService.class);
+        apiService = ApiClient.getRetrofitHeader(context).create(ApiService.class);
     }
 
     public static ComicByCategoryRepository getInstance() {

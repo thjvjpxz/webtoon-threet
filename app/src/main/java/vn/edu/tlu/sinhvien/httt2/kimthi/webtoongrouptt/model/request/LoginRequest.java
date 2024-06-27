@@ -1,4 +1,4 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Request;
 
 public class LoginRequest {
     private String email;
