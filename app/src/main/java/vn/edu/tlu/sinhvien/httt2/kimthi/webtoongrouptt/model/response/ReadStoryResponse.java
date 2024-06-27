@@ -5,12 +5,14 @@ import java.util.List;
 
 public class ReadStoryResponse implements Serializable {
     private Chapter chapter;
+    private List<Chapters> chapters;
 
     public ReadStoryResponse() {
     }
 
-    public ReadStoryResponse(Chapter chapter) {
+    public ReadStoryResponse(Chapter chapter, List<Chapters> chapters) {
         this.chapter = chapter;
+        this.chapters = chapters;
     }
 
     public Chapter getChapter() {
@@ -19,6 +21,14 @@ public class ReadStoryResponse implements Serializable {
 
     public void setChapter(Chapter chapter) {
         this.chapter = chapter;
+    }
+
+    public List<Chapters> getChapters() {
+        return chapters;
+    }
+
+    public void setChapters(List<Chapters> chapters) {
+        this.chapters = chapters;
     }
 
     public class Chapter implements Serializable {
@@ -77,6 +87,35 @@ public class ReadStoryResponse implements Serializable {
 
         public void setStory_id(int story_id) {
             this.story_id = story_id;
+        }
+    }
+
+    public class Chapters implements Serializable {
+        private int id;
+        private String slug;
+
+        public Chapters() {
+        }
+
+        public Chapters(int id, String slug) {
+            this.id = id;
+            this.slug = slug;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getSlug() {
+            return slug;
+        }
+
+        public void setSlug(String slug) {
+            this.slug = slug;
         }
     }
 }

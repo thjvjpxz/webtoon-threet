@@ -2,6 +2,7 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 public class SharedPrefManager {
     private static final String SHARED_PREF_NAME = "my_shared_preff";
     private static SharedPrefManager mInstance;
@@ -20,6 +21,35 @@ public class SharedPrefManager {
 
     private SharedPreferences.Editor getEditor() {
         return sharedPreferences.edit();
+    }
+
+    public void saveTextSize(int textSize) {
+        getEditor().putInt("textSize", textSize).apply();
+    }
+
+    public int getTextSize() {
+        return sharedPreferences.getInt("textSize", 16);
+    }
+
+    public void saveBgColor(String bgColor) {
+        getEditor().putString("bgColor", bgColor).apply();
+    }
+
+    public Boolean checkFormatNull() {
+        return sharedPreferences.getInt("textSize", -1) == -1 && sharedPreferences.getString(
+                "bgColor", null) == null && sharedPreferences.getString("textColor", null) == null;
+    }
+
+    public String getBgColor() {
+        return sharedPreferences.getString("bgColor", "#FFFFFF");
+    }
+
+    public void saveTextColor(String textColor) {
+        getEditor().putString("textColor", textColor).apply();
+    }
+
+    public String getTextColor() {
+        return sharedPreferences.getString("textColor", "#000000");
     }
 
     public void saveTypeWebtoon(int type) {
