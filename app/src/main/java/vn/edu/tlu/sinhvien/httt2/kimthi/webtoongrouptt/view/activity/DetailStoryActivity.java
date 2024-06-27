@@ -48,6 +48,7 @@ public class DetailStoryActivity extends AppCompatActivity {
 
     private ActivityDetailStoryBinding binding;
     private TabDetailStoryAdapter tab;
+    private DetailStoryViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,8 @@ public class DetailStoryActivity extends AppCompatActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        viewModel = new ViewModelProvider(this).get(DetailStoryViewModel.class);
+
         handleTabLayout();
         processFollow();
         processBack();
@@ -64,6 +67,8 @@ public class DetailStoryActivity extends AppCompatActivity {
         Story story = getStoryIntent();
 
         processTab(story);
+
+        observer(story.getId());
 
         if (story == null) {
             Toast.makeText(this, "Đã xảy ra lỗi!", Toast.LENGTH_SHORT).show();
@@ -73,9 +78,16 @@ public class DetailStoryActivity extends AppCompatActivity {
         fillData(story);
     }
 
+    private void observer(int storyId) {
+        viewModel.getDetailStoryResponse(storyId).observe(this, response -> {
+            if (response != null) {
+                binding.ivFollow.setSelected(response.isFollow());
+            }
+        });
+    }
+
     private void processTab(Story story) {
-        tab = new TabDetailStoryAdapter(getSupportFragmentManager(),
-                getLifecycle(), story);
+        tab = new TabDetailStoryAdapter(getSupportFragmentManager(), getLifecycle(), story);
         binding.viewPager2.setAdapter(tab);
         binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -123,18 +135,14 @@ public class DetailStoryActivity extends AppCompatActivity {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transform(new CenterCrop(), new RoundedCorners(20));
 
-        Glide.with(this).load(story.getThumbnail())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .apply(requestOptions)
-                .into(binding.imgThumbnail);
-        Glide.with(this).load(story.getThumbnail())
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .into(binding.imgThumbnailLarge);
+        Glide.with(this).load(story.getThumbnail()).diskCacheStrategy(DiskCacheStrategy.ALL).apply(requestOptions).into(binding.imgThumbnail);
+        Glide.with(this).load(story.getThumbnail()).diskCacheStrategy(DiskCacheStrategy.ALL).into(binding.imgThumbnailLarge);
         binding.tvNameStory.setText(story.getName());
     }
 
     private void processFollow() {
         binding.ivFollow.setOnClickListener(v -> {
+            
             boolean isSeleted = !binding.ivFollow.isSelected();
             binding.ivFollow.setSelected(isSeleted);
 

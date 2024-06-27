@@ -11,14 +11,26 @@ public class DetailStoryResponse {
     private List<Chapter> chapters;
     private List<Comment> comments;
     private List<String> history;
+    private boolean follow;
 
-    public DetailStoryResponse() {}
+    public DetailStoryResponse() {
+    }
 
-    public DetailStoryResponse(Story story, List<Chapter> chapters, List<Comment> comments, List<String> history) {
+    public DetailStoryResponse(Story story, List<Chapter> chapters, List<Comment> comments,
+                               List<String> history, boolean follow) {
         this.story = story;
         this.chapters = chapters;
         this.comments = comments;
         this.history = history;
+        this.follow = follow;
+    }
+
+    public boolean isFollow() {
+        return follow;
+    }
+
+    public void setFollow(boolean follow) {
+        this.follow = follow;
     }
 
     public Story getStory() {
