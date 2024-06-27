@@ -2,13 +2,14 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
 public class SharedPrefManager {
     private static final String SHARED_PREF_NAME = "my_shared_preff";
     private static SharedPrefManager mInstance;
-    private Context mCtx;
+    private SharedPreferences sharedPreferences;
 
-    public SharedPrefManager(Context mCtx) {
-        this.mCtx = mCtx;
+    public SharedPrefManager(Context context) {
+        sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
     }
 
     public static synchronized SharedPrefManager getInstance(Context mCtx) {
@@ -18,71 +19,80 @@ public class SharedPrefManager {
         return mInstance;
     }
 
+    private SharedPreferences.Editor getEditor() {
+        return sharedPreferences.edit();
+    }
+
+    public void saveTextSize(int textSize) {
+        getEditor().putInt("textSize", textSize).apply();
+    }
+
+    public int getTextSize() {
+        return sharedPreferences.getInt("textSize", 16);
+    }
+
+    public void saveBgColor(String bgColor) {
+        getEditor().putString("bgColor", bgColor).apply();
+    }
+
+    public Boolean checkFormatNull() {
+        return sharedPreferences.getInt("textSize", -1) == -1 && sharedPreferences.getString(
+                "bgColor", null) == null && sharedPreferences.getString("textColor", null) == null;
+    }
+
+    public String getBgColor() {
+        return sharedPreferences.getString("bgColor", "#FFFFFF");
+    }
+
+    public void saveTextColor(String textColor) {
+        getEditor().putString("textColor", textColor).apply();
+    }
+
+    public String getTextColor() {
+        return sharedPreferences.getString("textColor", "#000000");
+    }
+
+    public void saveTypeWebtoon(int type) {
+        getEditor().putInt("type", type).apply();
+    }
+
+    public int getTypeWebtoon() {
+        return sharedPreferences.getInt("type", 0);
+    }
+
     public void saveToken(String token) {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("token", token);
-        editor.apply();
+        getEditor().putString("token", token).apply();
     }
 
     public void saveAvatar(String avatar) {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("avatar", avatar);
-        editor.apply();
+        getEditor().putString("avatar", avatar).apply();
     }
 
     public void saveName(String name) {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("name", name);
-        editor.apply();
+        getEditor().putString("name", name).apply();
     }
 
     public void removeToken() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
+        getEditor().clear().apply();
     }
 
-    public void removeAvatar() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
-    }
-
-    public void removeName() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
-    }
     public boolean isLoggedIn() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString("token", null) != null;
     }
 
     public String getToken() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString("token", null);
     }
 
     public String getAvatar() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString("avatar", null);
     }
 
     public String getName() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString("name", null);
     }
 
     public void clearUserData() {
-        SharedPreferences sharedPreferences = mCtx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear();
-        editor.apply();
+        getEditor().clear().apply();
     }
 }

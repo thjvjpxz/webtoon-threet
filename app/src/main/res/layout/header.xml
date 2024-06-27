@@ -3,30 +3,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgAvatar"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:scaleType="centerCrop"
-        android:background="@drawable/rounded_border"
         android:backgroundTint="#FDD7DE"
         android:contentDescription="@string/avatar"
+        android:scaleType="centerCrop"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/circle_image" />
 
-<!--    <ImageView-->
-<!--        android:id="@+id/imageView"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintBottom_toBottomOf="@+id/ellipse_1"-->
-<!--        app:layout_constraintEnd_toEndOf="@+id/ellipse_1"-->
-<!--        app:layout_constraintStart_toStartOf="@+id/ellipse_1"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/ellipse_1"-->
-<!--        app:srcCompat="@drawable/ic_user"-->
-<!--        android:contentDescription="user" />-->
+    <!--    <ImageView-->
+    <!--        android:id="@+id/imageView"-->
+    <!--        android:layout_width="wrap_content"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        app:layout_constraintBottom_toBottomOf="@+id/ellipse_1"-->
+    <!--        app:layout_constraintEnd_toEndOf="@+id/ellipse_1"-->
+    <!--        app:layout_constraintStart_toStartOf="@+id/ellipse_1"-->
+    <!--        app:layout_constraintTop_toTopOf="@+id/ellipse_1"-->
+    <!--        app:srcCompat="@drawable/ic_user"-->
+    <!--        android:contentDescription="user" />-->
 
     <TextView
         android:id="@+id/home"
@@ -45,20 +45,33 @@
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal|top"
-        android:letterSpacing="-0.02"
         android:layout_marginStart="10dp"
+        android:gravity="center_horizontal|top"
         android:textColor="#F97892"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/imgAvatar"
         app:layout_constraintTop_toBottomOf="@+id/home" />
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnStory"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginEnd="15dp"
+        android:background="@drawable/select_edit"
+        android:paddingHorizontal="10dp"
+        android:text="Truyện Chữ"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toBottomOf="@id/btnSearch"
+        app:layout_constraintEnd_toStartOf="@id/btnSearch"
+        app:layout_constraintTop_toTopOf="@id/btnSearch" />
+
 
     <ImageView
         android:id="@+id/btnLogout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginTop="5dp"
         android:contentDescription="@string/notification"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,11 +79,12 @@
         app:srcCompat="@drawable/ic_bell" />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/search"
-        android:layout_marginEnd="15dp"
+        android:id="@+id/btnSearch"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/search"
         app:layout_constraintEnd_toStartOf="@+id/btnLogout"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_search" />

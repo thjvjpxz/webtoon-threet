@@ -1,8 +1,6 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,7 +9,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.UpdateRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.UserResponse;
@@ -22,6 +19,7 @@ public class UserRepository {
     private static volatile UserRepository instance;
     ApiService apiService;
     Context context;
+
 
     public UserRepository(Context context) {
         apiService = ApiClient.getRetrofitHeader(context).create(ApiService.class);
@@ -63,6 +61,7 @@ public class UserRepository {
                 } else {
                     logoutResponseData.setValue(null);
                 }
+                ApiClient.setRetrofitHeaderNull();
             }
 
             @Override

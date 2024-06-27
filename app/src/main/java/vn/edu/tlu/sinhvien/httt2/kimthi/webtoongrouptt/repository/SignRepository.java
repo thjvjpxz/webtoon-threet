@@ -1,7 +1,6 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
@@ -11,16 +10,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.LoginRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.TwitterResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.TwitterResponse;
 
 public class SignRepository {
     private ApiService apiService;
@@ -49,14 +48,12 @@ public class SignRepository {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
-                        SharedPrefManager share = SharedPrefManager.getInstance(context);
-                        assert response.body() != null;
-                        share.saveToken(response.body().getToken());
-                        share.saveAvatar(response.body().getAvatar());
-                        share.saveName(response.body().getName());
-                        loginResponseData.setValue(response.body());
-                } else {
-                    loginResponseData.setValue(null);
+                    SharedPrefManager share = SharedPrefManager.getInstance(context);
+                    share.saveToken(response.body().getToken());
+                    share.saveAvatar(response.body().getAvatar());
+                    share.saveName(response.body().getName());
+                    share.saveTypeWebtoon(Constants.TYPE_WEBTOON_COMIC);
+                    loginResponseData.setValue(response.body());
                 }
             }
 
@@ -118,7 +115,7 @@ public class SignRepository {
         return loginResponseData;
     }
 
-    public LiveData<ResponseBody> forgotPass(ForgotRequest request) {
+    public LiveData<ResponseBody> forgotPass(vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest request) {
         MutableLiveData<ResponseBody> forgotResponseData = new MutableLiveData<>();
         apiService.forgotPassword(request).enqueue(new Callback<ResponseBody>() {
             @Override

@@ -346,8 +346,9 @@
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="7dp"
                 android:background="@color/white"
+                android:layout_marginHorizontal="7dp"
+                android:layout_marginBottom="100dp"
                 app:cardCornerRadius="16dp">
 
                 <LinearLayout

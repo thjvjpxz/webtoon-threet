@@ -1,5 +1,7 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.models;
 
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
+
 public class FollowsComic {
     private Integer id;
     private Integer id_user;

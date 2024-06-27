@@ -7,6 +7,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -16,7 +17,8 @@ import com.bumptech.glide.request.RequestOptions;
 import java.util.List;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.models.Comic;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_BANNER = 1;
@@ -26,10 +28,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888);
     private int viewType;
     private List<Comic> listComic;
+    private final MainActivity mainActivity;
 
-    public HomeAdapter(List<Comic> listComic, int viewType) {
+    public HomeAdapter(MainActivity mainActivity, List<Comic> listComic, int viewType) {
         this.listComic = listComic;
         this.viewType = viewType;
+        this.mainActivity = mainActivity;
     }
 
     @NonNull
@@ -50,23 +54,26 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         if (holder instanceof BannerViewHolder) {
             bannerViewHolder = (BannerViewHolder) holder;
             bannerViewHolder.tvName.setText(comic.getName());
-            Glide.with(bannerViewHolder.imgBanner)
-                    .applyDefaultRequestOptions(requestOptions)
-                    .load(comic.getThumbnail())
-                    .into(bannerViewHolder.imgBanner);
+            bannerViewHolder.tvRating.setText(String.valueOf(comic.getRating()));
+            bannerViewHolder.tvNumChap.setText(String.valueOf(comic.getChapters_count()));
+            Glide.with(bannerViewHolder.imgBanner).load(comic.getThumbnail()).into(bannerViewHolder.imgBanner);
+            bannerViewHolder.imgBanner.setOnClickListener(v -> {
+                mainActivity.openDetailActivity(String.valueOf(comic.getId()));
+            });
         } else if (holder instanceof ListViewHolder) {
             ListViewHolder listViewHolder = (ListViewHolder) holder;
-            Glide.with(listViewHolder.imgThumbnail)
-                    .applyDefaultRequestOptions(requestOptions)
-                    .load(comic.getThumbnail())
-                    .into(listViewHolder.imgThumbnail);
+            Glide.with(listViewHolder.imgThumbnail).load(comic.getThumbnail()).into(listViewHolder.imgThumbnail);
+            listViewHolder.imgThumbnail.setOnClickListener(v -> {
+                mainActivity.openDetailActivity(String.valueOf(comic.getId()));
+            });
         } else {
             RankViewHolder rankViewHolder = (RankViewHolder) holder;
             rankViewHolder.tvName.setText(comic.getName());
-            Glide.with(rankViewHolder.imgThumbnail)
-                    .applyDefaultRequestOptions(requestOptions)
-                    .load(comic.getThumbnail())
-                    .into(rankViewHolder.imgThumbnail);
+            rankViewHolder.tvViews.setText(String.valueOf(comic.getViews()));
+            Glide.with(rankViewHolder.imgThumbnail).load(comic.getThumbnail()).into(rankViewHolder.imgThumbnail);
+            rankViewHolder.itemRank.setOnClickListener(v -> {
+                mainActivity.openDetailActivity(String.valueOf(comic.getId()));
+            });
         }
     }
 
@@ -104,12 +111,14 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static class RankViewHolder extends RecyclerView.ViewHolder {
         ImageView imgThumbnail;
         TextView tvName, tvViews;
-
+        ConstraintLayout itemRank;
         public RankViewHolder(@NonNull View itemView) {
             super(itemView);
             imgThumbnail = itemView.findViewById(R.id.imgThumbnail);
             tvName = itemView.findViewById(R.id.tvName);
             tvViews = itemView.findViewById(R.id.tvViews);
+            itemRank = itemView.findViewById(R.id.item_ranking);
         }
     }
+
 }

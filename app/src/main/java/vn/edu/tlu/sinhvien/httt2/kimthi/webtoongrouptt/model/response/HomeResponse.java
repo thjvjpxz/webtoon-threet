@@ -2,8 +2,8 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response;
 
 import java.util.List;
 
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.models.Category;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.models.Comic;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
 
 public class HomeResponse {
     private List<Comic> popularComics;

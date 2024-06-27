@@ -85,19 +85,18 @@ public class UserFragment extends Fragment {
 
     private void processLogOut() {
         binding.btnLogout.setOnClickListener(v -> {
-            sharedPrefManager.clearUserData();
+            SharedPrefManager.getInstance(getContext()).clearUserData();
 
             gsc.signOut();
             userViewModel.logOut().observe(getViewLifecycleOwner(), responseBody -> {
                 if (responseBody != null) {
+                    Intent intent = new Intent(getContext(), SignActivity.class);
+                    startActivity(intent);
                     requireActivity().finish();
                 } else {
                     Toast.makeText(getContext(), "Đăng xuất thất bại", Toast.LENGTH_SHORT).show();
                 }
             });
-            Intent intent = new Intent(getContext(), SignActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
         });
     }
 

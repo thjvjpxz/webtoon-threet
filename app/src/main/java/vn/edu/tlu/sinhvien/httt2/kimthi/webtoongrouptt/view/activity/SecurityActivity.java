@@ -192,44 +192,44 @@ public class SecurityActivity extends AppCompatActivity {
 
     private void uploadFileToServer() {
         try {
-            String token = sharedPrefManager.getToken();
-            Log.d("TOKEN SHARE", "TOKEN: " + token);
-            OkHttpClient client = new OkHttpClient();
-
-            RequestBody name = RequestBody.create(binding.tvName.getText().toString(), MediaType.parse("multipart/form-data"));
-            RequestBody email = RequestBody.create(binding.tvEmail.getText().toString(), MediaType.parse("multipart/form-data"));
-            RequestBody roadId = RequestBody.create("1", MediaType.parse("multipart/form-data"));
-
-            MultipartBody requestBody = new MultipartBody.Builder()
-                    .setType(MultipartBody.FORM)
-                    .addFormDataPart("name", name.toString())
-                    .addFormDataPart("email", email.toString())
-                    .addFormDataPart("road_id", roadId.toString())
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url("https://truyenhdc.com/api/user/update")
-                    .post(requestBody)
-                    .addHeader("Authorization", token)
-                    .build();
-
-            client.newCall(request).enqueue(new Callback() {
-                @Override
-                public void onFailure(Call call, IOException e) {
-                    e.printStackTrace();
-                    runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show());
-                }
-
-                @Override
-                public void onResponse(Call call, Response response) throws IOException {
-                    if (response.isSuccessful()) {
-                        Log.d("TAG", "PARAM: " + call.request().body());
-                        runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show());
-                    } else {
-                        runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show());
-                    }
-                }
-            });
+//            String token = sharedPrefManager.getToken();
+//            Log.d("TOKEN SHARE", "TOKEN: " + token);
+//            OkHttpClient client = new OkHttpClient();
+//
+//            RequestBody name = RequestBody.create(binding.tvName.getText().toString(), MediaType.parse("multipart/form-data"));
+//            RequestBody email = RequestBody.create(binding.tvEmail.getText().toString(), MediaType.parse("multipart/form-data"));
+//            RequestBody roadId = RequestBody.create("1", MediaType.parse("multipart/form-data"));
+//
+//            MultipartBody requestBody = new MultipartBody.Builder()
+//                    .setType(MultipartBody.FORM)
+//                    .addFormDataPart("name", name.toString())
+//                    .addFormDataPart("email", email.toString())
+//                    .addFormDataPart("road_id", roadId.toString())
+//                    .build();
+//
+//            Request request = new Request.Builder()
+//                    .url("https://truyenhdc.com/api/user/update")
+//                    .post(requestBody)
+//                    .addHeader("Authorization", token)
+//                    .build();
+//
+//            client.newCall(request).enqueue(new Callback() {
+//                @Override
+//                public void onFailure(Call call, IOException e) {
+//                    e.printStackTrace();
+//                    runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show());
+//                }
+//
+//                @Override
+//                public void onResponse(Call call, Response response) throws IOException {
+//                    if (response.isSuccessful()) {
+//                        Log.d("TAG", "PARAM: " + call.request().body());
+//                        runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show());
+//                    } else {
+//                        runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show());
+//                    }
+//                }
+//            });
 
         } catch (Exception e) {
             e.printStackTrace();

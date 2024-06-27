@@ -1,23 +1,25 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel;
 
-import android.content.Context;
+import android.app.Application;
 
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
+
+import org.jetbrains.annotations.NotNull;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository.HomeRepository;
 
-public class HomeViewModel extends ViewModel {
+public class HomeViewModel extends AndroidViewModel{
     private HomeRepository homeRepository;
     private MutableLiveData<HomeResponse> responseHome;
     private MutableLiveData<Boolean> isLoaded;
 
-    public HomeViewModel(Context context) {
+    public HomeViewModel(@NotNull Application application) {
+        super(application);
         isLoaded = new MutableLiveData<>();
-        homeRepository = new HomeRepository(context);
-        homeRepository = HomeRepository.getInstance(context);
+        homeRepository = HomeRepository.getInstance(application);
         isLoaded.setValue(false);
         responseHome = homeRepository.fetchHomeData(() -> isLoaded.setValue(true));
     }
