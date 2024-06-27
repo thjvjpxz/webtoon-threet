@@ -12,6 +12,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.FollowReque
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ComicByCategoryResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.FilterComicResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HeartResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
@@ -97,5 +98,11 @@ public interface ApiService {
     // apt save history read story user
     @POST("user/saveHistory")
     Call<ResponseBase> saveHistory(@Body SaveHistoryRequest saveHistoryRequest);
+
+    @GET("comics/getFilterComics")
+    Call<FilterComicResponse> getFilterComics(@Query("page") int page,
+                                              @Query("sort") int sort,
+                                              @Query("status") int status,
+                                              @Query("keyword") String keyword);
 
 }

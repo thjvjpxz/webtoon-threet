@@ -8,6 +8,7 @@ public class Chapter {
     private Integer prevChap;
     private Integer nextChap;
     private Integer comic_id;
+    private String created_at;
 
     public Integer getId() {
         return id;
@@ -35,5 +36,9 @@ public class Chapter {
 
     public Integer getComic_id() {
         return comic_id;
+    }
+
+    public String getCreated_at() {
+        return created_at;
     }
 }
