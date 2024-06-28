@@ -21,6 +21,8 @@
         <activity
             android:name=".view.activity.ListTypeComicActivity"
             android:exported="false" />
+        <activity android:name=".view.activity.StoriesByTypeActivity"
+            android:exported="false" />
         <activity
             android:name=".view.activity.ReadStoryActivity"
             android:exported="false" />

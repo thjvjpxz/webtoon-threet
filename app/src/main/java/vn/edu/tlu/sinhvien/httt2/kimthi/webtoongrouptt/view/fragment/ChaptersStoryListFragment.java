@@ -38,6 +38,12 @@ public class ChaptersStoryListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        observer(story);
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
