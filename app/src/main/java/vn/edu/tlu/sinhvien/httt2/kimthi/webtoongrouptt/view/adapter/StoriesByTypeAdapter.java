@@ -1,5 +1,7 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ItemStoryVerBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.DetailStoryActivity;
 
 public class StoriesByTypeAdapter extends RecyclerView.Adapter<StoriesByTypeAdapter.StoriesByTypeViewHolder> {
 
@@ -67,6 +70,14 @@ public class StoriesByTypeAdapter extends RecyclerView.Adapter<StoriesByTypeAdap
 
             binding.tvNameStory.setText(story.getName());
             binding.tvView.setText(String.valueOf(story.getTotal_views()));
+
+            binding.rlItemStoryFav.setOnClickListener(v -> {
+                Intent intent = new Intent(binding.getRoot().getContext(), DetailStoryActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("story", story);
+                intent.putExtras(bundle);
+                binding.getRoot().getContext().startActivity(intent);
+            });
         }
     }
 }

@@ -30,6 +30,7 @@ import com.google.android.material.tabs.TabLayout;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivityDetailStoryBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.LayoutCommentStoryBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.CustomToast;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.TabDetailStoryAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.CmtStoryListFragment;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.CommentViewModel;
@@ -65,7 +66,7 @@ public class DetailStoryActivity extends AppCompatActivity {
         observer(story.getId());
 
         if (story == null) {
-            Toast.makeText(this, "Đã xảy ra lỗi!", Toast.LENGTH_SHORT).show();
+            CustomToast.makeText(this, "Đã xảy ra lỗi!", Toast.LENGTH_SHORT, CustomToast.ERROR).show();
             return;
         }
 
@@ -170,7 +171,8 @@ public class DetailStoryActivity extends AppCompatActivity {
     private void processCallFollow(String storyId) {
         viewModel.followStory(storyId).observe(this, response -> {
             if (response != null) {
-                Toast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT).show();
+                CustomToast.makeText(this, response.getMessage(), Toast.LENGTH_SHORT,
+                        CustomToast.SUCCESS).show();
             }
         });
     }
@@ -201,7 +203,8 @@ public class DetailStoryActivity extends AppCompatActivity {
         layoutCommentStoryBinding.tvSendComment.setOnClickListener(v -> {
             String comment = layoutCommentStoryBinding.edtCommentStory.getText().toString();
             if (comment.isEmpty()) {
-                Toast.makeText(this, "Vui lòng nhập bình luận!", Toast.LENGTH_SHORT).show();
+                CustomToast.makeText(this, "Vui lòng nhập bình luận!", Toast.LENGTH_SHORT,
+                        CustomToast.WARNING).show();
                 return;
             }
             processSendComment(comment, story);
