@@ -12,12 +12,10 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository.ReadStoryRepos
 public class ReadStoryViewModel extends AndroidViewModel {
     private ReadStoryRepository readStoryRepository;
     private MutableLiveData<Boolean> isLoading;
-    private MutableLiveData<ReadStoryResponse> readStoryResponse;
 
     public ReadStoryViewModel(@NonNull Application application) {
         super(application);
         isLoading = new MutableLiveData<>();
-        readStoryResponse = new MutableLiveData<>();
         readStoryRepository = ReadStoryRepository.getInstance(application);
     }
 
@@ -25,15 +23,12 @@ public class ReadStoryViewModel extends AndroidViewModel {
         return isLoading;
     }
 
-    public MutableLiveData<ReadStoryResponse> getReadStoryResponse(String slug_story,
-                                                                   String slug_chapter) {
+    public MutableLiveData<ReadStoryResponse> getReadStoryResponse(int idChapter) {
         isLoading.setValue(true);
 
-        readStoryResponse =
-                (MutableLiveData<ReadStoryResponse>) readStoryRepository.getContentStory(slug_story, slug_chapter, () -> {
-                    isLoading.setValue(false);
-                });
-        return readStoryResponse;
+        return (MutableLiveData<ReadStoryResponse>) readStoryRepository.getContentStory(idChapter, () -> {
+            isLoading.setValue(false);
+        });
     }
 
 }

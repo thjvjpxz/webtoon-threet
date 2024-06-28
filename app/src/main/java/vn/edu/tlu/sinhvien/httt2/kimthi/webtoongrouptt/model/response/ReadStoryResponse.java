@@ -3,17 +3,12 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response;
 import java.io.Serializable;
 import java.util.List;
 
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Comment;
+
 public class ReadStoryResponse implements Serializable {
     private Chapter chapter;
     private List<Chapters> chapters;
-
-    public ReadStoryResponse() {
-    }
-
-    public ReadStoryResponse(Chapter chapter, List<Chapters> chapters) {
-        this.chapter = chapter;
-        this.chapters = chapters;
-    }
+    private List<Comment> comments;
 
     public Chapter getChapter() {
         return chapter;
@@ -29,6 +24,10 @@ public class ReadStoryResponse implements Serializable {
 
     public void setChapters(List<Chapters> chapters) {
         this.chapters = chapters;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
     }
 
     public class Chapter implements Serializable {

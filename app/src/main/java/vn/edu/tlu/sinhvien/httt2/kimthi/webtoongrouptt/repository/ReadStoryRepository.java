@@ -18,11 +18,9 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 public class ReadStoryRepository {
     private static ReadStoryRepository instance;
     private ApiService apiServiceHeader;
-    private ApiService apiService;
 
     private ReadStoryRepository(Context context) {
         apiServiceHeader = ApiClient.getRetrofitHeader(context).create(ApiService.class);
-        apiService = ApiClient.getRetrofit().create(ApiService.class);
     }
 
     public static ReadStoryRepository getInstance(Context context) {
@@ -36,42 +34,43 @@ public class ReadStoryRepository {
         return instance;
     }
 
-    private LiveData<BaseResponse> saveHistory(SaveHistoryRequest saveHistoryRequest) {
-        MutableLiveData<BaseResponse> mutableLiveData = new MutableLiveData<>();
-        apiServiceHeader.saveHistory(saveHistoryRequest).enqueue(new Callback<BaseResponse>() {
-            @Override
-            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
-                if (response.isSuccessful()) {
-                    mutableLiveData.setValue(response.body());
-                }
-            }
+//    private LiveData<BaseResponse> saveHistory(SaveHistoryRequest saveHistoryRequest) {
+//        MutableLiveData<BaseResponse> mutableLiveData = new MutableLiveData<>();
+//        apiServiceHeader.saveHistory(saveHistoryRequest).enqueue(new Callback<BaseResponse>() {
+//            @Override
+//            public void onResponse(Call<BaseResponse> call, Response<BaseResponse> response) {
+//                if (response.isSuccessful()) {
+//                    mutableLiveData.setValue(response.body());
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<BaseResponse> call, Throwable t) {
+//                mutableLiveData.setValue(null);
+//            }
+//        });
+//
+//        return mutableLiveData;
+//    }
 
-            @Override
-            public void onFailure(Call<BaseResponse> call, Throwable t) {
-                mutableLiveData.setValue(null);
-            }
-        });
-
-        return mutableLiveData;
-    }
-
-    public LiveData<ReadStoryResponse> getContentStory(String slug_story, String slug_chapter, Runnable isLoading) {
+    public LiveData<ReadStoryResponse> getContentStory(int idChapter, Runnable isLoading) {
         MutableLiveData<ReadStoryResponse> mutableLiveData = new MutableLiveData<>();
-        apiService.getContentStory(slug_story, slug_chapter).enqueue(new Callback<ReadStoryResponse>() {
+        apiServiceHeader.getContentStory(idChapter).enqueue(new Callback<ReadStoryResponse>() {
             @Override
             public void onResponse(Call<ReadStoryResponse> call,
                                    Response<ReadStoryResponse> response) {
                 if (response.isSuccessful()) {
                     mutableLiveData.setValue(response.body());
-                    int id_story = response.body().getChapter().getStory_id();
-                    int id_chapter = response.body().getChapter().getId();
-                    String type = "story";
-                    SaveHistoryRequest saveHistoryRequest = new SaveHistoryRequest(
-                            id_story,
-                            type,
-                            id_chapter
-                    );
-                    saveHistory(saveHistoryRequest);
+//                    int id_story = response.body().getChapter().getStory_id();
+//                    int id_chapter = response.body().getChapter().getId();
+//                    Log.d("ReadStoryRepository", "onResponse: " + id_story + "_" + id_chapter);
+//                    String type = "story";
+//                    SaveHistoryRequest saveHistoryRequest = new SaveHistoryRequest(
+//                            id_story,
+//                            type,
+//                            id_chapter
+//                    );
+//                    saveHistory(saveHistoryRequest);
                 }
                 isLoading.run();
             }

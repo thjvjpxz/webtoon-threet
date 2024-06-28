@@ -2,7 +2,9 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,29 +16,44 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.PopupWindow;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.util.List;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivityReadStoryBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.LayoutCommentStoryBottomSheetBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.PopupLayoutBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ReadStoryResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Comment;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Utility;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.CustomToast;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.StoryCmtAdapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.CommentViewModel;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.ReadStoryViewModel;
 
 public class ReadStoryActivity extends AppCompatActivity {
     private ActivityReadStoryBinding binding;
     private ReadStoryViewModel readStoryViewModel;
     private PopupLayoutBinding popupView;
+    private CommentViewModel commentViewModel;
+    private StoryCmtAdapter adapter;
+    private int storyId;
+    private List<Comment> comments;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +65,18 @@ public class ReadStoryActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         Intent intent = getIntent();
-        String slugChapter = intent.getStringExtra("slug_chapter");
-        String slugStory = intent.getStringExtra("slug_story");
+        int idChapter = intent.getIntExtra("idChapter", -1);
+
+        if (idChapter == -1) {
+            CustomToast.makeText(this, "Không tìm thấy chương truyện", Toast.LENGTH_SHORT,
+                    CustomToast.ERROR).show();
+            finish();
+        }
 
         readStoryViewModel = new ViewModelProvider(this).get(ReadStoryViewModel.class);
+        commentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
+
+
         binding.webView.getSettings().setJavaScriptEnabled(true);
         binding.webView.setWebViewClient(new WebViewClient() {
             @Override
@@ -62,6 +87,7 @@ public class ReadStoryActivity extends AppCompatActivity {
         });
 
         processBtnBack();
+
         popupView = PopupLayoutBinding.inflate(LayoutInflater.from(this));
 
         // click text color
@@ -80,8 +106,85 @@ public class ReadStoryActivity extends AppCompatActivity {
             });
         }
 
-        observer(slugStory, slugChapter);
+        observer(idChapter);
+        adapter = new StoryCmtAdapter(comments);
+        processBtnFormat();
+        handleIvComment(idChapter);
     }
+
+    private void handleIvComment(int chapterId) {
+        binding.ivComment.setOnClickListener(v -> {
+            View viewDialog =
+                    getLayoutInflater().inflate(R.layout.layout_comment_story_bottom_sheet, null);
+            BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+            bottomSheetDialog.setContentView(viewDialog);
+            bottomSheetDialog.show();
+
+            LayoutCommentStoryBottomSheetBinding bindingBottomSheet =
+                    LayoutCommentStoryBottomSheetBinding.bind(viewDialog);
+            bindingBottomSheet.rvCommentStory.setLayoutManager(new LinearLayoutManager(this));
+
+            fetchComment(bindingBottomSheet);
+            processSendComment(bindingBottomSheet, storyId, chapterId);
+        });
+    }
+
+    private void fetchComment(LayoutCommentStoryBottomSheetBinding binding1) {
+        if (comments.size() == 0) {
+            binding1.tvNoComment.setVisibility(View.VISIBLE);
+        } else {
+            adapter.setComments(comments);
+            binding1.tvNoComment.setVisibility(View.GONE);
+            binding1.rvCommentStory.setAdapter(adapter);
+        }
+    }
+
+    private void processSendComment(LayoutCommentStoryBottomSheetBinding binding1, int storyId,
+                                    int chapterId) {
+        binding1.btnSendComment.setOnClickListener(v -> {
+            if (binding1.edtCommentStory.getText().toString().isEmpty()) {
+                CustomToast.makeText(this, "Vui lòng nhập nội dung bình luận", Toast.LENGTH_SHORT,
+                        CustomToast.WARNING).show();
+                return;
+            }
+            String content = binding1.edtCommentStory.getText().toString();
+            commentViewModel.commentStory(storyId, chapterId, content).observe(this, isSuccess -> {
+                if (isSuccess) {
+                    binding1.edtCommentStory.setText("");
+                    binding1.edtCommentStory.clearFocus();
+                    Utility.hideKeyboard(this, binding1.edtCommentStory);
+
+                    readStoryViewModel.getReadStoryResponse(chapterId).observe(this,
+                            readStoryResponse -> {
+                                if (readStoryResponse != null) {
+                                    comments = readStoryResponse.getComments();
+                                    fetchComment(binding1);
+                                }
+                            });
+                }
+            });
+        });
+    }
+
+    private void observer(int idChapter) {
+        readStoryViewModel.getReadStoryResponse(idChapter).observe(this,
+                readStoryResponse -> {
+                    if (readStoryResponse != null) {
+                        storyId = readStoryResponse.getChapter().getStory_id();
+                        comments = readStoryResponse.getComments();
+                        updateUIWithResponse(readStoryResponse);
+                        setupChapterNavigation(readStoryResponse.getChapters(), idChapter);
+
+                    }
+                });
+    }
+
+//    private void changeColorProcessBar(LayoutCommentStoryBottomSheetBinding binding1) {
+//        Drawable indeterminateDrawable = binding1.pbComment.getIndeterminateDrawable();
+//        indeterminateDrawable.setColorFilter(ContextCompat.getColor(this, R.color.primary_color),
+//                PorterDuff.Mode.SRC_IN);
+//        binding1.pbComment.setIndeterminateDrawable(indeterminateDrawable);
+//    }
 
     private void applyStoredColors() {
         String bgColor = SharedPrefManager.getInstance(this).getBgColor();
@@ -127,18 +230,6 @@ public class ReadStoryActivity extends AppCompatActivity {
         return Color.TRANSPARENT;
     }
 
-    private void observer(String slugStory, String slugChapter) {
-        readStoryViewModel.getReadStoryResponse(slugStory, slugChapter).observe(this,
-                readStoryResponse -> {
-                    if (readStoryResponse != null) {
-                        updateUIWithResponse(readStoryResponse);
-                        setupChapterNavigation(readStoryResponse.getChapters(),
-                                readStoryResponse.getChapter().getId(), slugStory);
-                    }
-                });
-        processBtnFormat();
-    }
-
     private void updateUIWithResponse(ReadStoryResponse readStoryResponse) {
         String nameChapter =
                 readStoryResponse.getChapter().getName() + ": " + Utility.capitalizeFirstLetter(readStoryResponse.getChapter().getTitle());
@@ -157,9 +248,9 @@ public class ReadStoryActivity extends AppCompatActivity {
     }
 
     private void setupChapterNavigation(List<ReadStoryResponse.Chapters> chapters,
-                                        int currentChapterId, String slugStory) {
-        String slugNext = "";
-        String slugPre = "";
+                                        int currentChapterId) {
+        int idChapterPre = -1;
+        int idChapterNext = -1;
 
         for (int i = 0; i < chapters.size(); i++) {
             if (chapters.get(i).getId() == currentChapterId) {
@@ -170,31 +261,30 @@ public class ReadStoryActivity extends AppCompatActivity {
                     binding.ivChapterNext.setVisibility(View.GONE);
                 }
                 if (i > 0) {
-                    slugPre = chapters.get(i - 1).getSlug();
+                    idChapterPre = chapters.get(i - 1).getId();
                 }
                 if (i < chapters.size() - 1) {
-                    slugNext = chapters.get(i + 1).getSlug();
+                    idChapterNext = chapters.get(i + 1).getId();
                 }
                 break;
             }
         }
 
-        setupChapterNavigationButtons(slugPre, slugNext, slugStory);
+        setupChapterNavigationButtons(idChapterPre, idChapterNext);
     }
 
-    private void setupChapterNavigationButtons(String slugPre, String slugNext, String slugStory) {
-        if (!slugPre.isEmpty()) {
-            binding.ivChapterPre.setOnClickListener(v -> navigateToChapter(slugPre, slugStory));
+    private void setupChapterNavigationButtons(int idChapterPre, int idChapterNext) {
+        if (idChapterPre != -1) {
+            binding.ivChapterPre.setOnClickListener(v -> navigateToChapter(idChapterPre));
         }
-        if (!slugNext.isEmpty()) {
-            binding.ivChapterNext.setOnClickListener(v -> navigateToChapter(slugNext, slugStory));
+        if (idChapterNext != -1) {
+            binding.ivChapterNext.setOnClickListener(v -> navigateToChapter(idChapterNext));
         }
     }
 
-    private void navigateToChapter(String slugChapter, String slugStory) {
+    private void navigateToChapter(int idChapter) {
         Intent intent = new Intent(this, ReadStoryActivity.class);
-        intent.putExtra("slug_chapter", slugChapter);
-        intent.putExtra("slug_story", slugStory);
+        intent.putExtra("idChapter", idChapter);
         startActivity(intent);
         finish();
     }

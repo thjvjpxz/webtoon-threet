@@ -98,12 +98,14 @@ public interface ApiService {
     @GET("mobile/stories/getDetail/{id_story}")
     Call<DetailStoryResponse> getDetailStory(@Path("id_story") int id_story);
 
-    @GET("stories/getContentStory/{slug_story}/{slug_chapter}")
-    Call<ReadStoryResponse> getContentStory(@Path("slug_story") String slug_story,
-                                            @Path("slug_chapter") String slug_chapter);
+//    @GET("stories/getContentStory/{slug_story}/{slug_chapter}")
+//    Call<ReadStoryResponse> getContentStory(@Path("slug_story") String slug_story,
+//                                            @Path("slug_chapter") String slug_chapter);
+    @GET("mobile/stories/getChapter/{idChapter}")
+    Call<ReadStoryResponse> getContentStory(@Path("idChapter") int idChapter);
 
-    @POST("user/saveHistory")
-    Call<BaseResponse> saveHistory(@Body SaveHistoryRequest saveHistoryRequest);
+//    @POST("user/saveHistory")
+//    Call<BaseResponse> saveHistory(@Body SaveHistoryRequest saveHistoryRequest);
 
     @GET("mobile/stories/getListFavoriteStory")
     Call<FavouriteStoryResponse> getListFavoriteStory();

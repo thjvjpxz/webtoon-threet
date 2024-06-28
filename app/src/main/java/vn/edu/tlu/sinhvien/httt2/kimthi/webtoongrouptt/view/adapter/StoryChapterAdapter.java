@@ -100,11 +100,9 @@ public class StoryChapterAdapter extends RecyclerView.Adapter<StoryChapterAdapte
             handleStoriesHistory(String.valueOf(chapter.getId()), history);
 
             binding.llItem.setOnClickListener(v -> {
-                String slug_chapter = chapter.getSlug();
-                String slug_story = story.getSlug();
+                int idChapter = chapter.getId();
                 Intent intent = new Intent(v.getContext(), ReadStoryActivity.class);
-                intent.putExtra("slug_chapter", slug_chapter);
-                intent.putExtra("slug_story", slug_story);
+                intent.putExtra("idChapter", idChapter);
                 v.getContext().startActivity(intent);
             });
         }
