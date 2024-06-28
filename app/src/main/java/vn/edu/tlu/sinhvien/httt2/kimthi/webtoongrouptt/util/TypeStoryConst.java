@@ -6,4 +6,6 @@ public class TypeStoryConst {
     public static final int TYPE_CONVERT = 2;
     public static final int TYPE_TRANSLATION = 3;
 
+    public static final String[] TYPE_STORY = {"truyen-hot", "truyen-hoan-thanh", "truyen" +
+            "-translate", "truyen-convert"};
 }

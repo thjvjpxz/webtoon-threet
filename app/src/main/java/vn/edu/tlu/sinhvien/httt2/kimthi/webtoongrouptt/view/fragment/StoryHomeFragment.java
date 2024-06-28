@@ -30,6 +30,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.TypeStoryConst;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.OnScrollChangeListener;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.StoriesByTypeActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.StoryHomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.StoryHomeViewModel;
 
@@ -97,9 +98,24 @@ public class StoryHomeFragment extends Fragment {
 
         handleLoading();
         handleStories();
+        handleClickWatchMore();
 
         return binding.getRoot();
     }
+
+    private void handleClickWatchMore() {
+        binding.btnHotAdd.setOnClickListener(v -> initIntent(TypeStoryConst.TYPE_HOT));
+        binding.btnCompletedAdd.setOnClickListener(v -> initIntent(TypeStoryConst.TYPE_COMPLETED));
+        binding.btnConvertAdd.setOnClickListener(v -> initIntent(TypeStoryConst.TYPE_CONVERT));
+        binding.btnTranslationAdd.setOnClickListener(v -> initIntent(TypeStoryConst.TYPE_TRANSLATION));
+    }
+
+    private void initIntent(int type) {
+        Intent intent = new Intent(getContext(), StoriesByTypeActivity.class);
+        intent.putExtra("type", type);
+        startActivity(intent);
+    }
+
 
     private void handleLoading() {
         viewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {

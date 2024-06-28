@@ -26,6 +26,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginRespo
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ReadStoryResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.StoriesByTypeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.StoryHomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ReadComicResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.TwitterResponse;
@@ -39,13 +40,15 @@ public interface ApiService {
     Call<DetailResponse> getDetailComic(@Path("id") String id);
 
     @GET("mobile/comics/getComicByCategory/{id}")
-    Call<ComicByCategoryResponse> getComicByCategory(@Path("id") String id, @Query("page") int page);
+    Call<ComicByCategoryResponse> getComicByCategory(@Path("id") String id,
+                                                     @Query("page") int page);
 
     @GET("mobile/comics/getListFavourite")
     Call<HeartResponse> getListFavourite();
 
     @GET("mobile/comics/getChapter/{id}")
     Call<ReadComicResponse> getChapterComic(@Path("id") String id);
+
     @GET("user")
     Call<UserResponse> getUser();
 
@@ -75,6 +78,7 @@ public interface ApiService {
 
     @POST("comment/report/{id}")
     Call<BaseResponse> reportComment(@Path("id") String id);
+
     @POST("auth/forgot")
     Call<ResponseBody> forgotPassword(@Body ForgotRequest forgotRequest);
 
@@ -94,9 +98,13 @@ public interface ApiService {
     @GET("stories/getContentStory/{slug_story}/{slug_chapter}")
     Call<ReadStoryResponse> getContentStory(@Path("slug_story") String slug_story,
                                             @Path("slug_chapter") String slug_chapter);
+
     @POST("user/saveHistory")
     Call<BaseResponse> saveHistory(@Body SaveHistoryRequest saveHistoryRequest);
 
     @GET("mobile/stories/getListFavoriteStory")
     Call<FavouriteStoryResponse> getListFavoriteStory();
+
+    @GET("mobile/stories/getStoriesByType/{type}")
+    Call<StoriesByTypeResponse> getStoriesByType(@Path("type") String type, @Query("page") int page);
 }

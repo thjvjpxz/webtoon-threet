@@ -9,6 +9,7 @@ import androidx.lifecycle.MutableLiveData;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.StoriesByTypeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.StoryHomeResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
@@ -61,5 +62,27 @@ public class StoryHomeRepository {
         });
 
         return storyHomeResponseData;
+    }
+
+    public MutableLiveData<StoriesByTypeResponse> getStoriesByType(String type, int page, Runnable isLoading) {
+        MutableLiveData<StoriesByTypeResponse> stories = new MutableLiveData<>();
+        apiService.getStoriesByType(type, page).enqueue(new Callback<StoriesByTypeResponse>() {
+            @Override
+            public void onResponse(Call<StoriesByTypeResponse> call, Response<StoriesByTypeResponse> response) {
+                if (response.isSuccessful()) {
+                    stories.setValue(response.body());
+                }
+                isLoading.run();
+            }
+
+            @Override
+            public void onFailure(Call<StoriesByTypeResponse> call, Throwable t) {
+                Log.d("StoryHomeRepository", "onFailure: " + t.getMessage());
+                stories.setValue(null);
+                isLoading.run();
+            }
+        });
+
+        return stories;
     }
 }
