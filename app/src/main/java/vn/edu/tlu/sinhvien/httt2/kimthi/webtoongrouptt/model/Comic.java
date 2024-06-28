@@ -15,8 +15,8 @@ public class Comic {
     private List<Author> authors;
     private String status;
     private Integer chapters_count;
+    private Chapter chapter;
     private Integer views;
-    private String updated_at;
     private String date_updated;
 
     public Integer getViews() {
@@ -68,11 +68,14 @@ public class Comic {
         return status;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
-    }
-
     public String getDate_updated() {
         return date_updated;
+    }
+    public Chapter getChapter() {
+        return chapter;
+    }
+
+    public String getSlug() {
+        return slug;
     }
 }

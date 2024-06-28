@@ -1,6 +1,7 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
@@ -23,17 +24,30 @@ public class SearchMangaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         binding = ActivitySearchMangaBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        binding.webView.setWebViewClient(new WebViewClient() {
+        handleWebView();
+    }
+
+    private void handleWebView () {
+        binding.webview.setWebViewClient(new WebViewClient() {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                view.loadUrl(request.getUrl().toString());
+                String url = request.getUrl().toString();
+                view.loadUrl(url);
                 return true;
             }
+
         });
 
-        binding.webView.loadUrl("https://truyenhdc.com/tim-kiem?tukhoa=");
+        binding.webview.getSettings().setJavaScriptEnabled(true);
+        binding.webview.getSettings().setDomStorageEnabled(true);
 
-        setContentView(binding.getRoot());
+        String url = "https://truyenhdc.com/truyen-tranh/tim-truyen";
+        binding.webview.loadUrl(url);
+
+        binding.ivBack.setOnClickListener(v -> {
+            finish();
+        });
     }
 }

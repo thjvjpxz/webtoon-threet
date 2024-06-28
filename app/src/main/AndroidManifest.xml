@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission
         android:name="android.permission.READ_EXTERNAL_STORAGE"
@@ -21,7 +22,8 @@
         <activity
             android:name=".view.activity.ListTypeComicActivity"
             android:exported="false" />
-        <activity android:name=".view.activity.StoriesByTypeActivity"
+        <activity
+            android:name=".view.activity.StoriesByTypeActivity"
             android:exported="false" />
         <activity
             android:name=".view.activity.ReadStoryActivity"
@@ -39,6 +41,18 @@
         <activity
             android:name=".view.activity.DetailActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".view.activity.LoadViewActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.InfoAppActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.StickerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.activity.SearchActivity"
+            android:exported="false" />
         <activity
             android:name=".view.activity.SearchMangaActivity"
             android:exported="false" />
@@ -64,17 +78,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- <service -->
-        <!-- android:name=".api.ApiService" -->
-        <!-- android:enabled="true" -->
-        <!-- android:exported="true" /> -->
         <activity
             android:name=".view.activity.IntroActivity"
             android:exported="true">
 
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".view.activity.MainActivity"

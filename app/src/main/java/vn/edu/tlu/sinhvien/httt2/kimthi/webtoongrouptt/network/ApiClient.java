@@ -32,17 +32,20 @@ public class ApiClient {
         if (retrofitHeader == null) {
             synchronized (ApiClient.class) {
                 if (retrofitHeader == null) {
-                    SharedPrefManager sharedPrefManager =
-                            SharedPrefManager.getInstance(context);
-                    String fullToken = "Bearer " + sharedPrefManager.getToken();
-                    Interceptor intercepter = chain -> {
+                    Interceptor interceptor = chain -> {
+                        SharedPrefManager sharedPrefManager =
+                                SharedPrefManager.getInstance(context);
+                        String fullToken = "Bearer " + sharedPrefManager.getToken();
                         Request request = chain.request();
                         Request.Builder newRequest = request.newBuilder()
+                                .removeHeader("Authorization")
                                 .addHeader("Authorization", fullToken);
                         return chain.proceed(newRequest.build());
                     };
+
+
                     OkHttpClient.Builder client =
-                            new OkHttpClient.Builder().addInterceptor(intercepter);
+                            new OkHttpClient.Builder().addInterceptor(interceptor);
                     retrofitHeader = new Retrofit.Builder()
                             .baseUrl(BASE_URL)
                             .addConverterFactory(GsonConverterFactory.create())
@@ -51,6 +54,11 @@ public class ApiClient {
                 }
             }
         }
+
         return retrofitHeader;
+    }
+
+    public static void setRetrofitHeaderNull() {
+        retrofitHeader = null;
     }
 }

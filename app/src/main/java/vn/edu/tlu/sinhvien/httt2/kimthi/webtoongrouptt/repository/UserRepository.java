@@ -1,14 +1,18 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.UpdateRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.UserResponse;
@@ -61,6 +65,7 @@ public class UserRepository {
                 } else {
                     logoutResponseData.setValue(null);
                 }
+                ApiClient.setRetrofitHeaderNull();
             }
 
             @Override
@@ -78,8 +83,15 @@ public class UserRepository {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
-                    updateResponseData.setValue(response.body());
+                    assert response.body() != null;
+                    if (Objects.equals(response.body().getStatus(), "success")) {
+                        updateResponseData.setValue(response.body());
+                    } else {
+                        Log.d("updateUser", "onResponse: " + response.body().getStatus());
+                        updateResponseData.setValue(null);
+                    }
                 } else {
+                        Log.d("updateUser", "onResponse: loi roi");
                     updateResponseData.setValue(null);
                 }
             }

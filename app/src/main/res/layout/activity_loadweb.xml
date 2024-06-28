@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/nunito_bold"
-            android:text="Search Manga"
+            android:text="Facebook"
             android:textSize="17sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"

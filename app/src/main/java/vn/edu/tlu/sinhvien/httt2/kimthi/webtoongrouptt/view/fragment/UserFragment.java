@@ -12,7 +12,6 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +22,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.InfoAppActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SearchActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.StickerActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.LevelActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentUserBinding;
@@ -73,14 +75,31 @@ public class UserFragment extends Fragment {
 
         binding.tvNameUser.setText(sharedPrefManager.getName());
 
+        processShare();
         processLogOut();
         processComment();
         processInfoUser(resultLauncher);
         processLevel();
+        processSticker();
+        processInfoApp();
         processSearchManga();
         observe();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(getContext());
+        String avatar = sharedPrefManager.getAvatar();
+        String name = sharedPrefManager.getName();
+        Glide.with(this)
+                .load(avatar)
+                .circleCrop()
+                .into(binding.userImage);
+        binding.tvNameUser.setText(name);
     }
 
     private void processLogOut() {
@@ -90,14 +109,13 @@ public class UserFragment extends Fragment {
             gsc.signOut();
             userViewModel.logOut().observe(getViewLifecycleOwner(), responseBody -> {
                 if (responseBody != null) {
+                    Intent intent = new Intent(getContext(), SignActivity.class);
+                    startActivity(intent);
                     requireActivity().finish();
                 } else {
                     Toast.makeText(getContext(), "Đăng xuất thất bại", Toast.LENGTH_SHORT).show();
                 }
             });
-            Intent intent = new Intent(getContext(), SignActivity.class);
-            startActivity(intent);
-            requireActivity().finish();
         });
     }
 
@@ -148,4 +166,34 @@ public class UserFragment extends Fragment {
         });
     }
 
+    private void processSticker () {
+        binding.btnStickerUser.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), StickerActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void processShare () {
+        binding.btnShare.setOnClickListener(v -> {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Webtoon Group TT");
+            shareIntent.putExtra(Intent.EXTRA_TEXT, "http://truyenhdc.com");
+            startActivity(Intent.createChooser(shareIntent, "Chia sẻ ứng dụng"));
+        });
+    }
+
+    private void processInfoApp () {
+        binding.btnInfoApp.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), InfoAppActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void processRanking () {
+        binding.btnRanking.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            startActivity(intent);
+        });
+    }
 }

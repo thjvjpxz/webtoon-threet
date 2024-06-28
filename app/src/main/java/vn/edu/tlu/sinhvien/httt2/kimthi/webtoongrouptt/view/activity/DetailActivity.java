@@ -27,7 +27,6 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Author;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comment;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.User;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository.CommentRepository;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.CommentComicAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.DetailAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.CommentViewModel;

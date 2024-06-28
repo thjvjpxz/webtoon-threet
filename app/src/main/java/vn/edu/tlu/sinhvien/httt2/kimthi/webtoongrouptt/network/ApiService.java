@@ -13,11 +13,11 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseRespon
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ComicByCategoryResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.FavouriteStoryResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.FilterComicResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HeartResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.ForgotRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.GoogleRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.LoginRequest;
-import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.SaveHistoryRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailStoryResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.UpdateRequest;
@@ -41,7 +41,8 @@ public interface ApiService {
     Call<DetailResponse> getDetailComic(@Path("id") String id);
 
     @GET("mobile/comics/getComicByCategory/{id}")
-    Call<ComicByCategoryResponse> getComicByCategory(@Path("id") String id, @Query("page") int page);
+    Call<ComicByCategoryResponse> getComicByCategory(@Path("id") String id,
+                                                     @Query("page") int page);
 
     @GET("mobile/comics/getListFavourite")
     Call<HeartResponse> getListFavourite();
@@ -55,7 +56,7 @@ public interface ApiService {
     @GET("user")
     Call<UserResponse> getUser();
 
-    @POST("/user/update")
+    @POST("user/update")
     Call<LoginResponse> updateUser(@Body UpdateRequest updateRequest);
 
     @POST("logout")
@@ -91,6 +92,12 @@ public interface ApiService {
     @POST("auth/twitter")
     Call<TwitterResponse> loginTwitter(@Body TwitterRequest twitterRequest);
 
+    @GET("comics/getFilterComics")
+    Call<FilterComicResponse> getFilterComics(@Query("page") int page,
+                                              @Query("sort") int sort,
+                                              @Query("status") int status,
+                                              @Query("keyword") String keyword);
+
     // Story
     @GET("mobile/stories/getStories")
     Call<StoryHomeResponse> getStories();
@@ -98,7 +105,7 @@ public interface ApiService {
     @GET("mobile/stories/getDetail/{id_story}")
     Call<DetailStoryResponse> getDetailStory(@Path("id_story") int id_story);
 
-//    @GET("stories/getContentStory/{slug_story}/{slug_chapter}")
+    //    @GET("stories/getContentStory/{slug_story}/{slug_chapter}")
 //    Call<ReadStoryResponse> getContentStory(@Path("slug_story") String slug_story,
 //                                            @Path("slug_chapter") String slug_chapter);
     @GET("mobile/stories/getChapter/{idChapter}")
@@ -111,5 +118,6 @@ public interface ApiService {
     Call<FavouriteStoryResponse> getListFavoriteStory();
 
     @GET("mobile/stories/getStoriesByType/{type}")
-    Call<StoriesByTypeResponse> getStoriesByType(@Path("type") String type, @Query("page") int page);
+    Call<StoriesByTypeResponse> getStoriesByType(@Path("type") String type,
+                                                 @Query("page") int page);
 }

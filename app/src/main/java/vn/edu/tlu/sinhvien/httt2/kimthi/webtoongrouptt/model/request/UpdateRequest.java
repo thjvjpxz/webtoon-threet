@@ -6,13 +6,13 @@ public class UpdateRequest {
     private String name;
     private String email;
     private Integer road_id;
-    MultipartBody.Part avatar;
+    private String uriAvatar;
 
-    public UpdateRequest(String name, String email, Integer road_id, MultipartBody.Part avatar) {
+    public UpdateRequest(String name, String email, Integer road_id, String uriAvatar) {
         this.name = name;
         this.email = email;
         this.road_id = road_id;
-        this.avatar = avatar;
+        this.uriAvatar = uriAvatar;
     }
 
     public String getName() {
@@ -39,11 +39,11 @@ public class UpdateRequest {
         this.road_id = road_id;
     }
 
-    public MultipartBody.Part getAvatar() {
-        return avatar;
+    public String getUriAvatar() {
+        return uriAvatar;
     }
 
-    public void setAvatar(MultipartBody.Part avatar) {
-        this.avatar = avatar;
+    public void setUriAvatar(String uriAvatar) {
+        this.uriAvatar = uriAvatar;
     }
 }

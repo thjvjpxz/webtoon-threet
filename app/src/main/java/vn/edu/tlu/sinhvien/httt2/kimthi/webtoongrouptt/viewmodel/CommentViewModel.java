@@ -1,12 +1,10 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel;
 
 import android.app.Application;
-import android.content.Context;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
-import androidx.lifecycle.ViewModel;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository.CommentRepository;
 

@@ -31,6 +31,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.TypeStoryConst;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.OnScrollChangeListener;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.StoriesByTypeActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SearchActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.StoryHomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.StoryHomeViewModel;
 
@@ -99,6 +100,10 @@ public class StoryHomeFragment extends Fragment {
         handleLoading();
         handleStories();
         handleClickWatchMore();
+        binding.header.btnSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            startActivity(intent);
+        });
 
         return binding.getRoot();
     }

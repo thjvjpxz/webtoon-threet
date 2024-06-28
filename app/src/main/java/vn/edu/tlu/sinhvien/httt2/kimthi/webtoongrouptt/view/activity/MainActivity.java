@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements OnScrollChangeLis
         binding.vpMain.setUserInputEnabled(false);
 
         binding.bottomNavigationBar.setItemSelected(R.id.home, true);
+        binding.vpMain.setUserInputEnabled(false);
 
         binding.bottomNavigationBar.setOnItemSelectedListener(new ChipNavigationBar.OnItemSelectedListener() {
             @Override

@@ -36,6 +36,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Utility;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.CategoryActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.ListTypeComicActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SearchActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
 
@@ -137,6 +138,14 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
                 Log.d("HomeFragment", "Không có dữ liệu");
             }
+        });
+        handleSearch();
+    }
+
+    private void handleSearch () {
+        binding.header.btnSearch.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            startActivity(intent);
         });
     }
 
