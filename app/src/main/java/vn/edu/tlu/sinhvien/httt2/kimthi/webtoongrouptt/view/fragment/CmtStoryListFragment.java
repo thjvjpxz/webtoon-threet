@@ -32,6 +32,12 @@ public class CmtStoryListFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        observer();
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -56,7 +62,7 @@ public class CmtStoryListFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void observer() {
+    public void observer() {
         detailStoryViewModel.getIsLoading().observe(getViewLifecycleOwner(), isLoading -> {
             if (isLoading) {
                 binding.pbComment.setVisibility(View.VISIBLE);
@@ -76,6 +82,6 @@ public class CmtStoryListFragment extends Fragment {
                 storyCmtAdapter.setComments(detailStoryResponse.getComments());
             }
         });
-
     }
+
 }

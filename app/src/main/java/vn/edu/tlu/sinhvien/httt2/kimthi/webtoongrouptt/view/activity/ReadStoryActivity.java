@@ -143,10 +143,13 @@ public class ReadStoryActivity extends AppCompatActivity {
         String nameChapter =
                 readStoryResponse.getChapter().getName() + ": " + Utility.capitalizeFirstLetter(readStoryResponse.getChapter().getTitle());
         binding.tvNameChapter.setText(nameChapter);
+        binding.tvTitle.setText(readStoryResponse.getChapter().getName());
 
         String content = readStoryResponse.getChapter().getContent();
         String fullHtml = Utility.getFullHtml(content);
         binding.webView.loadDataWithBaseURL(null, fullHtml, "text/html", "UTF-8", null);
+
+        updateFontSize(SharedPrefManager.getInstance(this).getTextSize());
 
         if (SharedPrefManager.getInstance(this).checkFormatNull()) {
             saveShareReference(16, "#FFFFFF", "#000000");

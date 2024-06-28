@@ -1,21 +1,30 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel;
 
+import android.app.Application;
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModel;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository.CommentRepository;
 
-public class CommentViewModel extends ViewModel {
+public class CommentViewModel extends AndroidViewModel {
     private final CommentRepository commentRepository;
 
-    public CommentViewModel(Context context) {
-        commentRepository = CommentRepository.getInstance(context);
+    public CommentViewModel(@NonNull Application application) {
+        super(application);
+        commentRepository = CommentRepository.getInstance(application);
     }
 
-    public LiveData<Boolean> comment(Integer comicId, Integer chapterId, String content) {
-        return commentRepository.comment(comicId, chapterId, content);
+
+    public LiveData<Boolean> commentComic(Integer comicId, Integer chapterId, String content) {
+        return commentRepository.comment(comicId, null, chapterId, content, "comic");
+    }
+
+    public LiveData<Boolean> commentStory(Integer storyId, Integer chapterId, String content) {
+        return commentRepository.comment(null , storyId, chapterId, content, "story");
     }
 
     public LiveData<Boolean> likeComment(String commentId) {

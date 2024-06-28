@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -53,7 +54,7 @@ public class DetailActivity extends AppCompatActivity implements CommentInterfac
         if (comicId != null) {
             id = Integer.parseInt(comicId);
             detailViewModel = new DetailViewModel(comicId, this);
-            commentViewModel = new CommentViewModel(this);
+            commentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
             observice();
         }
         binding.ivBack.setOnClickListener(v -> {
@@ -148,7 +149,7 @@ public class DetailActivity extends AppCompatActivity implements CommentInterfac
         EditText editText = binding.edtComment;
         String content = editText.getText().toString();
         if (!content.isEmpty()) {
-            commentViewModel.comment(id, null, content).observe(this, isSuccess -> {
+            commentViewModel.commentComic(id, null, content).observe(this, isSuccess -> {
                 if (isSuccess) {
                     editText.setText("");
                     Comment comment = new Comment();

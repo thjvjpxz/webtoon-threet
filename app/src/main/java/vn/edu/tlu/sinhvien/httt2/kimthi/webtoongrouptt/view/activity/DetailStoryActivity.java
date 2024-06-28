@@ -3,12 +3,19 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
@@ -17,18 +24,24 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.tabs.TabLayout;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivityDetailStoryBinding;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.LayoutCommentStoryBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.TabDetailStoryAdapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.CmtStoryListFragment;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.CommentViewModel;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.DetailStoryViewModel;
 
 public class DetailStoryActivity extends AppCompatActivity {
 
     private ActivityDetailStoryBinding binding;
+    private LayoutCommentStoryBinding layoutCommentStoryBinding;
     private TabDetailStoryAdapter tab;
     private DetailStoryViewModel viewModel;
+    private CommentViewModel cmtViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +52,7 @@ public class DetailStoryActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         viewModel = new ViewModelProvider(this).get(DetailStoryViewModel.class);
+        cmtViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
 
         handleTabLayout();
         processBack();
@@ -56,6 +70,7 @@ public class DetailStoryActivity extends AppCompatActivity {
         }
 
         fillData(story);
+        processAddComment(story);
     }
 
     private void observer(int storyId) {
@@ -74,6 +89,11 @@ public class DetailStoryActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 if (tab != null) {
                     binding.viewPager2.setCurrentItem(tab.getPosition());
+                    if (tab.getPosition() == 2) {
+                        binding.fabAddComment.setVisibility(View.VISIBLE);
+                    } else {
+                        binding.fabAddComment.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -122,7 +142,7 @@ public class DetailStoryActivity extends AppCompatActivity {
 
     private void processFollow(Story story) {
         binding.ivFollow.setOnClickListener(v -> {
-            
+
             boolean isSeleted = !binding.ivFollow.isSelected();
             binding.ivFollow.setSelected(isSeleted);
 
@@ -158,6 +178,62 @@ public class DetailStoryActivity extends AppCompatActivity {
     private void processBack() {
         binding.btnBack.setOnClickListener(v -> {
             finish();
+        });
+    }
+
+    private void processAddComment(Story story) {
+        binding.fabAddComment.setOnClickListener(v -> {
+            layoutCommentStoryBinding = LayoutCommentStoryBinding.inflate(getLayoutInflater());
+            showBottomSheetDialog(story);
+
+        });
+    }
+
+    private void showBottomSheetDialog(Story story) {
+        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(this);
+        bottomSheetDialog.setContentView(layoutCommentStoryBinding.getRoot());
+        bottomSheetDialog.show();
+        binding.fabAddComment.setVisibility(View.GONE);
+        CmtStoryListFragment fragment = (CmtStoryListFragment) getFragmentComment(2);
+        if (fragment != null) {
+            fragment.onPause();
+        }
+        layoutCommentStoryBinding.tvSendComment.setOnClickListener(v -> {
+            String comment = layoutCommentStoryBinding.edtCommentStory.getText().toString();
+            if (comment.isEmpty()) {
+                Toast.makeText(this, "Vui lòng nhập bình luận!", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            processSendComment(comment, story);
+            bottomSheetDialog.dismiss();
+        });
+
+
+        bottomSheetDialog.setOnDismissListener(dialog -> {
+            binding.fabAddComment.setVisibility(View.VISIBLE);
+        });
+    }
+
+    private Fragment getFragmentComment(int position) {
+        Fragment fragment = getFragmentAtPosition(position);
+        if (fragment instanceof CmtStoryListFragment) {
+            return fragment;
+        }
+        return null;
+    }
+
+    private Fragment getFragmentAtPosition(int position) {
+        return tab.getRegisteredFragment(position);
+    }
+
+    private void processSendComment(String comment, Story story) {
+        cmtViewModel.commentStory(story.getId(), null, comment).observe(this, isSuccess -> {
+            if (isSuccess) {
+                CmtStoryListFragment fragment = (CmtStoryListFragment) getFragmentComment(2);
+                if (fragment != null) {
+                    fragment.onResume();
+                }
+            }
         });
     }
 }

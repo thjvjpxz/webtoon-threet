@@ -12,6 +12,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -49,7 +50,7 @@ public class ReadActivity extends AppCompatActivity implements CommentInterface 
         if (chapterId != null) {
             currentChapterId = chapterId;
             readViewModel = new ReadViewModel(currentChapterId, this);
-            commentViewModel = new CommentViewModel(this);
+            commentViewModel = new ViewModelProvider(this).get(CommentViewModel.class);
             observe();
         }
 
@@ -158,7 +159,7 @@ public class ReadActivity extends AppCompatActivity implements CommentInterface 
         EditText editText = binding.edtComment;
         String content = editText.getText().toString();
         if (!content.isEmpty()) {
-            commentViewModel.comment(id, chapter_id, content).observe(this, isSuccess -> {
+            commentViewModel.commentComic(id, chapter_id, content).observe(this, isSuccess -> {
                 if (isSuccess) {
                     editText.setText("");
                     Comment comment = new Comment();

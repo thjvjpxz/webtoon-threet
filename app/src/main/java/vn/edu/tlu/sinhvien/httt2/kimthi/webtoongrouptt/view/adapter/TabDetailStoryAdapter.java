@@ -1,10 +1,14 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter;
 
+import android.util.SparseArray;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.adapter.FragmentViewHolder;
 
 import java.util.List;
 
@@ -15,8 +19,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.IntroStoryF
 
 public class TabDetailStoryAdapter extends FragmentStateAdapter {
     private Story story;
-    private List<String> history;
-
+    private SparseArray<Fragment> registeredFragments = new SparseArray<>();
     public TabDetailStoryAdapter(@NonNull FragmentManager fragmentManager,
                                  @NonNull Lifecycle lifecycle, Story story) {
         super(fragmentManager, lifecycle);
@@ -26,17 +29,31 @@ public class TabDetailStoryAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
+        Fragment fragment;
         if (position == 0) {
-            return new IntroStoryFragment(story);
+            fragment = new IntroStoryFragment(story);
         } else if (position == 1) {
-            return new ChaptersStoryListFragment(story);
+            fragment = new ChaptersStoryListFragment(story);
         } else {
-            return new CmtStoryListFragment(story);
+            fragment = new CmtStoryListFragment(story);
         }
+        registeredFragments.put(position, fragment);
+        return fragment;
     }
 
     @Override
     public int getItemCount() {
         return 3;
     }
+
+    public Fragment getRegisteredFragment(int position) {
+        return registeredFragments.get(position);
+    }
+
+    @Override
+    public void onViewDetachedFromWindow(@NonNull FragmentViewHolder holder) {
+        super.onViewDetachedFromWindow(holder);
+        registeredFragments.remove(holder.getAdapterPosition());
+    }
+
 }

@@ -33,9 +33,9 @@ public class CommentRepository {
         return instance;
     }
 
-    public LiveData<Boolean> comment(Integer comicId, Integer chapterId, String content) {
+    public LiveData<Boolean> comment(Integer comicId, Integer storyId, Integer chapterId, String content, String type) {
         MutableLiveData<Boolean> result = new MutableLiveData<>();
-        CommentRequest commentRequest = new CommentRequest(content, "comic", chapterId, comicId, null);
+        CommentRequest commentRequest = new CommentRequest(content, type, chapterId, comicId, storyId);
         Call<BaseResponse> call = apiService.comment(commentRequest);
         call.enqueue(new Callback<BaseResponse>() {
             @Override

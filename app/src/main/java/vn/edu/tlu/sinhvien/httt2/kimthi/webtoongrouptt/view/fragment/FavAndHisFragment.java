@@ -31,7 +31,6 @@ public class FavAndHisFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        viewModel = new ViewModelProvider(this).get(FavouriteStoryViewModel.class);
         observer();
     }
 

@@ -40,4 +40,5 @@ public class FavouriteAndHistoryTabAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return 2;
     }
+
 }
