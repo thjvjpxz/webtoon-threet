@@ -22,6 +22,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailStor
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.TwitterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.UpdateRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.GoogleResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.ListTypeComicResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.LoginResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.RegisterRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.HomeResponse;
@@ -40,14 +41,16 @@ public interface ApiService {
     Call<DetailResponse> getDetailComic(@Path("id") String id);
 
     @GET("mobile/comics/getComicByCategory/{id}")
-    Call<ComicByCategoryResponse> getComicByCategory(@Path("id") String id,
-                                                     @Query("page") int page);
+    Call<ComicByCategoryResponse> getComicByCategory(@Path("id") String id, @Query("page") int page);
 
     @GET("mobile/comics/getListFavourite")
     Call<HeartResponse> getListFavourite();
 
     @GET("mobile/comics/getChapter/{id}")
     Call<ReadComicResponse> getChapterComic(@Path("id") String id);
+
+    @GET("mobile/comics/getComicsByType/{slug}")
+    Call<ListTypeComicResponse> getComicsByType(@Path("slug") String slug, @Query("page") int page);
 
     @GET("user")
     Call<UserResponse> getUser();
