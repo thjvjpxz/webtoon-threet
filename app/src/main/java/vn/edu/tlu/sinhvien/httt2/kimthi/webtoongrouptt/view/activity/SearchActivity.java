@@ -1,5 +1,6 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,6 +15,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
+import retrofit2.Converter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.ActivitySearchBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.SearchPagerAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.SearchFragment;
@@ -21,6 +23,9 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.SearchFragm
 public class SearchActivity extends AppCompatActivity {
     private ActivitySearchBinding binding;
     private String sort = "0";
+
+    private int type;
+    String type_ranking;
 
     public String getQuery() {
         return binding.searchView.getQuery().toString();
@@ -30,11 +35,27 @@ public class SearchActivity extends AppCompatActivity {
         return sort;
     }
 
+    public int getType() {
+        return type;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivitySearchBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
+
+        Intent intent = getIntent();
+        type = intent.getIntExtra("type", 0);
+        type_ranking = intent.getStringExtra("type_ranking");
+        if (type_ranking != null) {
+            binding.actionBarSpinner.setSelection(Integer.parseInt(type_ranking));
+        }
+        if (type == 1) {
+            binding.llSort.setVisibility(View.GONE);
+            binding.tabLayout.setVisibility(View.GONE);
+        }
 
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Tất cả"));
         binding.tabLayout.addTab(binding.tabLayout.newTab().setText("Hoàn thành"));
@@ -66,7 +87,7 @@ public class SearchActivity extends AppCompatActivity {
                 super.onPageSelected(position);
                 Fragment fragment = getSupportFragmentManager().findFragmentByTag("f" + position);
                 if (fragment instanceof SearchFragment) {
-                    ((SearchFragment) fragment).updateData(getQuery(), getSort());
+                    ((SearchFragment) fragment).updateData(getQuery(), getSort(), getType());
                 }
             }
         });
@@ -75,13 +96,13 @@ public class SearchActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String newSort = String.valueOf(position);
-                if (!newSort.equals(sort)) {
-                    sort = newSort;
-                    Fragment fragment = getSupportFragmentManager().findFragmentByTag("f" + binding.viewPager2.getCurrentItem());
-                    if (fragment instanceof SearchFragment) {
-                        ((SearchFragment) fragment).updateDataRvView(getQuery(), getSort());
+                    if (!newSort.equals(sort)) {
+                        sort = newSort;
+                        Fragment fragment = getSupportFragmentManager().findFragmentByTag("f" + binding.viewPager2.getCurrentItem());
+                        if (fragment instanceof SearchFragment) {
+                            ((SearchFragment) fragment).updateDataRvView(getQuery(), getSort());
+                        }
                     }
-                }
             }
 
             @Override

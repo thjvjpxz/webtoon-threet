@@ -25,7 +25,8 @@ public class SearchPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         String query = searchActivity.getQuery();
         String sort = searchActivity.getSort();
-        return SearchFragment.newInstance(position, query, sort);
+        int type = searchActivity.getType();
+        return SearchFragment.newInstance(position, query, sort, type);
     }
 
     @Override

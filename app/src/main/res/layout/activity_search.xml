@@ -33,7 +33,7 @@
                     android:layout_weight="1"
                     android:background="@drawable/shape_bg_search"
                     android:iconifiedByDefault="false"
-                    android:queryHint="Nhập số chương muốn tìm"
+                    android:queryHint="Nhập truyện muốn tìm"
                     android:searchIcon="@drawable/ic_search_2"
                     android:layout_marginEnd="10dp"
                     android:queryBackground="@null" />
@@ -48,6 +48,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/llSort"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
@@ -70,6 +71,7 @@
             </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
+                android:layout_marginTop="10dp"
                 android:id="@+id/tabLayout"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"

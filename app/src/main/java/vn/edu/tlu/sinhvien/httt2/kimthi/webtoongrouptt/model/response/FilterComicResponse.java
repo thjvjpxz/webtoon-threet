@@ -7,11 +7,16 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Comic;
 
 public class FilterComicResponse {
     private Paginate comics;
+    private Paginate stories;
     public Paginate getComics() {
         return comics;
     }
 
     public void setComics(Paginate comics) {
         this.comics = comics;
+    }
+
+    public Paginate getStories() {
+        return stories;
     }
 }

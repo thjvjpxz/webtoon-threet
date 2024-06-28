@@ -21,10 +21,32 @@ public class FilterComicRepository {
         apiService = ApiClient.getRetrofitHeader(context).create(ApiService.class);
     }
 
-    public LiveData<FilterComicResponse> fetchData(int page, int sort, int status, String keyword) {
+    public LiveData<FilterComicResponse> fetchDataComics(int page, int sort, int status, String keyword) {
         MutableLiveData<FilterComicResponse> filterSearchResponse = new MutableLiveData<>();
 
         apiService.getFilterComics(page, sort, status, keyword).enqueue(new Callback<FilterComicResponse>() {
+            @Override
+            public void onResponse(Call<FilterComicResponse> call, Response<FilterComicResponse> response) {
+                if (response.isSuccessful()) {
+                    if (response.body() != null) {
+                        FilterComicResponse dataResponse = response.body();
+                        filterSearchResponse.setValue(dataResponse);
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FilterComicResponse> call, Throwable t) {
+                filterSearchResponse.setValue(null);
+            }
+        });
+        return filterSearchResponse;
+    }
+
+    public LiveData<FilterComicResponse> fetchDataStories(int page, String keyword) {
+        MutableLiveData<FilterComicResponse> filterSearchResponse = new MutableLiveData<>();
+
+        apiService.getFilterStories(page, keyword).enqueue(new Callback<FilterComicResponse>() {
             @Override
             public void onResponse(Call<FilterComicResponse> call, Response<FilterComicResponse> response) {
                 if (response.isSuccessful()) {

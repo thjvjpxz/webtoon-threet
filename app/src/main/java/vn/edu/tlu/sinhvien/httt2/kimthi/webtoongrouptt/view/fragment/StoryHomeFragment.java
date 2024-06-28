@@ -102,8 +102,10 @@ public class StoryHomeFragment extends Fragment {
         handleClickWatchMore();
         binding.header.btnSearch.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), SearchActivity.class);
+            intent.putExtra("type", Constants.TYPE_STORIES);
             startActivity(intent);
         });
+
 
         return binding.getRoot();
     }

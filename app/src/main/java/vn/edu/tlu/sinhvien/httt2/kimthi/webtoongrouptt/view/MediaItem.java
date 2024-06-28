@@ -1,10 +1,13 @@
-package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model;
+package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view;
 
+import java.io.Serializable;
 import java.util.List;
 
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Author;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
 
-public class Comic {
+public class MediaItem implements Serializable {
     private Integer id;
     private String name;
     private String origin_name;
@@ -17,7 +20,7 @@ public class Comic {
     private List<Author> authors;
     private String status;
     private Integer chapters_count;
-    private Chapter chapter;
+    private Story.Chapter chapter;
     private Integer views;
     private String date_updated;
 
@@ -73,11 +76,13 @@ public class Comic {
     public String getDate_updated() {
         return date_updated;
     }
-    public Chapter getChapter() {
+    public Story.Chapter getChapter() {
         return chapter;
     }
 
     public String getSlug() {
         return slug;
     }
+
+    // Các phương thức getter và setter
 }

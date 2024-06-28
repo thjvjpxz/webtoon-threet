@@ -22,11 +22,21 @@ public class FilterComicViewModel extends AndroidViewModel {
         dataMap = new HashMap<>();
     }
 
-    public LiveData<FilterComicResponse> fetchData(int page, int sort, int status, String keyword) {
+    public LiveData<FilterComicResponse> fetchDataComics(int page, int sort, int status, String keyword) {
         String key = page + "-" + sort + "-" + status + "-" + keyword;
         MutableLiveData<FilterComicResponse> data = dataMap.get(key);
         if (data == null) {
-            data = (MutableLiveData<FilterComicResponse>) filterComicRepository.fetchData(page, sort, status, keyword);
+            data = (MutableLiveData<FilterComicResponse>) filterComicRepository.fetchDataComics(page, sort, status, keyword);
+            dataMap.put(key, data);
+        }
+        return data;
+    }
+
+    public LiveData<FilterComicResponse> fetchDataStories(int page, String keyword) {
+        String key = page + "-" + keyword;
+        MutableLiveData<FilterComicResponse> data = dataMap.get(key);
+        if (data == null) {
+            data = (MutableLiveData<FilterComicResponse>) filterComicRepository.fetchDataStories(page, keyword);
             dataMap.put(key, data);
         }
         return data;
@@ -34,7 +44,7 @@ public class FilterComicViewModel extends AndroidViewModel {
 
     public void refreshData(int page, int sort, int status, String keyword) {
         String key = page + "-" + sort + "-" + status + "-" + keyword;
-        MutableLiveData<FilterComicResponse> data = (MutableLiveData<FilterComicResponse>) filterComicRepository.fetchData(page, sort, status, keyword);
+        MutableLiveData<FilterComicResponse> data = (MutableLiveData<FilterComicResponse>) filterComicRepository.fetchDataComics(page, sort, status, keyword);
         dataMap.put(key, data);
     }
 }

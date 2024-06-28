@@ -5,11 +5,15 @@ import static vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.fragment.Leve
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.browser.customtabs.CustomTabColorSchemeParams;
+import androidx.browser.customtabs.CustomTabsIntent;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -22,6 +26,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.CategoryActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.DetailActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.InfoAppActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SearchActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.StickerActivity;
@@ -75,14 +82,8 @@ public class UserFragment extends Fragment {
 
         binding.tvNameUser.setText(sharedPrefManager.getName());
 
-        processShare();
-        processLogOut();
-        processComment();
+        handleUserInterfaceActions();
         processInfoUser(resultLauncher);
-        processLevel();
-        processSticker();
-        processInfoApp();
-        processSearchManga();
         observe();
 
         return binding.getRoot();
@@ -100,44 +101,6 @@ public class UserFragment extends Fragment {
                 .circleCrop()
                 .into(binding.userImage);
         binding.tvNameUser.setText(name);
-    }
-
-    private void processLogOut() {
-        binding.btnLogout.setOnClickListener(v -> {
-            sharedPrefManager.removeToken();
-
-            gsc.signOut();
-            userViewModel.logOut().observe(getViewLifecycleOwner(), responseBody -> {
-                if (responseBody != null) {
-                    Intent intent = new Intent(getContext(), SignActivity.class);
-                    startActivity(intent);
-                    requireActivity().finish();
-                } else {
-                    Toast.makeText(getContext(), "Đăng xuất thất bại", Toast.LENGTH_SHORT).show();
-                }
-            });
-        });
-    }
-
-    private void processSearchManga () {
-        binding.btnSearchManga.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), SearchMangaActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    private void processLevel() {
-        binding.btnLevelUser.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), LevelActivity.class);
-            startActivity(intent);
-        });
-    }
-
-    private void processComment() {
-        binding.btnCommentUser.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), CommentActivity.class);
-            startActivity(intent);
-        });
     }
 
     private void processInfoUser(ActivityResultLauncher<Intent> resultLauncher) {
@@ -166,14 +129,25 @@ public class UserFragment extends Fragment {
         });
     }
 
-    private void processSticker () {
-        binding.btnStickerUser.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), StickerActivity.class);
+    private void handleUserInterfaceActions () {
+        binding.btnBookmark.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), CategoryActivity.class);
+            intent.putExtra("categoryId", String.valueOf(83));
+            intent.putExtra("page", 1);
             startActivity(intent);
         });
-    }
 
-    private void processShare () {
+        binding.btnRanking.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
+            intent.putExtra("type_ranking", "2");
+            startActivity(intent);
+        });
+
+        binding.btnInfoApp.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), InfoAppActivity.class);
+            startActivity(intent);
+        });
+
         binding.btnShare.setOnClickListener(v -> {
             Intent shareIntent = new Intent(Intent.ACTION_SEND);
             shareIntent.setType("text/plain");
@@ -181,19 +155,45 @@ public class UserFragment extends Fragment {
             shareIntent.putExtra(Intent.EXTRA_TEXT, "http://truyenhdc.com");
             startActivity(Intent.createChooser(shareIntent, "Chia sẻ ứng dụng"));
         });
-    }
 
-    private void processInfoApp () {
-        binding.btnInfoApp.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), InfoAppActivity.class);
+        binding.btnStickerUser.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), StickerActivity.class);
             startActivity(intent);
         });
-    }
 
-    private void processRanking () {
-        binding.btnRanking.setOnClickListener(v -> {
-            Intent intent = new Intent(getContext(), SearchActivity.class);
+        binding.btnCommentUser.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), CommentActivity.class);
             startActivity(intent);
+        });
+
+        binding.btnLevelUser.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), LevelActivity.class);
+            startActivity(intent);
+        });
+
+        binding.btnSearchManga.setOnClickListener(v -> {
+            CustomTabColorSchemeParams.Builder colorBuilder = new CustomTabColorSchemeParams.Builder();
+            colorBuilder.setToolbarColor(ContextCompat.getColor(v.getContext(), R.color.primary_color));
+            CustomTabColorSchemeParams colorParams = colorBuilder.build();
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            builder.setDefaultColorSchemeParams(colorParams);
+            CustomTabsIntent customTabsIntent = builder.build();
+            customTabsIntent.launchUrl(v.getContext(), Uri.parse("https://truyenhdc.com/truyen-tranh/tim-truyen"));
+        });
+
+        binding.btnLogout.setOnClickListener(v -> {
+            sharedPrefManager.removeToken();
+
+            gsc.signOut();
+            userViewModel.logOut().observe(getViewLifecycleOwner(), responseBody -> {
+                if (responseBody != null) {
+                    Intent intent = new Intent(getContext(), SignActivity.class);
+                    startActivity(intent);
+                    requireActivity().finish();
+                } else {
+                    Toast.makeText(getContext(), "Đăng xuất thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
         });
     }
 }

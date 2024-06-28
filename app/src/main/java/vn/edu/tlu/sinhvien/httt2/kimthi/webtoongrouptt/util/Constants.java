@@ -14,4 +14,6 @@ public class Constants {
             new RequestOptions().format(DecodeFormat.PREFER_ARGB_8888);
     public static final RequestOptions IMG_CENTER_CROP_ROUND_30_OPTIONS =
             new RequestOptions().transform(new CenterCrop(), new RoundedCorners(30));
+    public static final int TYPE_STORIES = 1;
+    public static final int TYPE_COMICS = 0;
 }

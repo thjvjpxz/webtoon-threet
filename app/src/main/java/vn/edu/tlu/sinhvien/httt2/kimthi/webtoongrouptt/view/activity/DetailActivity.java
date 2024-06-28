@@ -3,6 +3,7 @@ package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,9 +46,10 @@ public class DetailActivity extends AppCompatActivity implements CommentInterfac
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         binding = ActivityDetailBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
+
         Intent intent = getIntent();
         String comicId = intent.getStringExtra("COMIC_ID");
-        setContentView(binding.getRoot());
         binding.listChapter.setLayoutManager(new LinearLayoutManager(this,
                 RecyclerView.VERTICAL, false));
         if (comicId != null) {

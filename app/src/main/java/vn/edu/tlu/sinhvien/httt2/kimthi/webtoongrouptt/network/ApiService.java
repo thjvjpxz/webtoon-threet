@@ -98,6 +98,10 @@ public interface ApiService {
                                               @Query("status") int status,
                                               @Query("keyword") String keyword);
 
+    @GET("stories/getFilterStories")
+    Call<FilterComicResponse> getFilterStories(@Query("page") int page,
+                                               @Query("keyword") String keyword);
+
     // Story
     @GET("mobile/stories/getStories")
     Call<StoryHomeResponse> getStories();
