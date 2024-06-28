@@ -34,6 +34,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Constants;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.util.Utility;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.CategoryActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.ListTypeComicActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.MainActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.HomeAdapter;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.viewmodel.HomeViewModel;
@@ -59,6 +60,8 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
 
         handleClickBtnStory();
+
+        handleClickMore();
 
         setLayoutRCV();
 
@@ -146,6 +149,20 @@ public class HomeFragment extends Fragment {
             startActivity(intent);
 
             getActivity().finish();
+        });
+    }
+
+    private void handleClickMore(){
+        binding.tvMoreRecent.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ListTypeComicActivity.class);
+            intent.putExtra("slug", "truyen-moi-cap-nhat");
+            startActivity(intent);
+        });
+
+        binding.tvMoreCompleted.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), ListTypeComicActivity.class);
+            intent.putExtra("slug", "truyen-hoan-thanh");
+            startActivity(intent);
         });
     }
 }

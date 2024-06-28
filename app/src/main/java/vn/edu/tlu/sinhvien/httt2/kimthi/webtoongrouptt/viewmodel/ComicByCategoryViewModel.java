@@ -52,7 +52,13 @@ public class ComicByCategoryViewModel extends ViewModel {
                                 responseComicByCategory.setValue(response);
                             } else {
                                 ComicByCategoryResponse currentResponse = responseComicByCategory.getValue();
-                                currentResponse.getData().getData().addAll(response.getData().getData());
+                                List<Comic> currentData = currentResponse.getData().getData();
+                                currentData.clear();
+                                for (Comic newComic : response.getData().getData()) {
+                                    if (!currentData.contains(newComic)) {
+                                        currentData.add(newComic);
+                                    }
+                                }
                                 responseComicByCategory.setValue(currentResponse);
                             }
                         }
