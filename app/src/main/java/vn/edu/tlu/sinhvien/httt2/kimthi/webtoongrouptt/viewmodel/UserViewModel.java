@@ -29,7 +29,7 @@ public class UserViewModel extends AndroidViewModel {
         return userRepository.LogOut();
     }
 
-    public LiveData<LoginResponse> updateUser(String name, String email, int road_id, MultipartBody.Part avatar) {
-        return userRepository.updateUser(new UpdateRequest(name, email, road_id, avatar));
+    public LiveData<LoginResponse> updateUser(String name, String email, int road_id, String uriAvatar) {
+        return userRepository.updateUser(new UpdateRequest(name, email, road_id, uriAvatar));
     }
 }

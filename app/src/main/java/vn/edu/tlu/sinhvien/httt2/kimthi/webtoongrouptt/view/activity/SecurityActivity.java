@@ -14,6 +14,8 @@ import android.widget.Toast;
 import android.provider.MediaStore;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLConnection;
+import java.nio.file.Files;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -29,6 +31,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 import com.bumptech.glide.Glide;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import okhttp3.Response;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
@@ -51,6 +55,8 @@ public class SecurityActivity extends AppCompatActivity {
         binding = ActivitySecurityBinding.inflate(getLayoutInflater());
         userViewModel = new UserViewModel(getApplication());
         sharedPrefManager = new SharedPrefManager(this);
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        StorageReference storageRef = storage.getReference();
         setContentView(binding.getRoot());
 
         activityResultLauncher = registerForActivityResult(
@@ -67,11 +73,11 @@ public class SecurityActivity extends AppCompatActivity {
                 }
         );
 
+        requestReadExternalStoragePermission();
         observe();
         processEditText();
         processBack();
         processSave();
-        requestReadExternalStoragePermission();
     }
     private void processEditText() {
         binding.ivAvatar.setOnClickListener(v-> {
@@ -156,7 +162,7 @@ public class SecurityActivity extends AppCompatActivity {
         return result;
     }
 
-    private void uploadFileToServer () {
+    private void uploadFileToServer() {
         try {
             if (fileUri == null) {
                 Toast.makeText(this, "Please select a file first", Toast.LENGTH_SHORT).show();
@@ -165,89 +171,50 @@ public class SecurityActivity extends AppCompatActivity {
 
             String path = getPathFromUri(this, fileUri);
             if (path == null) {
-                Toast.makeText(this, "Unable to get file path", Toast.LENGTH_SHORT).show();
-                Log.d("TAG", "uploadFileToServer: " + fileUri.getPath());
                 return;
             }
 
             File file = new File(path);
+            Uri fileUri = Uri.fromFile(file);
+            StorageReference storageRef = FirebaseStorage.getInstance().getReference().child("uploads/" + file.getName());
 
-            Log.d("TAG", "uploadFileToServer: " + file.getName());
-
-            RequestBody fileBody = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), file);
-            MultipartBody.Part filePart = MultipartBody.Part.createFormData("avatar", file.getName(), fileBody);
-
-            userViewModel.updateUser(binding.tvName.getText().toString(), binding.tvEmail.getText().toString(), 1, filePart).observe(this, updateResponse -> {
-                if (updateResponse != null) {
-                    Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
-                }
+            storageRef.putFile(fileUri).addOnSuccessListener(taskSnapshot -> {
+                storageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String fileUrl = uri.toString();
+                    updateUserWithFileUrl(fileUrl);
+                }).addOnFailureListener(e -> {
+                    Toast.makeText(this, "Failed to get download URL", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                });
+            }).addOnFailureListener(e -> {
+                Toast.makeText(this, "Failed to upload file", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             });
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-//    private void uploadFileToServer() {
-//        try {
-//            String token = sharedPrefManager.getToken();
-//            Log.d("TOKEN SHARE", "TOKEN: " + token);
-//            OkHttpClient client = new OkHttpClient();
-//
-//            RequestBody name = RequestBody.create(binding.tvName.getText().toString(), MediaType.parse("multipart/form-data"));
-//            RequestBody email = RequestBody.create(binding.tvEmail.getText().toString(), MediaType.parse("multipart/form-data"));
-//            RequestBody roadId = RequestBody.create("1", MediaType.parse("multipart/form-data"));
-//
-//            MultipartBody requestBody = new MultipartBody.Builder()
-//                    .setType(MultipartBody.FORM)
-//                    .addFormDataPart("name", name.toString())
-//                    .addFormDataPart("email", email.toString())
-//                    .addFormDataPart("road_id", roadId.toString())
-//                    .build();
-//
-//            Request request = new Request.Builder()
-//                    .url("https://truyenhdc.com/api/user/update")
-//                    .post(requestBody)
-//                    .addHeader("Authorization", token)
-//                    .build();
-//
-//            client.newCall(request).enqueue(new Callback() {
-//                @Override
-//                public void onFailure(Call call, IOException e) {
-//                    e.printStackTrace();
-//                    runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show());
-//                }
-//
-//                @Override
-//                public void onResponse(Call call, Response response) throws IOException {
-//                    if (response.isSuccessful()) {
-//                        Log.d("TAG", "PARAM: " + call.request().body());
-//                        runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show());
-//                    } else {
-//                        runOnUiThread(() -> Toast.makeText(SecurityActivity.this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show());
-//                    }
-//                }
-//            });
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+    private void updateUserWithFileUrl(String fileUrl) {
+        userViewModel.updateUser(binding.tvName.getText().toString(), binding.tvEmail.getText().toString(), 1, fileUrl).observe(this, updateResponse -> {
+            if (updateResponse != null) {
+                Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                sharedPrefManager.saveAvatar(fileUrl);
+                sharedPrefManager.saveName(binding.tvName.getText().toString());
+            } else {
+                Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 
     private String getPathFromUri(Context context, Uri uri) {
-        Log.d("TAG", "URI: " + uri.toString());
         String wholeID = DocumentsContract.getDocumentId(uri);
-        Log.d("TAG", "Whole ID: " + wholeID);
 
-        // Split at colon, use second item in the array
         String id = wholeID.split(":")[1];
-        Log.d("TAG", "ID: " + id);
 
         String[] column = {MediaStore.Images.Media.DATA};
 
-        // where id is equal to
         String sel = MediaStore.Images.Media._ID + "=?";
 
         Cursor cursor = context.getContentResolver().
@@ -255,7 +222,6 @@ public class SecurityActivity extends AppCompatActivity {
                         column, sel, new String[]{id}, null);
 
         if (cursor == null) {
-            Log.d("TAG", "Cursor is null");
             return null;
         }
 
@@ -265,11 +231,8 @@ public class SecurityActivity extends AppCompatActivity {
 
         if (cursor.moveToFirst()) {
             filePath = cursor.getString(columnIndex);
-        } else {
-            Log.d("TAG", "Cursor is empty");
         }
         cursor.close();
-        Log.d("TAG", "File Path: " + filePath);
         return filePath;
     }
 
@@ -286,11 +249,8 @@ public class SecurityActivity extends AppCompatActivity {
             do {
                 int idColumn = cursor.getColumnIndex(MediaStore.Images.Media._ID);
                 int id = cursor.getInt(idColumn);
-                Log.d("TAG", "ID: " + id);
             } while (cursor.moveToNext());
             cursor.close();
-        } else {
-            Log.d("TAG", "Cursor is null or empty");
         }
     }
 

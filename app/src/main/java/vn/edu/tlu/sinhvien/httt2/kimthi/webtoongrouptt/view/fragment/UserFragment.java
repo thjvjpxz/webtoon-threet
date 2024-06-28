@@ -23,6 +23,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.InfoAppActivity;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.SearchActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.StickerActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.activity.LevelActivity;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
@@ -85,6 +86,20 @@ public class UserFragment extends Fragment {
         observe();
 
         return binding.getRoot();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        SharedPrefManager sharedPrefManager = SharedPrefManager.getInstance(getContext());
+        String avatar = sharedPrefManager.getAvatar();
+        String name = sharedPrefManager.getName();
+        Glide.with(this)
+                .load(avatar)
+                .circleCrop()
+                .into(binding.userImage);
+        binding.tvNameUser.setText(name);
     }
 
     private void processLogOut() {
@@ -171,6 +186,13 @@ public class UserFragment extends Fragment {
     private void processInfoApp () {
         binding.btnInfoApp.setOnClickListener(v -> {
             Intent intent = new Intent(getContext(), InfoAppActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void processRanking () {
+        binding.btnRanking.setOnClickListener(v -> {
+            Intent intent = new Intent(getContext(), SearchActivity.class);
             startActivity(intent);
         });
     }
