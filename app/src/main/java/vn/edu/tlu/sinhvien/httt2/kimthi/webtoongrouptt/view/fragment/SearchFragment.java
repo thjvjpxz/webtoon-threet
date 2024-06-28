@@ -42,6 +42,7 @@ public class SearchFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        filterComicViewModel = new FilterComicViewModel(requireActivity().getApplication());
         if (getArguments() != null) {
             tabPosition = getArguments().getInt(ARG_TAB_POSITION);
             if (tabPosition == 2) {
@@ -56,8 +57,6 @@ public class SearchFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentSearchBinding.inflate(inflater, container, false);
-        binding.rvSearch.setLayoutManager(new LinearLayoutManager(getContext()));
-        filterComicViewModel = new FilterComicViewModel(requireActivity().getApplication());
         Bundle bundle = getArguments();
         if (bundle != null) {
             query = bundle.getString("query");

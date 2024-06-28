@@ -50,7 +50,7 @@ public interface ApiService {
     @GET("user")
     Call<UserResponse> getUser();
 
-    @POST("/user/update")
+    @POST("user/update")
     Call<LoginResponse> updateUser(@Body UpdateRequest updateRequest);
 
     @POST("logout")

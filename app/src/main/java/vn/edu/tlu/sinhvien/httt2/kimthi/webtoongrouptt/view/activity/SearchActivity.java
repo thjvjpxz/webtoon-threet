@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.SearchView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -73,17 +74,39 @@ public class SearchActivity extends AppCompatActivity {
         binding.actionBarSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                binding.actionBarSpinner.setSelection(position);
-                sort = String.valueOf(position);
-                Fragment fragment = getSupportFragmentManager().findFragmentByTag("f" + binding.viewPager2.getCurrentItem());
-                if (fragment instanceof SearchFragment) {
-                    ((SearchFragment) fragment).updateDataRvView(getQuery(), getSort());
+                String newSort = String.valueOf(position);
+                if (!newSort.equals(sort)) {
+                    sort = newSort;
+                    Fragment fragment = getSupportFragmentManager().findFragmentByTag("f" + binding.viewPager2.getCurrentItem());
+                    if (fragment instanceof SearchFragment) {
+                        ((SearchFragment) fragment).updateDataRvView(getQuery(), getSort());
+                    }
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
+        });
+
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Fragment fragment = getSupportFragmentManager().findFragmentByTag("f" + binding.viewPager2.getCurrentItem());
+                if (fragment instanceof SearchFragment) {
+                    ((SearchFragment) fragment).updateDataRvView(query, getSort());
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
+        binding.tvBack.setOnClickListener(v -> {
+            finish();
         });
     }
 }

@@ -1,9 +1,12 @@
 package vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
+import java.util.Objects;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -79,8 +82,15 @@ public class UserRepository {
             @Override
             public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
                 if (response.isSuccessful()) {
-                    updateResponseData.setValue(response.body());
+                    assert response.body() != null;
+                    if (Objects.equals(response.body().getStatus(), "success")) {
+                        updateResponseData.setValue(response.body());
+                    } else {
+                        Log.d("updateUser", "onResponse: " + response.body().getStatus());
+                        updateResponseData.setValue(null);
+                    }
                 } else {
+                        Log.d("updateUser", "onResponse: loi roi");
                     updateResponseData.setValue(null);
                 }
             }

@@ -156,42 +156,41 @@ public class SecurityActivity extends AppCompatActivity {
         return result;
     }
 
-//    private void uploadFileToServer (String token) {
-//        try {
-//            if (fileUri == null) {
-//                Toast.makeText(this, "Please select a file first", Toast.LENGTH_SHORT).show();
-//                return;
-//            }
-//
-//            String path = getPathFromUri(this, fileUri);
-//            if (path == null) {
-//                Toast.makeText(this, "Unable to get file path", Toast.LENGTH_SHORT).show();
-//                Log.d("TAG", "uploadFileToServer: " + fileUri.getPath());
-//                return;
-//            }
-//
-//            File file = new File(path);
-//
-//            Log.d("TAG", "uploadFileToServer: " + file.getName());
-//            Log.d("TOKEN SHARE", "TOKEN: " + token);
-//
-//            RequestBody fileBody = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), file);
-//            MultipartBody.Part filePart = MultipartBody.Part.createFormData("avatar", file.getName(), fileBody);
-//
-//            userViewModel.updateUser(binding.tvName.getText().toString(), binding.tvEmail.getText().toString(), 1, filePart).observe(this, updateResponse -> {
-//                if (updateResponse != null) {
-//                    Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
-//                } else {
-//                    Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-    private void uploadFileToServer() {
+    private void uploadFileToServer () {
         try {
+            if (fileUri == null) {
+                Toast.makeText(this, "Please select a file first", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            String path = getPathFromUri(this, fileUri);
+            if (path == null) {
+                Toast.makeText(this, "Unable to get file path", Toast.LENGTH_SHORT).show();
+                Log.d("TAG", "uploadFileToServer: " + fileUri.getPath());
+                return;
+            }
+
+            File file = new File(path);
+
+            Log.d("TAG", "uploadFileToServer: " + file.getName());
+
+            RequestBody fileBody = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), file);
+            MultipartBody.Part filePart = MultipartBody.Part.createFormData("avatar", file.getName(), fileBody);
+
+            userViewModel.updateUser(binding.tvName.getText().toString(), binding.tvEmail.getText().toString(), 1, filePart).observe(this, updateResponse -> {
+                if (updateResponse != null) {
+                    Toast.makeText(this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Cập nhật thất bại", Toast.LENGTH_SHORT).show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+//    private void uploadFileToServer() {
+//        try {
 //            String token = sharedPrefManager.getToken();
 //            Log.d("TOKEN SHARE", "TOKEN: " + token);
 //            OkHttpClient client = new OkHttpClient();
@@ -230,11 +229,11 @@ public class SecurityActivity extends AppCompatActivity {
 //                    }
 //                }
 //            });
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     private String getPathFromUri(Context context, Uri uri) {

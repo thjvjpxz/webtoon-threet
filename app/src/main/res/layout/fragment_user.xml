@@ -88,6 +88,7 @@
                     android:background="@drawable/bg_pink_radius"
                     android:fontFamily="@font/roboto_medium_italic"
                     android:paddingHorizontal="10dp"
+                    android:paddingVertical="2dp"
                     android:layout_marginTop="5dp"
                     android:text="Sơ cấp"
                     android:textColor="@color/pink_bold"
@@ -256,6 +257,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/btnStickerUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -358,6 +360,7 @@
                     android:orientation="vertical">
 
                     <LinearLayout
+                        android:id="@+id/btnShare"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
@@ -375,35 +378,13 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nunito_bold"
-                            android:text="Giới thiệu của tôi"
+                            android:text="Giới thiệu bạn bè"
                             android:textSize="15sp"
                             android:textStyle="bold" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_vertical"
-                        android:orientation="horizontal"
-                        android:paddingVertical="10dp">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="10dp"
-                            android:contentDescription="@string/app_name"
-                            android:src="@drawable/ic_question" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/nunito_bold"
-                            android:text="Phản hồi ý kiến"
-                            android:textSize="15sp"
-                            android:textStyle="bold" />
-                    </LinearLayout>
-
-                    <LinearLayout
+                        android:id="@+id/btnInfoApp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_vertical"
