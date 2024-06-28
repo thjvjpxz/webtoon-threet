@@ -16,6 +16,7 @@ import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.CommentRequ
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.CustomToast;
 
 public class CommentRepository {
     private static CommentRepository instance;
@@ -43,18 +44,18 @@ public class CommentRepository {
                 if (response.isSuccessful()) {
                     BaseResponse baseResponse = response.body();
                     if(baseResponse != null) {
-                        Toast.makeText(context, baseResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                        CustomToast.makeText(context, baseResponse.getMessage(), Toast.LENGTH_SHORT, CustomToast.SUCCESS).show();
                         result.setValue(true);
                     }
                 } else {
-                    Toast.makeText(context, "Bình luận thất bại", Toast.LENGTH_SHORT).show();
+                    CustomToast.makeText(context, "Bình luận thất bại", Toast.LENGTH_SHORT, CustomToast.ERROR).show();
                     result.setValue(false);
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<BaseResponse> call, @NonNull Throwable t) {
-                Toast.makeText(context, "Bình luận thất bại", Toast.LENGTH_SHORT).show();
+                CustomToast.makeText(context, "Bình luận thất bại", Toast.LENGTH_SHORT, CustomToast.ERROR).show();
                 result.setValue(false);
             }
         });
