@@ -27,6 +27,14 @@ public class SharedPrefManager {
         getEditor().putInt("textSize", textSize).apply();
     }
 
+    public void saveVersionUpdateStory(int version) {
+        getEditor().putInt("version", version).apply();
+    }
+
+    public int getVersionUpdateStory() {
+        return sharedPreferences.getInt("version", -1);
+    }
+
     public int getTextSize() {
         return sharedPreferences.getInt("textSize", 16);
     }

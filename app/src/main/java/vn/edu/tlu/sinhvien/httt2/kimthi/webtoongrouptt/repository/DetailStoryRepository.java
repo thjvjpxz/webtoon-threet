@@ -6,21 +6,34 @@ import android.util.Log;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.dao.ChapterDAO;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.dao.StoryDAO;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.FollowRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailStoryResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Chapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiClient;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.network.ApiService;
 
 public class DetailStoryRepository {
     private static DetailStoryRepository instance;
     private ApiService apiService;
+    private StoryDAO storyDAO;
+    private ChapterDAO chapterDAO;
+    private Context context;
 
     private DetailStoryRepository(Context context) {
         apiService = ApiClient.getRetrofitHeader(context).create(ApiService.class);
+        storyDAO = new StoryDAO(context);
+        chapterDAO = new ChapterDAO(context);
+        this.context = context;
     }
 
     public static DetailStoryRepository getInstance(Context context) {
@@ -42,6 +55,13 @@ public class DetailStoryRepository {
                                    Response<DetailStoryResponse> response) {
                 if (response.isSuccessful()) {
                     data.setValue(response.body());
+                    if (SharedPrefManager.getInstance(context).getVersionUpdateStory() == -1) {
+                        SharedPrefManager.getInstance(context).saveVersionUpdateStory(0);
+                    }
+                    Story story = response.body().getStory();
+                    List<Chapter> chapters = response.body().getChapters();
+                    storyDAO.insertStory(story);
+                    chapterDAO.insertListChapter(chapters);
                 }
                 isLoading.run();
             }
@@ -53,6 +73,26 @@ public class DetailStoryRepository {
                 isLoading.run();
             }
         });
+        return data;
+    }
+
+    public MutableLiveData<Story> getStoryById(int storyId) {
+        MutableLiveData<Story> data = new MutableLiveData<>();
+        Story story = storyDAO.getStoryById(storyId);
+        if (story != null) {
+            data.setValue(story);
+        }
+
+        return data;
+    }
+
+    public MutableLiveData<List<Chapter>> getChapterByStoryId(int storyId) {
+        MutableLiveData<List<Chapter>> data = new MutableLiveData<>();
+        List<Chapter> chapters = chapterDAO.getListChapter(storyId);
+        if (chapters != null) {
+            data.setValue(chapters);
+        }
+
         return data;
     }
 

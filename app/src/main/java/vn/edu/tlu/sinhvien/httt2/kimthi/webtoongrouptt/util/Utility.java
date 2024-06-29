@@ -4,6 +4,11 @@ import android.content.Context;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.util.List;
+
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Author;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.Category;
+
 public class Utility {
     public static String capitalizeFirstLetter(String str) {
         if (str == null || str.isEmpty()) {
@@ -17,6 +22,32 @@ public class Utility {
                     .append(" ");
         }
         return sb.toString().trim();
+    }
+
+    public static List<Author> stringToListAuthor(String authors) {
+        List<Author> authorList = null;
+        if (authors != null) {
+            String[] authorArr = authors.split(", ");
+            for (String author : authorArr) {
+                Author a = new Author();
+                a.setName(author);
+                authorList.add(a);
+            }
+        }
+        return authorList;
+    }
+
+    public static List<Category> stringToListCategory(String categories) {
+        List<Category> categoryList = null;
+        if (categories != null) {
+            String[] categoryArr = categories.split(", ");
+            for (String category : categoryArr) {
+                Category c = new Category();
+                c.setName(category);
+                categoryList.add(c);
+            }
+        }
+        return categoryList;
     }
 
     public static String getFullHtml(String tag) {

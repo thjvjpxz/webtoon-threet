@@ -20,6 +20,9 @@ public class Story implements Serializable {
     private Chapter chapter;
     private String origin_name;
 
+    public Story() {
+    }
+
     public Story(int id, String name, String slug, String status, String content,
                  List<Author> authors, List<Category> categories, String thumbnail,
                  int total_views, float rating, Chapter chapter, String origin_name) {

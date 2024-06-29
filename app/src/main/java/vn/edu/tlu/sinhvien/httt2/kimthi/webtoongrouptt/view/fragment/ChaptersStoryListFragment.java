@@ -4,12 +4,6 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,10 +11,16 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.R;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.SharedPrefManager.SharedPrefManager;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.databinding.FragmentChaptersStoryListBinding;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.view.adapter.StoryChapterAdapter;
@@ -61,7 +61,11 @@ public class ChaptersStoryListFragment extends Fragment {
 
         viewModel = new ViewModelProvider(this).get(DetailStoryViewModel.class);
         storyChapterAdapter = new StoryChapterAdapter(new ArrayList<>(), story, new ArrayList<>());
-        observer(story);
+        if (SharedPrefManager.getInstance(getContext()).getVersionUpdateStory() == -1) {
+            observer(story);
+        } else {
+            observerNotCallAPI();
+        }
         binding.rvChapters.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvChapters.setAdapter(storyChapterAdapter);
 
@@ -105,6 +109,12 @@ public class ChaptersStoryListFragment extends Fragment {
                 storyChapterAdapter.setChapters(detailStoryResponse.getChapters());
                 storyChapterAdapter.setHistory(detailStoryResponse.getHistory());
             }
+        });
+    }
+
+    private void observerNotCallAPI() {
+        viewModel.getChapters(story.getId()).observe(getViewLifecycleOwner(), chapters -> {
+            storyChapterAdapter.setChapters(chapters);
         });
     }
 

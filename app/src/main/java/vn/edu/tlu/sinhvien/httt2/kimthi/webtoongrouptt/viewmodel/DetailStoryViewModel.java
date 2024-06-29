@@ -7,9 +7,13 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+import java.util.List;
+
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.request.FollowRequest;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.BaseResponse;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.response.DetailStoryResponse;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Chapter;
+import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.model.story.Story;
 import vn.edu.tlu.sinhvien.httt2.kimthi.webtoongrouptt.repository.DetailStoryRepository;
 
 public class DetailStoryViewModel extends AndroidViewModel {
@@ -52,6 +56,14 @@ public class DetailStoryViewModel extends AndroidViewModel {
         });
 
         return detailStoryResponse;
+    }
+
+    public MutableLiveData<List<Chapter>> getChapters(int storyId) {
+        return repository.getChapterByStoryId(storyId);
+    }
+
+    public MutableLiveData<Story> getStoryById(int storyId) {
+        return repository.getStoryById(storyId);
     }
 
     public LiveData<BaseResponse> followStory(String storyId) {
